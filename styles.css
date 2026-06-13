@@ -539,25 +539,94 @@ h3 {
 }
 
 .logo-rail {
-  display: grid;
-  grid-template-columns: repeat(8, minmax(128px, 1fr));
+  position: relative;
   margin-top: 18px;
-  border-block: 1px solid var(--line);
-  background: var(--paper);
-  overflow-x: auto;
+  padding: 16px 0;
+  border-block: 2px solid var(--black);
+  background:
+    linear-gradient(90deg, rgba(200, 149, 42, 0.18), transparent 20%, transparent 80%, rgba(184, 35, 26, 0.2)),
+    var(--black);
+  overflow: hidden;
+}
+
+.logo-rail::before,
+.logo-rail::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 10px;
+  background-image: radial-gradient(circle, var(--warm) 0 3px, transparent 3.4px);
+  background-position: 0 50%;
+  background-size: 28px 10px;
+  opacity: 0.86;
+  pointer-events: none;
+}
+
+.logo-rail::before {
+  top: 4px;
+}
+
+.logo-rail::after {
+  bottom: 4px;
+}
+
+.logo-rail-track {
+  display: flex;
+  width: max-content;
+  animation: filmstrip-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.logo-rail-set {
+  display: flex;
+  flex: 0 0 auto;
 }
 
 .logo-rail span {
-  min-height: 58px;
+  position: relative;
+  flex: 0 0 clamp(156px, 18vw, 226px);
+  min-height: 70px;
   display: grid;
   place-items: center;
-  padding: 0 18px;
-  border-right: 1px solid var(--line);
-  color: rgba(26, 23, 16, 0.44);
+  padding: 0 20px;
+  border-inline: 2px solid var(--black);
+  background: var(--paper);
+  color: rgba(26, 23, 16, 0.58);
   font-family: var(--serif);
   font-size: 0.92rem;
   font-weight: 800;
+  text-align: center;
   white-space: nowrap;
+}
+
+.logo-rail span::before {
+  content: "";
+  position: absolute;
+  inset: 9px 8px;
+  border: 1px solid rgba(26, 23, 16, 0.16);
+  pointer-events: none;
+}
+
+@keyframes filmstrip-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-rail {
+    overflow-x: auto;
+  }
+
+  .logo-rail-track {
+    animation: none;
+  }
 }
 
 .section {
@@ -1447,7 +1516,15 @@ figure {
   }
 
   .logo-rail {
-    grid-template-columns: repeat(8, minmax(118px, 1fr));
+    margin-top: 12px;
+    padding: 14px 0;
+  }
+
+  .logo-rail span {
+    flex-basis: 148px;
+    min-height: 62px;
+    padding: 0 14px;
+    font-size: 0.82rem;
   }
 
   .section {

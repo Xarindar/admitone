@@ -97,7 +97,7 @@ button {
 
 .hero-panel {
   position: relative;
-  min-height: min(760px, calc(100vh - 22px));
+  min-height: min(700px, calc(100vh - 22px));
   overflow: hidden;
   border-radius: var(--radius);
   background: var(--red);
@@ -109,9 +109,52 @@ button {
   content: "";
   position: absolute;
   inset: 88px 26px 26px;
+  z-index: 3;
   border: 1px solid rgba(251, 247, 238, 0.32);
   border-radius: var(--radius);
   pointer-events: none;
+}
+
+.hero-gradient {
+  position: absolute;
+  inset: 88px 26px 26px;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(90deg, rgba(184, 35, 26, 0.68), transparent 48%, rgba(184, 35, 26, 0.5)),
+    radial-gradient(circle at 50% 45%, rgba(251, 247, 238, 0.1), transparent 46%),
+    var(--red);
+}
+
+.hero-gradient::before,
+.hero-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-gradient::before {
+  background:
+    linear-gradient(110deg, rgba(251, 247, 238, 0.18), transparent 28%, rgba(26, 23, 16, 0.16) 78%),
+    repeating-linear-gradient(90deg, rgba(251, 247, 238, 0.06) 0 1px, transparent 1px 10px);
+  mix-blend-mode: screen;
+}
+
+.hero-gradient::after {
+  background:
+    radial-gradient(circle at 50% 44%, transparent 0 42%, rgba(184, 35, 26, 0.2) 64%, rgba(26, 23, 16, 0.34) 100%),
+    repeating-radial-gradient(circle at 24% 22%, rgba(251, 247, 238, 0.12) 0 0.7px, transparent 0.7px 3px);
+  opacity: 0.62;
+}
+
+.hero-gradient-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .site-header {
@@ -140,15 +183,21 @@ button {
 .brand-mark {
   width: 34px;
   height: 34px;
-  display: grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: var(--warm);
   color: var(--black);
   border: 1px solid currentColor;
   border-radius: 50%;
-  font-family: var(--serif);
-  font-size: 0.74rem;
-  font-weight: 800;
+  overflow: hidden;
+}
+
+.brand-mark img {
+  width: 22px;
+  height: 22px;
+  display: block;
+  object-fit: contain;
 }
 
 .brand-name {
@@ -212,10 +261,13 @@ button {
 }
 
 .hero-copy {
-  position: relative;
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 4;
   width: min(700px, calc(100% - 36px));
-  margin: 22px auto 0;
+  margin: 0;
   text-align: center;
 }
 
@@ -418,15 +470,69 @@ h3 {
 }
 
 .mini-poster {
+  position: relative;
   min-height: 118px;
   display: grid;
   place-items: center;
-  background: var(--gold);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--black);
   border: 1px solid var(--black);
   border-radius: var(--radius);
   font-family: var(--serif);
   font-size: 2rem;
   font-weight: 800;
+}
+
+.interactive-poster {
+  cursor: crosshair;
+}
+
+.poster-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mini-poster::before,
+.mini-poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.mini-poster::before {
+  background:
+    linear-gradient(115deg, rgba(251, 247, 238, 0.42), transparent 30%, rgba(26, 23, 16, 0.14) 72%),
+    repeating-linear-gradient(90deg, rgba(251, 247, 238, 0.08) 0 1px, transparent 1px 8px);
+  mix-blend-mode: screen;
+  opacity: 0.72;
+}
+
+.mini-poster::after {
+  background:
+    radial-gradient(circle at 50% 42%, transparent 0 44%, rgba(26, 23, 16, 0.32) 100%),
+    repeating-radial-gradient(circle at 20% 20%, rgba(251, 247, 238, 0.16) 0 0.7px, transparent 0.7px 3px);
+  opacity: 0.48;
+}
+
+.poster-monogram {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(26, 23, 16, 0.58);
+  border-radius: 50%;
+  background: rgba(251, 247, 238, 0.68);
+  color: var(--black);
+  box-shadow: 0 10px 28px rgba(26, 23, 16, 0.22);
+  backdrop-filter: blur(7px);
 }
 
 .card-left {
@@ -541,7 +647,7 @@ h3 {
 .logo-rail {
   position: relative;
   margin-top: 18px;
-  padding: 16px 0;
+  padding: 0;
   border-block: 2px solid var(--black);
   background:
     linear-gradient(90deg, rgba(200, 149, 42, 0.18), transparent 20%, transparent 80%, rgba(184, 35, 26, 0.2)),
@@ -549,8 +655,18 @@ h3 {
   overflow: hidden;
 }
 
-.logo-rail::before,
-.logo-rail::after {
+.logo-rail-track {
+  position: relative;
+  display: flex;
+  width: max-content;
+  padding: 16px 0;
+  background: var(--black);
+  animation: filmstrip-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.logo-rail-track::before,
+.logo-rail-track::after {
   content: "";
   position: absolute;
   left: 0;
@@ -564,19 +680,12 @@ h3 {
   pointer-events: none;
 }
 
-.logo-rail::before {
+.logo-rail-track::before {
   top: 4px;
 }
 
-.logo-rail::after {
+.logo-rail-track::after {
   bottom: 4px;
-}
-
-.logo-rail-track {
-  display: flex;
-  width: max-content;
-  animation: filmstrip-scroll 28s linear infinite;
-  will-change: transform;
 }
 
 .logo-rail-set {
@@ -615,7 +724,7 @@ h3 {
   }
 
   to {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-33.333333%, 0, 0);
   }
 }
 
@@ -1517,6 +1626,9 @@ figure {
 
   .logo-rail {
     margin-top: 12px;
+  }
+
+  .logo-rail-track {
     padding: 14px 0;
   }
 

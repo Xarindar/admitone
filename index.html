@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:opsz,wght@9..144,500..800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=filmstrip" />
+    <link rel="stylesheet" href="styles.css?v=poster-gradient" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -25,7 +25,9 @@
           <header class="site-header">
             <nav class="nav" aria-label="Primary navigation">
               <a class="brand" href="#top" aria-label="Admit One home">
-                <span class="brand-mark">AO</span>
+                <span class="brand-mark">
+                  <img src="assets/admit-one-logo.svg" alt="" aria-hidden="true" />
+                </span>
                 <span class="brand-name">Admit One</span>
               </a>
 
@@ -46,61 +48,15 @@
             </nav>
           </header>
 
+          <div class="hero-gradient" aria-hidden="true">
+            <canvas class="hero-gradient-canvas"></canvas>
+          </div>
+
           <div class="hero-copy">
-            <p class="eyebrow">Independent web design studio</p>
             <h1>Websites with a front-row feeling.</h1>
-            <p>
-              Clean builds, sharp layouts, and charming details for brands that need the site to feel intentional before the final assets are even ready.
-            </p>
             <div class="hero-actions">
               <a class="button button-light" href="#contact">Start a Project</a>
               <a class="button button-dark" href="#work">View Work</a>
-            </div>
-          </div>
-
-          <div class="hero-stage" aria-label="Website design preview">
-            <article class="stage-card card-large">
-              <div class="window-dots"><span></span><span></span><span></span></div>
-              <div class="mini-nav">
-                <strong>Launch Preview</strong>
-                <span></span>
-                <span></span>
-              </div>
-              <div class="mini-layout">
-                <div>
-                  <p>Featured page</p>
-                  <h2>Warm, useful, ready to edit.</h2>
-                </div>
-                <div class="mini-poster">AO</div>
-              </div>
-            </article>
-
-            <article class="stage-card card-left">
-              <span class="card-kicker">Sites booked</span>
-              <strong>12+</strong>
-              <p>placeholder metric</p>
-            </article>
-
-            <article class="stage-card card-center">
-              <span class="card-kicker">Launch path</span>
-              <ul>
-                <li>Structure</li>
-                <li>Design system</li>
-                <li>Mobile polish</li>
-              </ul>
-            </article>
-
-            <article class="stage-card card-right">
-              <span class="card-kicker">Next slot</span>
-              <strong>July</strong>
-              <p>first draft sprint</p>
-            </article>
-
-            <div class="ticket-row" aria-hidden="true">
-              <span>ADMIT ONE</span>
-              <span>ADMIT ONE</span>
-              <span>ADMIT ONE</span>
-              <span>ADMIT ONE</span>
             </div>
           </div>
         </div>
@@ -109,6 +65,16 @@
       <section class="logo-rail" aria-label="Placeholder client logos">
         <div class="logo-rail-track">
           <div class="logo-rail-set">
+            <span>Ruby Yard</span>
+            <span>Northline</span>
+            <span>Good Hour</span>
+            <span>Method House</span>
+            <span>Vista Club</span>
+            <span>Field Notes</span>
+            <span>Mercer Supply</span>
+            <span>Juniper Room</span>
+          </div>
+          <div class="logo-rail-set" aria-hidden="true">
             <span>Ruby Yard</span>
             <span>Northline</span>
             <span>Good Hour</span>
@@ -417,7 +383,9 @@
     <footer class="footer">
       <div class="footer-inner">
         <a class="brand" href="#top" aria-label="Admit One home">
-          <span class="brand-mark">AO</span>
+          <span class="brand-mark">
+            <img src="assets/admit-one-logo.svg" alt="" aria-hidden="true" />
+          </span>
           <span class="brand-name">Admit One</span>
         </a>
         <p>Web design for clean launches and memorable first impressions.</p>
@@ -430,6 +398,6 @@
       </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=poster-gradient"></script>
   </body>
 </html>

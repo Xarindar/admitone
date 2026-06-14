@@ -6,22 +6,29 @@
     <title>Admit One | Web Design Studio</title>
     <meta
       name="description"
-      content="Admit One designs clean, modern websites with useful structure and a little vintage charm."
+      content="Admit One designs clean, modern websites with useful structure and a little vintage ticket-window charm."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:opsz,wght@9..144,500..800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:ital,opsz,wght@0,9..144,500..800;1,9..144,500..800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=poster-gradient" />
+    <link rel="stylesheet" href="styles.css?v=marquee" />
   </head>
   <body>
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
     <a class="skip-link" href="#main">Skip to content</a>
 
     <main id="main">
       <section class="hero-shell" id="top">
         <div class="hero-panel">
+          <div class="hero-grain" aria-hidden="true"></div>
+          <div class="hero-vignette" aria-hidden="true"></div>
+          <div class="hero-spotlight" aria-hidden="true"></div>
+
           <header class="site-header">
             <nav class="nav" aria-label="Primary navigation">
               <a class="brand" href="#top" aria-label="Admit One home">
@@ -48,16 +55,33 @@
             </nav>
           </header>
 
-          <div class="hero-gradient" aria-hidden="true">
-            <canvas class="hero-gradient-canvas"></canvas>
+          <div class="hero-copy">
+            <p class="hero-kicker" data-reveal>
+              <span>★</span> Feature Presentation <span>★</span>
+            </p>
+            <h1 data-reveal>
+              Websites with a
+              <em>front&#8209;row</em>
+              feeling.
+            </h1>
+            <p class="hero-lede" data-reveal>
+              A web design studio shaping clean, modern sites with a little ticket&#8209;window charm — structure first, vintage soul throughout.
+            </p>
+            <div class="hero-actions" data-reveal>
+              <a class="button button-light" href="#contact">Start a Project</a>
+              <a class="button button-ghost" href="#work">View Work</a>
+            </div>
+
+            <p class="billing-block" data-reveal aria-label="Studio credits">
+              Admit One Studio Presents &nbsp;·&nbsp; A Front-Row Production &nbsp;·&nbsp; “Your Next Website”<br />
+              Site Strategy &nbsp;·&nbsp; Custom Design &nbsp;·&nbsp; Art Direction &nbsp;·&nbsp; Launch Support<br />
+              Typeset in Fraunces &amp; Bricolage &nbsp;·&nbsp; Color by Vintage Red &amp; Hollywood Gold &nbsp;·&nbsp; Directed by Admit One
+            </p>
           </div>
 
-          <div class="hero-copy">
-            <h1>Websites with a front-row feeling.</h1>
-            <div class="hero-actions">
-              <a class="button button-light" href="#contact">Start a Project</a>
-              <a class="button button-dark" href="#work">View Work</a>
-            </div>
+          <div class="hero-ticket" aria-hidden="true">
+            <span class="hero-ticket-stub">Admit One</span>
+            <span class="hero-ticket-no">No. 001</span>
           </div>
         </div>
       </section>
@@ -98,31 +122,31 @@
       </section>
 
       <section class="section intro">
-        <p class="eyebrow centered">About Admit One</p>
-        <h2>A web design partner for brands that want clean structure with personality.</h2>
-        <p class="intro-text">
+        <p class="eyebrow centered" data-reveal>Now Showing</p>
+        <h2 data-reveal>A web design partner for brands that want clean structure with personality.</h2>
+        <p class="intro-text" data-reveal>
           We shape the first draft into something real: hierarchy, sections, calls to action, placeholder visuals, and a look that can grow as your assets arrive.
         </p>
 
-        <div class="stat-grid">
-          <article class="stat-card image-stat">
-            <img src="https://picsum.photos/seed/admit-one-desk/480/320" alt="Placeholder studio desk" />
+        <div class="stat-grid" data-reveal-group>
+          <article class="stat-card image-stat" data-reveal>
+            <img src="https://picsum.photos/seed/admit-one-desk/480/320" alt="Placeholder studio desk" data-parallax data-parallax-speed="0.05" />
             <div>
               <strong>Useful first</strong>
               <span>every section has a job</span>
             </div>
           </article>
-          <article class="stat-card">
+          <article class="stat-card" data-reveal>
             <span class="stat-label">Draft rhythm</span>
             <strong>2-6 weeks</strong>
             <p>Typical site direction and page design window.</p>
           </article>
-          <article class="stat-card gold-stat">
+          <article class="stat-card gold-stat" data-reveal>
             <span class="stat-label">Assets can wait</span>
             <strong>Placeholder-ready</strong>
             <p>Logo marks, image blocks, and content modules are designed to swap cleanly.</p>
           </article>
-          <article class="stat-card dark-stat">
+          <article class="stat-card dark-stat" data-reveal>
             <span class="stat-label">Pages</span>
             <strong>1-8+</strong>
             <p>Homepages, service pages, launch pages, and simple content hubs.</p>
@@ -131,43 +155,43 @@
       </section>
 
       <section class="section services" id="services">
-        <p class="eyebrow centered">Services</p>
-        <h2>Comprehensive web design without the bloated production circus.</h2>
-        <p class="section-intro">
+        <p class="eyebrow centered" data-reveal>The Program</p>
+        <h2 data-reveal>Comprehensive web design without the bloated production circus.</h2>
+        <p class="section-intro" data-reveal>
           Strategy, design, and handoff support organized into practical pieces.
         </p>
 
-        <div class="service-row">
-          <article>
+        <div class="service-row" data-reveal-group>
+          <article data-reveal>
             <span class="icon-dot">01</span>
             <h3>Site Strategy</h3>
             <p>Page goals, content order, calls to action, and the structure behind a cleaner site.</p>
           </article>
-          <article>
+          <article data-reveal>
             <span class="icon-dot">02</span>
             <h3>Custom Design</h3>
             <p>Homepage and interior layouts with strong hierarchy, responsive states, and reusable sections.</p>
           </article>
-          <article>
+          <article data-reveal>
             <span class="icon-dot">03</span>
             <h3>Launch Support</h3>
             <p>Design notes, placeholder assets, QA passes, and clean handoff for build or implementation.</p>
           </article>
-          <article class="service-photo">
+          <article class="service-photo" data-reveal>
             <img src="https://picsum.photos/seed/admit-one-team/520/360" alt="Placeholder team collaboration" />
           </article>
         </div>
       </section>
 
       <section class="section feature-section">
-        <p class="eyebrow centered">The Build</p>
-        <h2>Where visual polish meets a site people can actually use.</h2>
-        <p class="section-intro">
+        <p class="eyebrow centered" data-reveal>Behind the Screen</p>
+        <h2 data-reveal>Where visual polish meets a site people can actually use.</h2>
+        <p class="section-intro" data-reveal>
           The draft should make decisions visible, not hide behind decoration.
         </p>
 
-        <div class="feature-grid">
-          <article>
+        <div class="feature-grid" data-reveal-group>
+          <article data-reveal>
             <div class="feature-visual browser-stack">
               <span></span>
               <span></span>
@@ -176,7 +200,7 @@
             <h3>Page Architecture</h3>
             <p>Sections are ordered around what visitors need to understand, compare, and do next.</p>
           </article>
-          <article>
+          <article data-reveal>
             <div class="feature-visual chart-stack">
               <span></span>
               <span></span>
@@ -186,7 +210,7 @@
             <h3>Design Systems</h3>
             <p>Colors, type, buttons, cards, spacing, and reusable blocks stay consistent across the site.</p>
           </article>
-          <article>
+          <article data-reveal>
             <div class="feature-visual ticket-stack">
               <span>ADMIT</span>
               <span>ONE</span>
@@ -194,7 +218,7 @@
             <h3>Brand Details</h3>
             <p>Small moments bring the vintage charm without turning the interface into a theme party.</p>
           </article>
-          <article>
+          <article data-reveal>
             <div class="feature-visual map-stack">
               <span>Home</span>
               <span>Work</span>
@@ -209,30 +233,36 @@
       <section class="section work" id="work">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Selected Work</p>
-            <h2>Placeholder projects with the right final-frame energy.</h2>
+            <p class="eyebrow" data-reveal>Now Playing</p>
+            <h2 data-reveal>Placeholder projects with the right final-frame energy.</h2>
           </div>
-          <a class="small-link" href="#contact">Pitch yours</a>
+          <a class="small-link" href="#contact" data-reveal>Pitch yours</a>
         </div>
 
-        <div class="work-grid">
-          <article>
-            <img src="https://picsum.photos/seed/admit-one-restaurant/560/420" alt="Placeholder restaurant project" />
-            <div>
+        <div class="work-grid" data-reveal-group>
+          <article data-reveal>
+            <div class="work-thumb">
+              <img src="https://picsum.photos/seed/admit-one-restaurant/560/420" alt="Placeholder restaurant project" data-parallax data-parallax-speed="0.04" />
+            </div>
+            <div class="work-meta">
               <p>Restaurant</p>
               <h3>Reservation-first site for a neighborhood dining room.</h3>
             </div>
           </article>
-          <article>
-            <img src="https://picsum.photos/seed/admit-one-retail/560/420" alt="Placeholder retail project" />
-            <div>
+          <article data-reveal>
+            <div class="work-thumb">
+              <img src="https://picsum.photos/seed/admit-one-retail/560/420" alt="Placeholder retail project" data-parallax data-parallax-speed="0.04" />
+            </div>
+            <div class="work-meta">
               <p>Retail</p>
               <h3>Catalog-style pages with modern product storytelling.</h3>
             </div>
           </article>
-          <article>
-            <img src="https://picsum.photos/seed/admit-one-studio/560/420" alt="Placeholder studio project" />
-            <div>
+          <article data-reveal>
+            <div class="work-thumb">
+              <img src="https://picsum.photos/seed/admit-one-studio/560/420" alt="Placeholder studio project" data-parallax data-parallax-speed="0.04" />
+            </div>
+            <div class="work-meta">
               <p>Studio</p>
               <h3>Clean service pages for a creative team with range.</h3>
             </div>
@@ -241,14 +271,14 @@
       </section>
 
       <section class="section pricing" id="pricing">
-        <p class="eyebrow centered">Packages</p>
-        <h2>Flexible plans built for different stages of growth.</h2>
-        <p class="section-intro">
+        <p class="eyebrow centered" data-reveal>Box Office</p>
+        <h2 data-reveal>Flexible plans built for different stages of growth.</h2>
+        <p class="section-intro" data-reveal>
           Numbers are draft placeholders for now, but the package structure is ready to tune.
         </p>
 
-        <div class="pricing-grid">
-          <article>
+        <div class="pricing-grid" data-reveal-group>
+          <article data-reveal>
             <span class="icon-dot">01</span>
             <p>Starter</p>
             <h3>Opening Night</h3>
@@ -261,7 +291,7 @@
             </ul>
             <a href="#contact" class="button button-dark">Get Started</a>
           </article>
-          <article class="featured-price">
+          <article class="featured-price" data-reveal>
             <span class="icon-dot">02</span>
             <p>Most requested</p>
             <h3>Full House</h3>
@@ -274,7 +304,7 @@
             </ul>
             <a href="#contact" class="button button-light">Get Started</a>
           </article>
-          <article>
+          <article data-reveal>
             <span class="icon-dot">03</span>
             <p>Ongoing</p>
             <h3>Encore</h3>
@@ -293,29 +323,29 @@
       <section class="section testimonials">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Testimonials</p>
-            <h2>What the placeholder clients say.</h2>
+            <p class="eyebrow" data-reveal>Rave Reviews</p>
+            <h2 data-reveal>What the placeholder clients say.</h2>
           </div>
           <div class="mini-controls" aria-hidden="true"><span></span><span></span></div>
         </div>
 
-        <div class="testimonial-row">
-          <figure>
+        <div class="testimonial-row" data-reveal-group>
+          <figure data-reveal>
             <img src="https://picsum.photos/seed/admit-one-client-a/360/360" alt="Placeholder client portrait" />
             <blockquote>"The first draft finally made the brand feel organized."</blockquote>
             <figcaption>Marin Reed</figcaption>
           </figure>
-          <figure>
+          <figure data-reveal>
             <img src="https://picsum.photos/seed/admit-one-client-b/360/360" alt="Placeholder client portrait" />
             <blockquote>"Warm, direct, and much easier for customers to scan."</blockquote>
             <figcaption>Lena Soto</figcaption>
           </figure>
-          <figure>
+          <figure data-reveal>
             <img src="https://picsum.photos/seed/admit-one-client-c/360/360" alt="Placeholder client portrait" />
             <blockquote>"The placeholder approach let us keep moving."</blockquote>
             <figcaption>Ari Kim</figcaption>
           </figure>
-          <figure>
+          <figure data-reveal>
             <img src="https://picsum.photos/seed/admit-one-client-d/360/360" alt="Placeholder client portrait" />
             <blockquote>"It felt polished without losing the handmade quality."</blockquote>
             <figcaption>Nora Vale</figcaption>
@@ -326,24 +356,24 @@
       <section class="section notes" id="notes">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Notes</p>
-            <h2>Latest insights and trends.</h2>
+            <p class="eyebrow" data-reveal>From the Booth</p>
+            <h2 data-reveal>Latest insights and trends.</h2>
           </div>
-          <a class="small-link" href="#contact">Read more</a>
+          <a class="small-link" href="#contact" data-reveal>Read more</a>
         </div>
 
-        <div class="notes-grid">
-          <article>
+        <div class="notes-grid" data-reveal-group>
+          <article data-reveal>
             <img src="https://picsum.photos/seed/admit-one-note-a/520/360" alt="Placeholder website planning" />
             <p>Design Direction</p>
             <h3>How to make placeholder assets feel intentional.</h3>
           </article>
-          <article>
+          <article data-reveal>
             <img src="https://picsum.photos/seed/admit-one-note-b/520/360" alt="Placeholder content planning" />
             <p>Content</p>
             <h3>What your homepage needs before the visuals arrive.</h3>
           </article>
-          <article>
+          <article data-reveal>
             <img src="https://picsum.photos/seed/admit-one-note-c/520/360" alt="Placeholder development screen" />
             <p>Launch</p>
             <h3>Small QA checks that make a site feel finished.</h3>
@@ -352,9 +382,10 @@
       </section>
 
       <section class="section contact" id="contact">
-        <div class="contact-banner">
+        <div class="contact-banner" data-reveal>
+          <div class="contact-grain" aria-hidden="true"></div>
           <div class="contact-copy">
-            <p class="eyebrow">Build the first draft</p>
+            <p class="eyebrow">Final Call</p>
             <h2>We combine clean structure with a little ticket-window charm.</h2>
             <p>
               Tell us what you are making, what assets are still in progress, and what the new site needs to do.
@@ -398,6 +429,6 @@
       </div>
     </footer>
 
-    <script src="script.js?v=poster-gradient"></script>
+    <script src="script.js?v=marquee"></script>
   </body>
 </html>

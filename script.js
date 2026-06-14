@@ -1,8 +1,6 @@
 const menuToggle = document.querySelector(".menu-toggle");
 const navLinks = document.querySelector(".nav-links");
 const navItems = document.querySelectorAll(".nav-links a");
-const heroGradient = document.querySelector(".hero-gradient");
-const heroGradientCanvas = document.querySelector(".hero-gradient-canvas");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 function setMenu(open) {
@@ -25,115 +23,84 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
-function setupHeroGradient() {
-  if (!heroGradient || !heroGradientCanvas) {
+/* Scroll-reveal: a quiet fade-and-rise as each section enters frame.
+   Items that share a parent stagger in sequence, like a marquee lighting up. */
+function setupReveals() {
+  const revealItems = document.querySelectorAll("[data-reveal]");
+  if (!revealItems.length) {
     return;
   }
 
-  const context = heroGradientCanvas.getContext("2d");
-  const pointer = { x: 0.62, y: 0.34 };
-  const current = { x: pointer.x, y: pointer.y };
-  let animationFrame = 0;
-  let time = 0;
-
-  function resizeCanvas() {
-    const bounds = heroGradient.getBoundingClientRect();
-    const scale = Math.min(window.devicePixelRatio || 1, 2);
-    heroGradientCanvas.width = Math.max(1, Math.round(bounds.width * scale));
-    heroGradientCanvas.height = Math.max(1, Math.round(bounds.height * scale));
-    context.setTransform(scale, 0, 0, scale, 0, 0);
-    drawGradient();
-  }
-
-  function paintGlow(x, y, radius, colors) {
-    const gradient = context.createRadialGradient(x, y, 0, x, y, radius);
-    colors.forEach((stop) => gradient.addColorStop(stop[0], stop[1]));
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, heroGradient.clientWidth, heroGradient.clientHeight);
-  }
-
-  function drawGradient() {
-    const width = heroGradient.clientWidth;
-    const height = heroGradient.clientHeight;
-    const driftX = Math.sin(time * 0.018) * 0.14;
-    const driftY = Math.cos(time * 0.015) * 0.12;
-
-    context.clearRect(0, 0, width, height);
-    context.globalCompositeOperation = "source-over";
-
-    const base = context.createLinearGradient(0, 0, width, height);
-    base.addColorStop(0, "#8f1d18");
-    base.addColorStop(0.28, "#b8231a");
-    base.addColorStop(0.58, "#c85f24");
-    base.addColorStop(0.82, "#c8952a");
-    base.addColorStop(1, "#7a2018");
-    context.fillStyle = base;
-    context.fillRect(0, 0, width, height);
-
-    context.globalCompositeOperation = "screen";
-    paintGlow(width * current.x, height * current.y, width * 0.66, [
-      [0, "rgba(255, 223, 160, 0.68)"],
-      [0.32, "rgba(200, 149, 42, 0.52)"],
-      [1, "rgba(226, 166, 48, 0)"],
-    ]);
-    paintGlow(width * (0.16 + driftX), height * (0.24 + driftY), width * 0.48, [
-      [0, "rgba(184, 35, 26, 0.82)"],
-      [0.42, "rgba(230, 88, 42, 0.42)"],
-      [1, "rgba(184, 35, 26, 0)"],
-    ]);
-
-    context.globalCompositeOperation = "multiply";
-    paintGlow(width * (0.88 - driftX), height * (0.8 - driftY), width * 0.68, [
-      [0, "rgba(55, 17, 12, 0.74)"],
-      [1, "rgba(55, 17, 12, 0)"],
-    ]);
-
-    context.globalCompositeOperation = "overlay";
-    const beam = context.createLinearGradient(width * current.x - 80, 0, width * current.x + 80, height);
-    beam.addColorStop(0, "rgba(255, 255, 255, 0)");
-    beam.addColorStop(0.48, "rgba(255, 246, 202, 0.26)");
-    beam.addColorStop(1, "rgba(255, 255, 255, 0)");
-    context.fillStyle = beam;
-    context.fillRect(0, 0, width, height);
-  }
-
-  function animate() {
-    current.x += (pointer.x - current.x) * 0.055;
-    current.y += (pointer.y - current.y) * 0.055;
-    time += 1;
-    drawGradient();
-    animationFrame = window.requestAnimationFrame(animate);
-  }
-
-  heroGradient.addEventListener("pointermove", (event) => {
-    const bounds = heroGradient.getBoundingClientRect();
-    pointer.x = (event.clientX - bounds.left) / bounds.width;
-    pointer.y = (event.clientY - bounds.top) / bounds.height;
-  });
-
-  heroGradient.addEventListener("pointerleave", () => {
-    pointer.x = 0.62;
-    pointer.y = 0.34;
-  });
-
-  resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
-
-  if (prefersReducedMotion.matches) {
-    drawGradient();
+  if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {
+    revealItems.forEach((item) => item.classList.add("is-revealed"));
     return;
   }
 
-  animate();
-
-  prefersReducedMotion.addEventListener("change", () => {
-    window.cancelAnimationFrame(animationFrame);
-    if (prefersReducedMotion.matches) {
-      drawGradient();
-    } else {
-      animate();
+  // Stagger each item against its [data-reveal] siblings under the same parent.
+  const stepMs = 90;
+  const maxSteps = 6;
+  revealItems.forEach((item) => {
+    const siblings = Array.from(item.parentElement?.children || []).filter((el) =>
+      el.hasAttribute("data-reveal")
+    );
+    const index = Math.min(siblings.indexOf(item), maxSteps);
+    if (index > 0) {
+      item.style.setProperty("--reveal-delay", `${index * stepMs}ms`);
     }
   });
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-revealed");
+          obs.unobserve(entry.target);
+        }
+      });
+    },
+    { rootMargin: "0px 0px -12% 0px", threshold: 0.12 }
+  );
+
+  revealItems.forEach((item) => observer.observe(item));
 }
 
-setupHeroGradient();
+/* Parallax depth: drift images at a fraction of scroll speed for a sense of
+   layers. Uses the independent `translate` property so it never fights the
+   grain's `transform` animation or the hover `scale`. */
+function setupParallax() {
+  const layers = Array.from(document.querySelectorAll("[data-parallax]"));
+  if (!layers.length || prefersReducedMotion.matches) {
+    return;
+  }
+
+  let ticking = false;
+
+  function update() {
+    const viewportH = window.innerHeight;
+    layers.forEach((layer) => {
+      const rect = layer.getBoundingClientRect();
+      if (rect.bottom < -120 || rect.top > viewportH + 120) {
+        return;
+      }
+      const speed = parseFloat(layer.dataset.parallaxSpeed || "0.06");
+      const fromCenter = (rect.top + rect.height / 2 - viewportH / 2) / (viewportH / 2);
+      const offset = -fromCenter * speed * 200;
+      layer.style.translate = `0 ${offset.toFixed(1)}px`;
+    });
+    ticking = false;
+  }
+
+  function requestUpdate() {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+  }
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+  update();
+}
+
+setupReveals();
+setupParallax();

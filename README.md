@@ -36,7 +36,6 @@ Admit One is being shaped as a fun, modern, clean web design studio with a small
 ├── js/
 │   └── main.js
 └── assets/
-    ├── ticket.svg
     └── logos/        # favicon + header/footer brand marks
 ```
 

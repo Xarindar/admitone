@@ -67,6 +67,47 @@ function setupShowtimeReveal() {
     return;
   }
 
+  // When the curtains part on scroll, briefly pin the page so a fast scroll
+  // doesn't blow straight past the freshly revealed contact form. The hold is
+  // temporary — full scrolling returns after a few seconds.
+  const SHOWTIME_LOCK_MS = 5000;
+  const scrollKeys = new Set([
+    " ", "Spacebar", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "Home", "End",
+  ]);
+  let releaseScrollLock = null;
+
+  function lockScrollForReveal() {
+    if (releaseScrollLock) {
+      return;
+    }
+
+    const lockedY = window.scrollY;
+    const relock = () => window.scrollTo(0, lockedY);
+    const blockEvent = (event) => event.preventDefault();
+    const blockKeys = (event) => {
+      if (scrollKeys.has(event.key)) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener("scroll", relock, { passive: true });
+    window.addEventListener("wheel", blockEvent, { passive: false });
+    window.addEventListener("touchmove", blockEvent, { passive: false });
+    window.addEventListener("keydown", blockKeys);
+    reveal.classList.add("is-scroll-locked");
+
+    releaseScrollLock = () => {
+      window.removeEventListener("scroll", relock);
+      window.removeEventListener("wheel", blockEvent);
+      window.removeEventListener("touchmove", blockEvent);
+      window.removeEventListener("keydown", blockKeys);
+      reveal.classList.remove("is-scroll-locked");
+      releaseScrollLock = null;
+    };
+
+    window.setTimeout(() => releaseScrollLock && releaseScrollLock(), SHOWTIME_LOCK_MS);
+  }
+
   function smoothStep(value) {
     const clamped = Math.min(1, Math.max(0, value));
     return clamped * clamped * (3 - 2 * clamped);
@@ -145,6 +186,10 @@ function setupShowtimeReveal() {
     reveal.style.setProperty("--showtime-copy-opacity", "1");
     reveal.style.setProperty("--showtime-form-opacity", "0");
 
+    if (source === "scroll") {
+      lockScrollForReveal();
+    }
+
     window.requestAnimationFrame(() => {
       reveal.classList.add(source === "scroll" ? "is-scroll-triggering-form" : "is-animating-form");
       reveal.style.setProperty("--showtime-progress", "1");
@@ -184,265 +229,41 @@ function setupShowtimeReveal() {
 setupShowtimeReveal();
 
 function setupPricingTickets() {
-  const stage = document.querySelector(".pricing-stage");
   const tickets = Array.from(document.querySelectorAll(".tier-ticket"));
-  const route = stage?.querySelector(".pricing-route");
-  const routePath = stage?.querySelector(".pricing-route-path");
-  const bulbLayer = stage?.querySelector(".pricing-route-bulbs");
 
-  if (!stage || !tickets.length || !route || !routePath || !bulbLayer) {
+  if (!tickets.length) {
     return;
   }
 
-  let bulbs = [];
-  let ticketHits = [];
-  let timeline = [];
-  let routeLength = 1;
-  let isRefreshing = false;
-
-  function clamp(value, min = 0, max = 1) {
-    return Math.min(max, Math.max(min, value));
+  // Reveal each ticket as it scrolls into view; the per-ticket --reveal-delay
+  // in CSS staggers a row that enters together.
+  function revealAll() {
+    tickets.forEach((ticket) => ticket.classList.add("is-visible"));
   }
 
-  function pointToSvg(x, y) {
-    const matrix = route.getScreenCTM();
-
-    if (!matrix) {
-      return null;
-    }
-
-    const point = route.createSVGPoint();
-    point.x = x;
-    point.y = y;
-    return point.matrixTransform(matrix.inverse());
+  if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {
+    revealAll();
+    return;
   }
 
-  function getTicketSvgRect(ticket) {
-    const bounds = ticket.getBoundingClientRect();
-    const points = [
-      pointToSvg(bounds.left, bounds.top),
-      pointToSvg(bounds.right, bounds.top),
-      pointToSvg(bounds.right, bounds.bottom),
-      pointToSvg(bounds.left, bounds.bottom),
-    ].filter(Boolean);
-
-    if (points.length !== 4) {
-      return null;
-    }
-
-    return {
-      left: Math.min(...points.map((point) => point.x)),
-      right: Math.max(...points.map((point) => point.x)),
-      top: Math.min(...points.map((point) => point.y)),
-      bottom: Math.max(...points.map((point) => point.y)),
-    };
-  }
-
-  function distanceToRect(point, rect) {
-    const dx = Math.max(rect.left - point.x, 0, point.x - rect.right);
-    const dy = Math.max(rect.top - point.y, 0, point.y - rect.bottom);
-    return Math.hypot(dx, dy);
-  }
-
-  function findTicketHitDistance(ticket, minimumDistance) {
-    const rect = getTicketSvgRect(ticket);
-
-    if (!rect) {
-      return minimumDistance;
-    }
-
-    const searchStart = clamp(minimumDistance, 0, routeLength);
-    const samples = 360;
-    const roughStep = Math.max(1, (routeLength - searchStart) / samples);
-    let bestDistance = searchStart;
-    let bestScore = Infinity;
-
-    for (let index = 0; index <= samples; index += 1) {
-      const distance = searchStart + (routeLength - searchStart) * (index / samples);
-      const score = distanceToRect(routePath.getPointAtLength(distance), rect);
-
-      if (score < bestScore) {
-        bestDistance = distance;
-        bestScore = score;
-      }
-    }
-
-    for (let index = -14; index <= 14; index += 1) {
-      const distance = clamp(bestDistance + roughStep * (index / 14), searchStart, routeLength);
-      const score = distanceToRect(routePath.getPointAtLength(distance), rect);
-
-      if (score < bestScore) {
-        bestDistance = distance;
-        bestScore = score;
-      }
-    }
-
-    return bestDistance;
-  }
-
-  function buildBulbs() {
-    const regularCount = Math.max(28, Math.ceil(routeLength / 32));
-    const regularStep = routeLength / regularCount;
-    const points = [];
-
-    for (let index = 0; index <= regularCount; index += 1) {
-      points.push({ distance: routeLength * (index / regularCount), isHit: false });
-    }
-
-    ticketHits.forEach((hit) => {
-      points.push({ distance: hit.distance, isHit: true });
-    });
-
-    const mergedPoints = [];
-    const mergeDistance = regularStep * 0.82;
-
-    points
-      .sort((a, b) => a.distance - b.distance)
-      .forEach((point) => {
-        const previous = mergedPoints[mergedPoints.length - 1];
-
-        if (previous && Math.abs(previous.distance - point.distance) < mergeDistance) {
-          if (point.isHit) {
-            previous.distance = point.distance;
-            previous.isHit = true;
-          }
-
-          return;
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
         }
-
-        mergedPoints.push({ ...point });
       });
+    },
+    { threshold: 0.2, rootMargin: "0px 0px -12% 0px" },
+  );
 
-    bulbLayer.replaceChildren();
-    bulbs = mergedPoints.map((point) => {
-      const routePoint = routePath.getPointAtLength(point.distance);
-      const bulb = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-
-      bulb.setAttribute("class", point.isHit ? "pricing-route-bulb is-ticket-hit" : "pricing-route-bulb");
-      bulb.setAttribute("cx", routePoint.x.toFixed(2));
-      bulb.setAttribute("cy", routePoint.y.toFixed(2));
-      bulb.setAttribute("r", point.isHit ? "8.3" : "6.6");
-      bulbLayer.appendChild(bulb);
-
-      return {
-        node: bulb,
-        distance: point.distance,
-      };
-    });
-  }
-
-  function normalizeTimeline() {
-    for (let index = 1; index < timeline.length; index += 1) {
-      if (timeline[index].scroll <= timeline[index - 1].scroll) {
-        timeline[index].scroll = timeline[index - 1].scroll + 1;
-      }
+  tickets.forEach((ticket) => observer.observe(ticket));
+  prefersReducedMotion.addEventListener("change", (event) => {
+    if (event.matches) {
+      revealAll();
     }
-  }
-
-  function refreshGeometry() {
-    routeLength = routePath.getTotalLength();
-
-    const ticketTriggerPoint = window.innerHeight * 0.58;
-    let previousDistance = 0;
-    ticketHits = tickets.map((ticket) => {
-      const distance = findTicketHitDistance(ticket, previousDistance);
-      const bounds = ticket.getBoundingClientRect();
-      const scroll = window.scrollY + bounds.top - ticketTriggerPoint;
-
-      previousDistance = Math.min(routeLength, distance + routeLength * 0.035);
-
-      return {
-        ticket,
-        distance,
-        scroll,
-      };
-    });
-
-    const stageBounds = stage.getBoundingClientRect();
-    const stageTop = window.scrollY + stageBounds.top;
-    const stageBottom = window.scrollY + stageBounds.bottom;
-    const firstHit = ticketHits[0];
-    const lastHit = ticketHits[ticketHits.length - 1];
-    const startsOnFirstTicket = firstHit.distance <= routeLength * 0.02;
-    const startScroll = startsOnFirstTicket
-      ? firstHit.scroll
-      : Math.min(stageTop - window.innerHeight * 0.18, firstHit.scroll - window.innerHeight * 0.3);
-    const endScroll = Math.max(stageBottom - window.innerHeight * 0.42, lastHit.scroll + window.innerHeight * 0.34);
-
-    timeline = [
-      { scroll: startScroll, distance: 0 },
-      ...ticketHits.map((hit) => ({ scroll: hit.scroll, distance: hit.distance })),
-      { scroll: endScroll, distance: routeLength },
-    ];
-
-    normalizeTimeline();
-    buildBulbs();
-  }
-
-  function getCurrentRouteDistance() {
-    const scrollY = window.scrollY;
-
-    if (!timeline.length || scrollY < timeline[0].scroll) {
-      return -1;
-    }
-
-    for (let index = 1; index < timeline.length; index += 1) {
-      const previous = timeline[index - 1];
-      const next = timeline[index];
-
-      if (scrollY <= next.scroll) {
-        const progress = clamp((scrollY - previous.scroll) / (next.scroll - previous.scroll));
-        return previous.distance + (next.distance - previous.distance) * progress;
-      }
-    }
-
-    return routeLength;
-  }
-
-  function renderPricingFlow() {
-    if (prefersReducedMotion.matches) {
-      tickets.forEach((ticket) => ticket.classList.add("is-visible"));
-      bulbs.forEach((bulb) => bulb.node.classList.add("is-lit"));
-      return;
-    }
-
-    const currentDistance = getCurrentRouteDistance();
-    const hitTolerance = routeLength * 0.008;
-
-    bulbs.forEach((bulb) => {
-      bulb.node.classList.toggle("is-lit", currentDistance >= 0 && bulb.distance <= currentDistance + hitTolerance);
-    });
-
-    ticketHits.forEach((hit) => {
-      const hasArrived = currentDistance >= 0
-        && window.scrollY + 0.5 >= hit.scroll
-        && currentDistance + hitTolerance >= hit.distance;
-      const bounds = hit.ticket.getBoundingClientRect();
-      const isNearViewport = bounds.top < window.innerHeight * 0.88 && bounds.bottom > window.innerHeight * 0.08;
-
-      hit.ticket.classList.toggle("is-visible", hasArrived && isNearViewport);
-    });
-  }
-
-  function requestRefresh() {
-    if (isRefreshing) {
-      return;
-    }
-
-    isRefreshing = true;
-    window.requestAnimationFrame(() => {
-      isRefreshing = false;
-      refreshGeometry();
-      renderPricingFlow();
-    });
-  }
-
-  refreshGeometry();
-  renderPricingFlow();
-  window.addEventListener("load", requestRefresh, { once: true });
-  onScroll(renderPricingFlow);
-  window.addEventListener("resize", requestRefresh);
-  prefersReducedMotion.addEventListener("change", requestRefresh);
+  });
 }
 
 setupPricingTickets();

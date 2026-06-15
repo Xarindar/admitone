@@ -63,7 +63,10 @@
           <div class="hero-marquee" aria-label="Now playing: Your brand, your voice">
             <div class="marquee-sign">
               <p class="marquee-kicker">Now Playing</p>
-              <h1>Your Brand, Your Voice</h1>
+              <h1 class="marquee-headline">
+                <span class="marquee-line"><span class="marquee-line-text">Your Brand,</span></span>
+                <span class="marquee-line"><span class="marquee-line-text">Your Voice</span></span>
+              </h1>
               <div class="hero-actions">
                 <a class="button button-light" href="#contact">Start a Project</a>
                 <a class="button button-dark" href="#work">View Work</a>
@@ -258,50 +261,85 @@
           Numbers are draft placeholders for now, but the package structure is ready to tune.
         </p>
 
-        <div class="pricing-stage">
-          <svg class="pricing-route" viewBox="0 0 740 1180" aria-hidden="true" focusable="false">
-            <path class="pricing-route-path" d="M 104 70 H 460 C 590 70 668 160 668 286 V 362 C 668 498 570 560 452 560 H 282 C 174 560 78 640 78 760 V 842 C 78 984 188 1098 328 1098 H 636" />
-            <g class="pricing-route-bulbs"></g>
-          </svg>
+        <div class="pricing-grid">
+          <article class="tier-ticket" style="--reveal-delay: 0ms">
+            <div class="ticket-inner">
+              <div class="ticket-body">
+                <p class="ticket-tier">Starter</p>
+                <h3>Opening Night</h3>
+                <ul>
+                  <li>Homepage direction</li>
+                  <li>Core visual system</li>
+                  <li>Responsive design pass</li>
+                  <li>Launch notes</li>
+                </ul>
+                <a href="#contact" class="button button-dark">Get Started</a>
+              </div>
+              <div class="ticket-stub">
+                <div class="ticket-price">
+                  <span class="ticket-price-label">Starting at</span>
+                  <strong>$2,500<span>+</span></strong>
+                </div>
+                <div class="ticket-mark">
+                  <span class="ticket-barcode" aria-hidden="true"></span>
+                  <span class="ticket-serial">Admit One &middot; No. 01</span>
+                </div>
+              </div>
+            </div>
+          </article>
 
-          <div class="pricing-grid">
-            <article class="tier-ticket">
-              <p>Starter</p>
-              <h3>Opening Night</h3>
-              <strong>$2,500+</strong>
-              <ul>
-                <li>Homepage direction</li>
-                <li>Core visual system</li>
-                <li>Responsive design pass</li>
-                <li>Launch notes</li>
-              </ul>
-              <a href="#contact" class="button button-dark">Get Started</a>
-            </article>
-            <article class="tier-ticket featured-price">
-              <p>Most requested</p>
-              <h3>Full House</h3>
-              <strong>$5,800+</strong>
-              <ul>
-                <li>Homepage plus interior pages</li>
-                <li>Placeholder asset system</li>
-                <li>Component direction</li>
-                <li>Build support</li>
-              </ul>
-              <a href="#contact" class="button button-light">Get Started</a>
-            </article>
-            <article class="tier-ticket">
-              <p>Ongoing</p>
-              <h3>Encore</h3>
-              <strong>$950+</strong>
-              <ul>
-                <li>Monthly design support</li>
-                <li>New sections and pages</li>
-                <li>Seasonal updates</li>
-                <li>Design QA</li>
-              </ul>
-              <a href="#contact" class="button button-dark">Get Started</a>
-            </article>
-          </div>
+          <article class="tier-ticket featured-price" style="--reveal-delay: 120ms">
+            <span class="ticket-flag">Most Requested</span>
+            <div class="ticket-inner">
+              <div class="ticket-body">
+                <p class="ticket-tier">Full Run</p>
+                <h3>Full House</h3>
+                <ul>
+                  <li>Homepage plus interior pages</li>
+                  <li>Placeholder asset system</li>
+                  <li>Component direction</li>
+                  <li>Build support</li>
+                </ul>
+                <a href="#contact" class="button button-light">Get Started</a>
+              </div>
+              <div class="ticket-stub">
+                <div class="ticket-price">
+                  <span class="ticket-price-label">Starting at</span>
+                  <strong>$5,800<span>+</span></strong>
+                </div>
+                <div class="ticket-mark">
+                  <span class="ticket-barcode" aria-hidden="true"></span>
+                  <span class="ticket-serial">Admit One &middot; No. 02</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="tier-ticket" style="--reveal-delay: 240ms">
+            <div class="ticket-inner">
+              <div class="ticket-body">
+                <p class="ticket-tier">Ongoing</p>
+                <h3>Encore</h3>
+                <ul>
+                  <li>Monthly design support</li>
+                  <li>New sections and pages</li>
+                  <li>Seasonal updates</li>
+                  <li>Design QA</li>
+                </ul>
+                <a href="#contact" class="button button-dark">Get Started</a>
+              </div>
+              <div class="ticket-stub">
+                <div class="ticket-price">
+                  <span class="ticket-price-label">Per month</span>
+                  <strong>$950<span>+</span></strong>
+                </div>
+                <div class="ticket-mark">
+                  <span class="ticket-barcode" aria-hidden="true"></span>
+                  <span class="ticket-serial">Admit One &middot; No. 03</span>
+                </div>
+              </div>
+            </div>
+          </article>
         </div>
       </section>
 

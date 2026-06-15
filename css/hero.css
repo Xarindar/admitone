@@ -30,7 +30,6 @@
   --bulb-size: clamp(4px, 0.7vw, 6px);
   --bulb-gap: clamp(22px, 3vw, 30px);
   --bulb-inset: clamp(12px, 1.8vw, 18px);
-  --rail-gap: clamp(28px, 4vw, 36px);
   position: absolute;
   inset: 88px 26px 26px;
   z-index: 4;
@@ -80,7 +79,7 @@
     calc(var(--bulb-size) * 2) var(--bulb-gap);
 }
 
-/* The reader board itself — one cream surface of slotted rails the letters sit on */
+/* The reader board itself — a cream sign face the slotted letter rows mount onto */
 .marquee-sign {
   position: relative;
   z-index: 3;
@@ -93,11 +92,9 @@
   text-align: center;
   border-radius: 3px;
   background-color: var(--paper);
-  background-image: repeating-linear-gradient(
-    to bottom,
-    rgba(26, 23, 16, 0.085) 0 1px,
-    rgba(26, 23, 16, 0) 1px var(--rail-gap)
-  );
+  background-image:
+    radial-gradient(140% 86% at 50% 0%, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0) 58%),
+    linear-gradient(180deg, rgba(255, 253, 248, 0.55), rgba(241, 234, 223, 0.6));
   box-shadow:
     inset 0 0 0 1px rgba(26, 23, 16, 0.55),
     inset 0 0 26px rgba(26, 23, 16, 0.1),
@@ -123,12 +120,80 @@
   letter-spacing: 0.16em;
 }
 
-.marquee-sign h1 {
-  max-width: 760px;
+/* The headline is a stack of slotted rail rows holding plastic letters. */
+.marquee-headline {
+  --letter-size: clamp(3rem, 9vw, 7.25rem);
+  display: grid;
+  gap: clamp(10px, 1.5vw, 18px);
+  width: 100%;
+  max-width: 820px;
   margin: 0;
-  font-size: clamp(3rem, 9vw, 7.25rem);
-  line-height: 0.82;
+  justify-items: center;
   text-transform: uppercase;
+}
+
+/* Each row is a recessed channel the letters slide into and rest on. */
+.marquee-line {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  padding: 0.14em 0.18em 0.08em;
+  border-radius: 3px;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 23, 16, 0.1) 0,
+    rgba(26, 23, 16, 0) 26%,
+    rgba(26, 23, 16, 0) 70%,
+    rgba(26, 23, 16, 0.05) 100%
+  );
+}
+
+/* Shadowed top lip of the channel where the rail recesses into the board. */
+.marquee-line::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.14em;
+  background: linear-gradient(180deg, rgba(26, 23, 16, 0.26), rgba(26, 23, 16, 0));
+  border-radius: 3px 3px 0 0;
+}
+
+/* Lit bottom rail — the physical shelf the letters are seated on. */
+.marquee-line::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 0.1em;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95) 0,
+    rgba(255, 253, 248, 0.7) 35%,
+    rgba(26, 23, 16, 0.3) 100%
+  );
+  box-shadow: 0 1px 2px rgba(26, 23, 16, 0.28);
+  border-radius: 0 0 3px 3px;
+}
+
+/* The plastic letters: glossy face, beveled top edge, shadow cast on the board. */
+.marquee-line-text {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding-bottom: 0.08em;
+  font-size: var(--letter-size);
+  line-height: 0.86;
+  letter-spacing: 0.012em;
+  color: #181410;
+  background-image: linear-gradient(177deg, #453d31 0%, #1d1a12 50%, #060503 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4))
+    drop-shadow(0 2px 1px rgba(26, 23, 16, 0.45))
+    drop-shadow(0 6px 7px rgba(26, 23, 16, 0.28));
 }
 
 .marquee-sign .hero-actions {
@@ -260,9 +325,9 @@
     font-size: 0.78rem;
   }
 
-  .marquee-sign h1 {
-    font-size: clamp(2.2rem, 11vw, 3.6rem);
-    line-height: 0.88;
+  .marquee-headline {
+    gap: 8px;
+    --letter-size: clamp(2.2rem, 11vw, 3.6rem);
   }
 
   .logo-rail {
@@ -312,9 +377,8 @@
     font-size: 0.72rem;
   }
 
-  .marquee-sign h1 {
-    font-size: clamp(1.9rem, 10vw, 2.55rem);
-    line-height: 0.9;
+  .marquee-headline {
+    --letter-size: clamp(1.9rem, 10vw, 2.55rem);
   }
 }
 

@@ -92,9 +92,9 @@ button {
 }
 
 .hero-shell {
-  width: calc(100% - 12px);
+  width: 100%;
   margin-inline: auto;
-  padding-top: 6px;
+  padding-top: 0;
 }
 
 .hero-panel {
@@ -137,19 +137,38 @@ button {
   isolation: isolate;
 }
 
-/* One continuous bulb frame — a single rail of lights around the board */
-.hero-marquee::before {
+.hero-marquee::before,
+.hero-marquee::after {
   content: "";
   position: absolute;
-  inset: var(--bulb-inset);
   z-index: 2;
   pointer-events: none;
-  background:
-    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)) repeat-x top / var(--bulb-gap) calc(var(--bulb-size) * 2),
-    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)) repeat-x bottom / var(--bulb-gap) calc(var(--bulb-size) * 2),
-    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)) repeat-y left / calc(var(--bulb-size) * 2) var(--bulb-gap),
-    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)) repeat-y right / calc(var(--bulb-size) * 2) var(--bulb-gap);
   filter: drop-shadow(0 0 4px rgba(255, 213, 138, 0.5));
+}
+
+/* Split rails keep the corner bulbs from stacking or clipping. */
+.hero-marquee::before {
+  inset: var(--bulb-inset);
+  background-image:
+    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)),
+    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px));
+  background-repeat: space no-repeat, space no-repeat;
+  background-position: left top, left bottom;
+  background-size:
+    var(--bulb-gap) calc(var(--bulb-size) * 2),
+    var(--bulb-gap) calc(var(--bulb-size) * 2);
+}
+
+.hero-marquee::after {
+  inset: calc(var(--bulb-inset) + (var(--bulb-gap) * 0.7)) var(--bulb-inset);
+  background-image:
+    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)),
+    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px));
+  background-repeat: no-repeat space, no-repeat space;
+  background-position: left top, right top;
+  background-size:
+    calc(var(--bulb-size) * 2) var(--bulb-gap),
+    calc(var(--bulb-size) * 2) var(--bulb-gap);
 }
 
 /* The reader board itself — one cream surface of slotted rails the letters sit on */
@@ -1274,13 +1293,15 @@ h3 {
   --ticket-pad-x: clamp(48px, 7vw, 76px);
   --ticket-pad-y: clamp(36px, 5vw, 48px);
   position: relative;
+  z-index: 1;
   width: min(100%, 680px);
   aspect-ratio: 759.5671 / 548.5173;
   display: grid;
   grid-template-columns: minmax(188px, 0.92fr) minmax(220px, 1fr);
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto auto auto auto;
   gap: 8px clamp(20px, 4vw, 44px);
   align-items: start;
+  align-content: center;
   padding: var(--ticket-pad-y) var(--ticket-pad-x) 50px;
   border: 0;
   background: transparent;
@@ -1297,6 +1318,11 @@ h3 {
 .pricing-grid article.is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0) rotate(var(--ticket-rotate, 0deg)) scale(1);
+}
+
+.pricing-grid article > * {
+  position: relative;
+  z-index: 2;
 }
 
 .pricing-grid article:nth-child(1) {
@@ -1336,13 +1362,13 @@ h3 {
 
 .pricing-grid article::before {
   inset: 0;
-  z-index: -2;
+  z-index: 0;
   background: var(--line-strong);
 }
 
 .pricing-grid article::after {
   inset: 1px;
-  z-index: -1;
+  z-index: 1;
   background: var(--paper);
 }
 
@@ -1363,11 +1389,15 @@ h3 {
 }
 
 .pricing-grid .icon-dot {
-  position: absolute;
-  top: var(--ticket-pad-y);
-  left: var(--ticket-pad-x);
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+  top: auto;
+  left: auto;
+  align-self: center;
+  justify-self: start;
   margin: 0;
-  z-index: 1;
+  z-index: 3;
 }
 
 .pricing-grid h3 {
@@ -1385,7 +1415,7 @@ h3 {
   margin: 4px 0 0;
   font-family: var(--serif);
   font-size: clamp(2rem, 3vw, 2.35rem);
-  line-height: 1;
+  line-height: 1.16;
 }
 
 .pricing-grid ul {
@@ -1967,7 +1997,6 @@ figure {
 }
 
 @media (max-width: 760px) {
-  .hero-shell,
   .section,
   .footer-inner {
     width: min(100% - 24px, 1120px);
@@ -2092,7 +2121,6 @@ figure {
   }
 
   @media (max-width: 520px) {
-    .hero-shell,
     .section,
     .footer-inner {
       width: min(100% - 16px, 1120px);
@@ -2278,7 +2306,6 @@ figure {
     padding-bottom: 36px;
   }
 
-  .pricing-grid p,
   .pricing-grid h3,
   .pricing-grid strong,
   .pricing-grid ul,
@@ -2289,6 +2316,12 @@ figure {
 
   .pricing-grid h3 {
     max-width: none;
+  }
+
+  .pricing-grid .icon-dot,
+  .pricing-grid p {
+    grid-column: 1;
+    grid-row: 1;
   }
 
   .pricing-grid ul {
@@ -2345,8 +2378,8 @@ figure {
   }
 
   .pricing-grid .icon-dot {
-    top: var(--ticket-pad-y);
-    left: var(--ticket-pad-x);
+    top: auto;
+    left: auto;
   }
 
   .pricing-grid p {

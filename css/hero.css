@@ -79,43 +79,52 @@
     calc(var(--bulb-size) * 2) var(--bulb-gap);
 }
 
-/* The reader board itself — a cream sign face slotted with horizontal rails. */
+/* The reader board itself — a cream sign face slotted with horizontal rails.
+   Content rows are whole-rail multiples and the top padding is a half-rail
+   multiple, so every row boundary lands on a rail groove: the letters slot in. */
 .marquee-sign {
-  --rail-gap: clamp(22px, 2.6vw, 30px);
+  --rail-gap: clamp(32px, 4.2vw, 50px);
   position: relative;
   z-index: 3;
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  gap: clamp(18px, 3vw, 26px);
-  padding: clamp(32px, 5vw, 56px) clamp(24px, 5vw, 60px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: calc(var(--rail-gap) * 2.5) clamp(24px, 5vw, 60px) calc(var(--rail-gap) * 1.5);
   color: var(--black);
   text-align: center;
   border-radius: 3px;
   background-color: var(--paper);
   background-image:
-    /* full-board marquee rails: a recessed groove + lit lip on every slat */
+    /* full-board marquee rails: a groove + lit lip centered in every slat */
     repeating-linear-gradient(
       180deg,
-      rgba(26, 23, 16, 0.16) 0 1px,
-      rgba(255, 255, 255, 0.6) 1px 2px,
-      rgba(26, 23, 16, 0) 2px var(--rail-gap)
+      transparent 0,
+      transparent calc(var(--rail-gap) * 0.5 - 1.5px),
+      rgba(26, 23, 16, 0.18) calc(var(--rail-gap) * 0.5 - 1.5px),
+      rgba(26, 23, 16, 0.18) calc(var(--rail-gap) * 0.5),
+      rgba(255, 255, 255, 0.72) calc(var(--rail-gap) * 0.5),
+      rgba(255, 255, 255, 0.72) calc(var(--rail-gap) * 0.5 + 1.5px),
+      transparent calc(var(--rail-gap) * 0.5 + 1.5px),
+      transparent var(--rail-gap)
     ),
-    radial-gradient(140% 86% at 50% 0%, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0) 58%),
-    linear-gradient(180deg, rgba(255, 253, 248, 0.55), rgba(241, 234, 223, 0.6));
+    radial-gradient(140% 86% at 50% 0%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 58%),
+    linear-gradient(180deg, rgba(255, 253, 248, 0.5), rgba(241, 234, 223, 0.55));
   box-shadow:
     inset 0 0 0 1px rgba(26, 23, 16, 0.55),
     inset 0 0 26px rgba(26, 23, 16, 0.1),
     0 12px 30px rgba(26, 23, 16, 0.3);
 }
 
+/* "Now Playing" plaque seated in a single rail channel. */
 .marquee-kicker {
   width: min(340px, 100%);
-  min-height: 38px;
+  height: var(--rail-gap);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 0;
+  margin: 0 0 var(--rail-gap);
   padding: 0 18px;
   color: var(--warm);
   background: var(--red);
@@ -123,48 +132,50 @@
   box-shadow: 0 2px 0 rgba(26, 23, 16, 0.42);
   font-size: clamp(0.82rem, 1.5vw, 1rem);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1;
   text-transform: uppercase;
   letter-spacing: 0.16em;
 }
 
-/* The headline is a stack of slotted rail rows holding plastic letters. */
+/* Headline: stacked rows, each two rails tall, ending two rails above the actions. */
 .marquee-headline {
-  --letter-size: clamp(3rem, 9vw, 7.25rem);
-  display: grid;
-  gap: clamp(10px, 1.5vw, 18px);
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  max-width: 820px;
-  margin: 0;
-  justify-items: center;
+  max-width: 900px;
+  margin: 0 0 calc(var(--rail-gap) * 2);
   text-transform: uppercase;
 }
 
-/* Each row centers a line of letters mounted onto the board's rails. */
+/* Each line spans two rail channels; the letters are seated on the lower rail. */
 .marquee-line {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   width: 100%;
+  height: calc(var(--rail-gap) * 2);
 }
 
-/* Plastic letters: solid glossy faces sitting flush on the rails (no shadow). */
+/* Plastic letters: solid glossy faces slotted onto the rails (no shadow). */
 .marquee-line-text {
   position: relative;
   z-index: 1;
   display: inline-block;
-  font-size: var(--letter-size);
-  line-height: 0.86;
+  font-size: calc(var(--rail-gap) * 1.82);
+  line-height: 1;
   letter-spacing: 0.012em;
   color: #181410;
   background-image: linear-gradient(177deg, #453d31 0%, #1d1a12 50%, #060503 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  transform: translateY(calc(var(--rail-gap) * 0.16));
 }
 
 .marquee-sign .hero-actions {
-  margin-top: 4px;
+  height: calc(var(--rail-gap) * 2);
+  align-items: center;
+  margin: 0;
 }
 
 /* Client logo rail (filmstrip marquee) */
@@ -284,17 +295,12 @@
   }
 
   .marquee-sign {
-    padding: 30px 18px;
+    --rail-gap: clamp(30px, 5.4vw, 42px);
+    padding-inline: 18px;
   }
 
   .marquee-kicker {
-    min-height: 36px;
     font-size: 0.78rem;
-  }
-
-  .marquee-headline {
-    gap: 8px;
-    --letter-size: clamp(2.2rem, 11vw, 3.6rem);
   }
 
   .logo-rail {
@@ -330,8 +336,8 @@
   }
 
   .marquee-sign {
-    gap: 14px;
-    padding: 26px 14px;
+    --rail-gap: clamp(26px, 7vw, 36px);
+    padding-inline: 14px;
     box-shadow:
       inset 0 0 0 1px rgba(26, 23, 16, 0.5),
       inset 0 0 18px rgba(26, 23, 16, 0.1),
@@ -340,17 +346,16 @@
 
   .marquee-kicker {
     width: min(250px, 100%);
-    min-height: 34px;
     font-size: 0.72rem;
-  }
-
-  .marquee-headline {
-    --letter-size: clamp(1.9rem, 10vw, 2.55rem);
   }
 }
 
 @media (max-width: 430px) {
   .hero-panel {
     min-height: clamp(500px, calc(100vh - 14px), 590px);
+  }
+
+  .marquee-sign {
+    --rail-gap: clamp(24px, 6.6vw, 32px);
   }
 }

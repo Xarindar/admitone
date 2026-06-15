@@ -230,28 +230,32 @@ function setupPricingTickets() {
     }
 
     const bounds = stage.getBoundingClientRect();
-    const travel = Math.max(1, bounds.height - window.innerHeight * 0.44);
-    const progress = Math.min(1, Math.max(0, (window.innerHeight * 0.78 - bounds.top) / travel));
+    const travel = Math.max(1, bounds.height + window.innerHeight * 0.36);
+    const progress = Math.min(1, Math.max(0, (window.innerHeight * 0.62 - bounds.top) / travel));
     stage.style.setProperty("--pricing-path-offset", (1 - progress).toFixed(3));
   }
 
-  const ticketObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          ticketObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.36 }
-  );
+  function setTicketVisibility() {
+    if (prefersReducedMotion.matches) {
+      tickets.forEach((ticket) => ticket.classList.add("is-visible"));
+      return;
+    }
 
-  tickets.forEach((ticket) => ticketObserver.observe(ticket));
+    tickets.forEach((ticket) => {
+      const bounds = ticket.getBoundingClientRect();
+      const isVisible = bounds.top < window.innerHeight * 0.72 && bounds.bottom > window.innerHeight * 0.18;
+      ticket.classList.toggle("is-visible", isVisible);
+    });
+  }
+
   setTicketProgress();
+  setTicketVisibility();
   window.addEventListener("scroll", setTicketProgress, { passive: true });
+  window.addEventListener("scroll", setTicketVisibility, { passive: true });
   window.addEventListener("resize", setTicketProgress);
+  window.addEventListener("resize", setTicketVisibility);
   prefersReducedMotion.addEventListener("change", setTicketProgress);
+  prefersReducedMotion.addEventListener("change", setTicketVisibility);
 }
 
 setupPricingTickets();

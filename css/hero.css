@@ -137,26 +137,31 @@
   letter-spacing: 0.16em;
 }
 
-/* Headline: stacked rows, each two rails tall, ending two rails above the actions.
-   container-type makes this the sizing reference for the letters below, so the
-   caps can scale to the board width (via cqw) instead of a fixed multiplier. */
+/* Headline: stacked rows, each two rails tall, with a one-rail channel between
+   the words; the trimmed bottom margin keeps the board's total height (and the
+   actions' groove) unchanged. container-type makes this the sizing reference
+   for the letters below, so the caps can scale to the board width (via cqw). */
 .marquee-headline {
   container-type: inline-size;
   display: flex;
   flex-direction: column;
+  gap: var(--rail-gap);
   width: 100%;
   max-width: 1080px;
-  margin: 0 0 calc(var(--rail-gap) * 2);
+  margin: 0 0 var(--rail-gap);
   text-transform: uppercase;
 }
 
-/* Each line spans two rail channels; the letters are seated on the lower rail. */
+/* Each line spans two rail channels; the letters are seated on the lower rail.
+   min-height:0 stops the flex line from growing to the oversized glyphs — it
+   keeps its two-rail height and lets the tall caps overflow visually instead. */
 .marquee-line {
   display: flex;
   align-items: flex-end;
   justify-content: center;
   width: 100%;
   height: calc(var(--rail-gap) * 2);
+  min-height: 0;
 }
 
 /* Plastic letters: solid glossy faces slotted onto the rails (no shadow).

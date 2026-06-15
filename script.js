@@ -137,3 +137,121 @@ function setupHeroGradient() {
 }
 
 setupHeroGradient();
+
+function setupShowtimeReveal() {
+  const reveal = document.querySelector(".showtime-reveal");
+  const formPanel = reveal?.querySelector(".showtime-form-panel");
+  const startTriggers = document.querySelectorAll('a[href="#contact"]');
+
+  if (!reveal) {
+    return;
+  }
+
+  function smoothStep(value) {
+    const clamped = Math.min(1, Math.max(0, value));
+    return clamped * clamped * (3 - 2 * clamped);
+  }
+
+  function setFormAccess(isReady) {
+    reveal.classList.toggle("is-form-ready", isReady);
+    formPanel?.toggleAttribute("inert", !isReady);
+    formPanel?.setAttribute("aria-hidden", String(!isReady));
+  }
+
+  function updateReveal() {
+    if (prefersReducedMotion.matches) {
+      reveal.style.setProperty("--showtime-progress", "1");
+      reveal.style.setProperty("--showtime-clip", "0%");
+      reveal.style.setProperty("--showtime-copy-opacity", "0");
+      reveal.style.setProperty("--showtime-form-opacity", "1");
+      setFormAccess(true);
+      return;
+    }
+
+    const bounds = reveal.getBoundingClientRect();
+    const travel = Math.max(1, bounds.height - window.innerHeight);
+    const progress = Math.min(1, Math.max(0, -bounds.top / travel));
+    const wipeProgress = smoothStep(progress / 0.64);
+    const copyOpacity = 1 - smoothStep((progress - 0.64) / 0.07);
+    const formOpacity = smoothStep((progress - 0.68) / 0.05);
+
+    reveal.style.setProperty("--showtime-progress", progress.toFixed(3));
+    reveal.style.setProperty("--showtime-clip", `${((1 - wipeProgress) * 100).toFixed(2)}%`);
+    reveal.style.setProperty("--showtime-copy-opacity", copyOpacity.toFixed(3));
+    reveal.style.setProperty("--showtime-form-opacity", formOpacity.toFixed(3));
+    setFormAccess(formOpacity > 0.96);
+  }
+
+  function scrollToForm(behavior) {
+    const targetTop = reveal.offsetTop + reveal.offsetHeight - window.innerHeight;
+    window.scrollTo({
+      top: Math.max(0, targetTop),
+      behavior,
+    });
+  }
+
+  function finishReveal(event) {
+    event.preventDefault();
+    setMenu(false);
+    window.history.pushState(null, "", "#contact");
+    scrollToForm(prefersReducedMotion.matches ? "auto" : "smooth");
+  }
+
+  setFormAccess(false);
+  startTriggers.forEach((trigger) => trigger.addEventListener("click", finishReveal));
+  updateReveal();
+
+  if (window.location.hash === "#contact") {
+    window.requestAnimationFrame(() => {
+      window.setTimeout(() => scrollToForm("auto"), 80);
+    });
+  }
+
+  window.addEventListener("scroll", updateReveal, { passive: true });
+  window.addEventListener("resize", updateReveal);
+  prefersReducedMotion.addEventListener("change", updateReveal);
+}
+
+setupShowtimeReveal();
+
+function setupPricingTickets() {
+  const stage = document.querySelector(".pricing-stage");
+  const tickets = document.querySelectorAll(".tier-ticket");
+
+  if (!stage || !tickets.length) {
+    return;
+  }
+
+  function setTicketProgress() {
+    if (prefersReducedMotion.matches) {
+      stage.style.setProperty("--pricing-path-offset", "0");
+      tickets.forEach((ticket) => ticket.classList.add("is-visible"));
+      return;
+    }
+
+    const bounds = stage.getBoundingClientRect();
+    const travel = Math.max(1, bounds.height - window.innerHeight * 0.44);
+    const progress = Math.min(1, Math.max(0, (window.innerHeight * 0.78 - bounds.top) / travel));
+    stage.style.setProperty("--pricing-path-offset", (1 - progress).toFixed(3));
+  }
+
+  const ticketObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          ticketObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.36 }
+  );
+
+  tickets.forEach((ticket) => ticketObserver.observe(ticket));
+  setTicketProgress();
+  window.addEventListener("scroll", setTicketProgress, { passive: true });
+  window.addEventListener("resize", setTicketProgress);
+  prefersReducedMotion.addEventListener("change", setTicketProgress);
+}
+
+setupPricingTickets();

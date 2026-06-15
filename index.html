@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:opsz,wght@9..144,500..800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=poster-gradient" />
+    <link rel="stylesheet" href="styles.css?v=gated-contact" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -247,46 +247,53 @@
           Numbers are draft placeholders for now, but the package structure is ready to tune.
         </p>
 
-        <div class="pricing-grid">
-          <article>
-            <span class="icon-dot">01</span>
-            <p>Starter</p>
-            <h3>Opening Night</h3>
-            <strong>$2,500+</strong>
-            <ul>
-              <li>Homepage direction</li>
-              <li>Core visual system</li>
-              <li>Responsive design pass</li>
-              <li>Launch notes</li>
-            </ul>
-            <a href="#contact" class="button button-dark">Get Started</a>
-          </article>
-          <article class="featured-price">
-            <span class="icon-dot">02</span>
-            <p>Most requested</p>
-            <h3>Full House</h3>
-            <strong>$5,800+</strong>
-            <ul>
-              <li>Homepage plus interior pages</li>
-              <li>Placeholder asset system</li>
-              <li>Component direction</li>
-              <li>Build support</li>
-            </ul>
-            <a href="#contact" class="button button-light">Get Started</a>
-          </article>
-          <article>
-            <span class="icon-dot">03</span>
-            <p>Ongoing</p>
-            <h3>Encore</h3>
-            <strong>$950+</strong>
-            <ul>
-              <li>Monthly design support</li>
-              <li>New sections and pages</li>
-              <li>Seasonal updates</li>
-              <li>Design QA</li>
-            </ul>
-            <a href="#contact" class="button button-dark">Get Started</a>
-          </article>
+        <div class="pricing-stage">
+          <svg class="pricing-route" viewBox="0 0 740 1180" aria-hidden="true" focusable="false">
+            <path class="pricing-route-track" d="M 104 70 H 460 C 590 70 668 160 668 286 V 362 C 668 498 570 560 452 560 H 282 C 174 560 78 640 78 760 V 842 C 78 984 188 1098 328 1098 H 636" />
+            <path class="pricing-route-progress" pathLength="1" d="M 104 70 H 460 C 590 70 668 160 668 286 V 362 C 668 498 570 560 452 560 H 282 C 174 560 78 640 78 760 V 842 C 78 984 188 1098 328 1098 H 636" />
+          </svg>
+
+          <div class="pricing-grid">
+            <article class="tier-ticket">
+              <span class="icon-dot">01</span>
+              <p>Starter</p>
+              <h3>Opening Night</h3>
+              <strong>$2,500+</strong>
+              <ul>
+                <li>Homepage direction</li>
+                <li>Core visual system</li>
+                <li>Responsive design pass</li>
+                <li>Launch notes</li>
+              </ul>
+              <a href="#contact" class="button button-dark">Get Started</a>
+            </article>
+            <article class="tier-ticket featured-price">
+              <span class="icon-dot">02</span>
+              <p>Most requested</p>
+              <h3>Full House</h3>
+              <strong>$5,800+</strong>
+              <ul>
+                <li>Homepage plus interior pages</li>
+                <li>Placeholder asset system</li>
+                <li>Component direction</li>
+                <li>Build support</li>
+              </ul>
+              <a href="#contact" class="button button-light">Get Started</a>
+            </article>
+            <article class="tier-ticket">
+              <span class="icon-dot">03</span>
+              <p>Ongoing</p>
+              <h3>Encore</h3>
+              <strong>$950+</strong>
+              <ul>
+                <li>Monthly design support</li>
+                <li>New sections and pages</li>
+                <li>Seasonal updates</li>
+                <li>Design QA</li>
+              </ul>
+              <a href="#contact" class="button button-dark">Get Started</a>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -351,31 +358,50 @@
         </div>
       </section>
 
-      <section class="section contact" id="contact">
-        <div class="contact-banner">
-          <div class="contact-copy">
-            <p class="eyebrow">Build the first draft</p>
-            <h2>We combine clean structure with a little ticket-window charm.</h2>
-            <p>
-              Tell us what you are making, what assets are still in progress, and what the new site needs to do.
-            </p>
-            <a href="mailto:hello@admitone.studio" class="button button-light">hello@admitone.studio</a>
+      <section class="showtime-reveal" id="contact" aria-labelledby="showtime-title">
+        <div class="showtime-sticky">
+          <div class="showtime-layer showtime-layer-dark">
+            <div class="showtime-copy">
+              <p class="eyebrow">Final cue</p>
+              <h2 id="showtime-title">Ready for showtime?</h2>
+              <a class="button button-light showtime-start" href="#contact">Start the Project</a>
+            </div>
           </div>
-          <form class="contact-form" action="#" method="post">
-            <label>
-              Name
-              <input type="text" name="name" autocomplete="name" placeholder="Your name" />
-            </label>
-            <label>
-              Email
-              <input type="email" name="email" autocomplete="email" placeholder="you@example.com" />
-            </label>
-            <label>
-              Project
-              <textarea name="message" rows="4" placeholder="What are we making?"></textarea>
-            </label>
-            <button class="button button-gold" type="submit">Send Inquiry</button>
-          </form>
+          <div class="showtime-layer showtime-layer-light" aria-hidden="true">
+            <div class="showtime-copy">
+              <p class="eyebrow">Final cue</p>
+              <h2>Ready for showtime?</h2>
+              <span class="button button-dark">Start the Project</span>
+            </div>
+          </div>
+
+          <div class="showtime-form-panel">
+            <div class="contact-banner">
+              <div class="contact-copy">
+                <p class="eyebrow">Build the first draft</p>
+                <h2>We combine clean structure with a little ticket-window charm.</h2>
+                <p>
+                  Tell us what you are making, what assets are still in progress, and what the new site needs to do.
+                </p>
+                <a href="mailto:hello@admitone.studio" class="button button-light">hello@admitone.studio</a>
+              </div>
+              <form class="contact-form" action="#" method="post">
+                <label>
+                  Name
+                  <input type="text" name="name" autocomplete="name" placeholder="Your name" />
+                </label>
+                <label>
+                  Email
+                  <input type="email" name="email" autocomplete="email" placeholder="you@example.com" />
+                </label>
+                <label>
+                  Project
+                  <textarea name="message" rows="4" placeholder="What are we making?"></textarea>
+                </label>
+                <button class="button button-gold" type="submit">Send Inquiry</button>
+              </form>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -398,6 +424,6 @@
       </div>
     </footer>
 
-    <script src="script.js?v=poster-gradient"></script>
+    <script src="script.js?v=gated-contact"></script>
   </body>
 </html>

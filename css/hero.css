@@ -79,8 +79,9 @@
     calc(var(--bulb-size) * 2) var(--bulb-gap);
 }
 
-/* The reader board itself — a cream sign face the slotted letter rows mount onto */
+/* The reader board itself — a cream sign face slotted with horizontal rails. */
 .marquee-sign {
+  --rail-gap: clamp(22px, 2.6vw, 30px);
   position: relative;
   z-index: 3;
   display: grid;
@@ -93,6 +94,13 @@
   border-radius: 3px;
   background-color: var(--paper);
   background-image:
+    /* full-board marquee rails: a recessed groove + lit lip on every slat */
+    repeating-linear-gradient(
+      180deg,
+      rgba(26, 23, 16, 0.16) 0 1px,
+      rgba(255, 255, 255, 0.6) 1px 2px,
+      rgba(26, 23, 16, 0) 2px var(--rail-gap)
+    ),
     radial-gradient(140% 86% at 50% 0%, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0) 58%),
     linear-gradient(180deg, rgba(255, 253, 248, 0.55), rgba(241, 234, 223, 0.6));
   box-shadow:
@@ -132,56 +140,19 @@
   text-transform: uppercase;
 }
 
-/* Each row is a recessed channel the letters slide into and rest on. */
+/* Each row centers a line of letters mounted onto the board's rails. */
 .marquee-line {
-  position: relative;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0.14em 0.18em 0.08em;
-  border-radius: 3px;
-  background: linear-gradient(
-    180deg,
-    rgba(26, 23, 16, 0.1) 0,
-    rgba(26, 23, 16, 0) 26%,
-    rgba(26, 23, 16, 0) 70%,
-    rgba(26, 23, 16, 0.05) 100%
-  );
 }
 
-/* Shadowed top lip of the channel where the rail recesses into the board. */
-.marquee-line::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 0.14em;
-  background: linear-gradient(180deg, rgba(26, 23, 16, 0.26), rgba(26, 23, 16, 0));
-  border-radius: 3px 3px 0 0;
-}
-
-/* Lit bottom rail — the physical shelf the letters are seated on. */
-.marquee-line::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 0.1em;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.95) 0,
-    rgba(255, 253, 248, 0.7) 35%,
-    rgba(26, 23, 16, 0.3) 100%
-  );
-  box-shadow: 0 1px 2px rgba(26, 23, 16, 0.28);
-  border-radius: 0 0 3px 3px;
-}
-
-/* The plastic letters: glossy face, beveled top edge, shadow cast on the board. */
+/* Plastic letters: solid glossy faces sitting flush on the rails (no shadow). */
 .marquee-line-text {
   position: relative;
   z-index: 1;
   display: inline-block;
-  padding-bottom: 0.08em;
   font-size: var(--letter-size);
   line-height: 0.86;
   letter-spacing: 0.012em;
@@ -190,10 +161,6 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter:
-    drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4))
-    drop-shadow(0 2px 1px rgba(26, 23, 16, 0.45))
-    drop-shadow(0 6px 7px rgba(26, 23, 16, 0.28));
 }
 
 .marquee-sign .hero-actions {

@@ -95,102 +95,66 @@ button {
   padding-top: 6px;
 }
 
-/* Darkened-theater one-sheet: lights down, feature about to start. */
 .hero-panel {
   position: relative;
-  min-height: min(760px, calc(100vh - 22px));
-  display: flex;
-  flex-direction: column;
+  min-height: min(700px, calc(100vh - 22px));
   overflow: hidden;
   border-radius: var(--radius);
-  background:
-    radial-gradient(120% 80% at 50% -10%, #2a2118 0%, transparent 60%),
-    #14110b;
+  background: var(--red);
   color: var(--warm);
-  border: 1px solid rgba(26, 23, 16, 0.4);
+  border: 1px solid rgba(26, 23, 16, 0.22);
 }
 
-/* Inner poster keyline, like the border printed on a film one-sheet. */
 .hero-panel::before {
   content: "";
   position: absolute;
-  inset: 88px 24px 24px;
-  z-index: 4;
-  border: 1px solid rgba(200, 149, 42, 0.34);
-  border-radius: calc(var(--radius) - 2px);
-  box-shadow: inset 0 0 0 6px rgba(20, 17, 11, 0.0), inset 0 0 0 7px rgba(251, 247, 238, 0.06);
+  inset: 88px 26px 26px;
+  z-index: 3;
+  border: 1px solid rgba(251, 247, 238, 0.32);
+  border-radius: var(--radius);
   pointer-events: none;
 }
 
-/* Soft projector spotlight from the top — static, not the old wobbling canvas. */
-.hero-spotlight {
+.hero-gradient {
+  position: absolute;
+  inset: 88px 26px 26px;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(90deg, rgba(184, 35, 26, 0.68), transparent 48%, rgba(184, 35, 26, 0.5)),
+    radial-gradient(circle at 50% 45%, rgba(251, 247, 238, 0.1), transparent 46%),
+    var(--red);
+}
+
+.hero-gradient::before,
+.hero-gradient::after {
+  content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background:
-    radial-gradient(70% 60% at 50% -8%, rgba(200, 149, 42, 0.26), transparent 62%),
-    radial-gradient(90% 70% at 50% 0%, rgba(184, 35, 26, 0.16), transparent 70%);
 }
 
-/* Vignette to darken the corners like a theater screen edge. */
-.hero-vignette {
+.hero-gradient::before {
+  background:
+    linear-gradient(110deg, rgba(251, 247, 238, 0.18), transparent 28%, rgba(26, 23, 16, 0.16) 78%),
+    repeating-linear-gradient(90deg, rgba(251, 247, 238, 0.06) 0 1px, transparent 1px 10px);
+  mix-blend-mode: screen;
+}
+
+.hero-gradient::after {
+  background:
+    radial-gradient(circle at 50% 44%, transparent 0 42%, rgba(184, 35, 26, 0.2) 64%, rgba(26, 23, 16, 0.34) 100%),
+    repeating-radial-gradient(circle at 24% 22%, rgba(251, 247, 238, 0.12) 0 0.7px, transparent 0.7px 3px);
+  opacity: 0.62;
+}
+
+.hero-gradient-canvas {
   position: absolute;
   inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: radial-gradient(120% 100% at 50% 38%, transparent 52%, rgba(8, 6, 3, 0.62) 100%);
-}
-
-/* Film grain over the whole hero, animated subtly for a "running projector" shimmer. */
-.hero-grain {
-  position: absolute;
-  inset: -120px;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 0.5;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  animation: grain-shift 1.2s steps(4) infinite;
-}
-
-@keyframes grain-shift {
-  0% { transform: translate3d(0, 0, 0); }
-  25% { transform: translate3d(-12px, 8px, 0); }
-  50% { transform: translate3d(10px, -10px, 0); }
-  75% { transform: translate3d(-8px, -6px, 0); }
-  100% { transform: translate3d(6px, 10px, 0); }
-}
-
-/* Ticket-stub flourish in the lower corner of the poster. */
-.hero-ticket {
-  position: absolute;
-  right: 40px;
-  bottom: 40px;
-  z-index: 5;
-  display: flex;
-  align-items: stretch;
-  border: 1px solid rgba(200, 149, 42, 0.5);
-  border-radius: 4px;
-  background: rgba(20, 17, 11, 0.5);
-  backdrop-filter: blur(2px);
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  transform: rotate(-4deg);
-}
-
-.hero-ticket-stub {
-  padding: 8px 12px;
-  color: var(--gold);
-}
-
-.hero-ticket-no {
-  padding: 8px 12px;
-  border-left: 1px dashed rgba(200, 149, 42, 0.5);
-  color: rgba(251, 247, 238, 0.66);
+  width: 100%;
+  height: 100%;
 }
 
 .site-header {
@@ -295,57 +259,14 @@ button {
 }
 
 .hero-copy {
-  position: relative;
-  z-index: 6;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  width: min(760px, calc(100% - 88px));
-  margin: 0 auto;
-  padding: 24px 0 64px;
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  width: min(700px, calc(100% - 36px));
+  margin: 0;
   text-align: center;
-}
-
-.hero-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 0 22px;
-  color: var(--gold);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.42em;
-  text-transform: uppercase;
-}
-
-.hero-kicker span {
-  font-size: 0.6rem;
-  opacity: 0.8;
-}
-
-.hero-lede {
-  max-width: 540px;
-  margin: 18px auto 30px;
-  color: rgba(251, 247, 238, 0.78);
-  font-size: 1.08rem;
-  line-height: 1.5;
-}
-
-/* The classic movie-poster billing block: tiny, condensed, all-caps credits. */
-.billing-block {
-  max-width: 620px;
-  margin: 40px auto 0;
-  padding-top: 22px;
-  border-top: 1px solid rgba(200, 149, 42, 0.28);
-  color: rgba(251, 247, 238, 0.52);
-  font-size: 0.62rem;
-  font-weight: 700;
-  line-height: 1.9;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
 }
 
 .eyebrow {
@@ -370,20 +291,11 @@ p {
 }
 
 h1 {
-  margin: 0 auto;
-  max-width: 12ch;
-  font-family: var(--serif);
-  font-size: clamp(3.4rem, 9vw, 6.4rem);
-  font-weight: 600;
-  line-height: 0.92;
-  letter-spacing: -0.01em;
-  text-wrap: balance;
-}
-
-h1 em {
-  font-style: italic;
-  font-weight: 500;
-  color: var(--gold);
+  margin: 0 auto 16px;
+  max-width: 760px;
+  font-size: 4.75rem;
+  font-weight: 800;
+  line-height: 0.9;
 }
 
 h2 {
@@ -400,6 +312,13 @@ h3 {
   font-size: 1.25rem;
   font-weight: 800;
   line-height: 1.08;
+}
+
+.hero-copy p:not(.eyebrow) {
+  max-width: 560px;
+  margin: 0 auto 22px;
+  color: rgba(251, 247, 238, 0.82);
+  font-size: 1.08rem;
 }
 
 .hero-actions {
@@ -455,17 +374,272 @@ h3 {
   color: var(--black);
 }
 
-.button-ghost {
-  background: transparent;
-  color: var(--warm);
-  border-color: rgba(251, 247, 238, 0.5);
+.hero-stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 322px;
 }
 
-.button-ghost:hover,
-.button-ghost:focus-visible {
-  background: var(--warm);
+.stage-card {
+  position: absolute;
+  border: 1px solid var(--black);
+  border-radius: var(--radius);
+  background: var(--paper);
   color: var(--black);
-  border-color: var(--warm);
+  box-shadow: 0 10px 24px rgba(26, 23, 16, 0.18);
+}
+
+.card-large {
+  left: 50%;
+  bottom: 62px;
+  width: 360px;
+  min-height: 225px;
+  transform: translateX(-50%);
+  overflow: hidden;
+  z-index: 3;
+}
+
+.window-dots {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  background: var(--black);
+}
+
+.window-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--warm);
+}
+
+.window-dots span:nth-child(2) {
+  background: var(--gold);
+}
+
+.window-dots span:nth-child(3) {
+  background: var(--red);
+}
+
+.mini-nav {
+  display: grid;
+  grid-template-columns: 1fr 52px 42px;
+  gap: 8px;
+  align-items: center;
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.mini-nav strong {
+  font-size: 0.9rem;
+}
+
+.mini-nav span {
+  height: 7px;
+  background: var(--paper-2);
+  border-radius: 999px;
+}
+
+.mini-layout {
+  display: grid;
+  grid-template-columns: 1fr 92px;
+  gap: 13px;
+  padding: 16px;
+}
+
+.mini-layout p {
+  margin-bottom: 8px;
+  color: var(--red);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.mini-layout h2 {
+  margin: 0;
+  text-align: left;
+  font-size: 2rem;
+  line-height: 0.92;
+}
+
+.mini-poster {
+  position: relative;
+  min-height: 118px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--black);
+  border: 1px solid var(--black);
+  border-radius: var(--radius);
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.interactive-poster {
+  cursor: crosshair;
+}
+
+.poster-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mini-poster::before,
+.mini-poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.mini-poster::before {
+  background:
+    linear-gradient(115deg, rgba(251, 247, 238, 0.42), transparent 30%, rgba(26, 23, 16, 0.14) 72%),
+    repeating-linear-gradient(90deg, rgba(251, 247, 238, 0.08) 0 1px, transparent 1px 8px);
+  mix-blend-mode: screen;
+  opacity: 0.72;
+}
+
+.mini-poster::after {
+  background:
+    radial-gradient(circle at 50% 42%, transparent 0 44%, rgba(26, 23, 16, 0.32) 100%),
+    repeating-radial-gradient(circle at 20% 20%, rgba(251, 247, 238, 0.16) 0 0.7px, transparent 0.7px 3px);
+  opacity: 0.48;
+}
+
+.poster-monogram {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(26, 23, 16, 0.58);
+  border-radius: 50%;
+  background: rgba(251, 247, 238, 0.68);
+  color: var(--black);
+  box-shadow: 0 10px 28px rgba(26, 23, 16, 0.22);
+  backdrop-filter: blur(7px);
+}
+
+.card-left {
+  left: 16%;
+  bottom: 80px;
+  width: 148px;
+  padding: 14px;
+  transform: rotate(-5deg);
+  z-index: 2;
+}
+
+.card-center {
+  left: 33%;
+  bottom: 28px;
+  width: 168px;
+  padding: 14px;
+  transform: rotate(3deg);
+  z-index: 4;
+}
+
+.card-right {
+  right: 15%;
+  bottom: 108px;
+  width: 158px;
+  padding: 14px;
+  transform: rotate(5deg);
+  z-index: 2;
+  background: var(--black);
+  color: var(--warm);
+}
+
+.card-kicker {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--red);
+  font-size: 0.67rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.card-right .card-kicker {
+  color: var(--gold);
+}
+
+.stage-card strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 2rem;
+  line-height: 0.96;
+}
+
+.stage-card p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.card-right p {
+  color: rgba(251, 247, 238, 0.7);
+}
+
+.stage-card ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  list-style: none;
+}
+
+.stage-card li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.stage-card li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border: 1px solid var(--black);
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.ticket-row {
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  bottom: 18px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  z-index: 1;
+}
+
+.ticket-row span {
+  min-height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(251, 247, 238, 0.42);
+  border-radius: var(--radius);
+  color: rgba(251, 247, 238, 0.72);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
 }
 
 .logo-rail {
@@ -626,9 +800,8 @@ h3 {
 }
 
 .image-stat img {
-  height: calc(100% + 52px);
-  min-height: 364px;
-  margin-top: -26px;
+  height: 100%;
+  min-height: 312px;
   object-fit: cover;
   opacity: 0.74;
   filter: saturate(0.85);
@@ -954,31 +1127,12 @@ h3 {
   filter: saturate(0.86);
 }
 
-.work-thumb {
-  height: 245px;
-  overflow: hidden;
-}
-
-/* Oversize + recenter the image so parallax translation never reveals card edges.
-   Parallax is driven through the independent `translate` property in JS, while
-   the hover zoom uses `scale` — so the two never overwrite each other. */
-.work-thumb img {
-  height: 290px;
-  margin-top: -22px;
-  object-fit: cover;
-  transition: scale 600ms ease;
-}
-
-.work-grid article:hover .work-thumb img {
-  scale: 1.04;
-}
-
-.work-meta,
+.work-grid div,
 .notes-grid article {
   position: relative;
 }
 
-.work-meta {
+.work-grid div {
   padding: 16px;
 }
 
@@ -1304,66 +1458,11 @@ figure {
   font-weight: 800;
 }
 
-/* ---- Scroll-reveal: a quiet fade-and-rise as each piece enters frame ----
-   The hidden state is scoped to `.js` so the page stays fully visible if
-   scripting is unavailable. */
-.js [data-reveal] {
-  opacity: 0;
-  transform: translateY(26px);
-  transition:
-    opacity 760ms cubic-bezier(0.22, 0.61, 0.36, 1),
-    transform 760ms cubic-bezier(0.22, 0.61, 0.36, 1);
-  transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
-}
-
-.js [data-reveal].is-revealed {
-  opacity: 1;
-  transform: none;
-}
-
-/* Contact banner gets the same theater grain as the hero. */
-.contact-banner {
-  position: relative;
-  overflow: hidden;
-}
-
-.contact-grain {
-  position: absolute;
-  inset: -120px;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.4;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-}
-
-.contact-copy,
-.contact-form {
-  position: relative;
-  z-index: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .js [data-reveal] {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .hero-grain {
-    animation: none;
-  }
-
-  .work-thumb img,
-  .image-stat img,
-  [data-parallax] {
-    translate: none !important;
-  }
-}
-
 @media (max-width: 980px) {
+  h1 {
+    font-size: 3.8rem;
+  }
+
   h2 {
     font-size: 2.5rem;
   }
@@ -1372,8 +1471,12 @@ figure {
     min-height: min(720px, calc(100vh - 18px));
   }
 
-  .hero-copy {
-    width: min(640px, calc(100% - 64px));
+  .card-left {
+    left: 7%;
+  }
+
+  .card-right {
+    right: 7%;
   }
 
   .stat-grid,
@@ -1462,23 +1565,16 @@ figure {
     border-radius: var(--radius);
   }
 
+  h1 {
+    font-size: 3.1rem;
+  }
+
   h2 {
     font-size: 2.15rem;
   }
 
   .hero-copy {
-    width: calc(100% - 48px);
-    padding: 16px 0 48px;
-  }
-
-  .billing-block {
-    margin-top: 30px;
-    letter-spacing: 0.12em;
-  }
-
-  .hero-ticket {
-    right: 20px;
-    bottom: 22px;
+    margin-top: 18px;
   }
 
   .hero-actions,
@@ -1488,6 +1584,38 @@ figure {
 
   .hero-actions .button {
     min-width: 136px;
+  }
+
+  .hero-stage {
+    height: 348px;
+  }
+
+  .card-large {
+    width: calc(100% - 72px);
+    bottom: 74px;
+  }
+
+  .mini-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .mini-poster {
+    min-height: 58px;
+  }
+
+  .card-left,
+  .card-right {
+    display: none;
+  }
+
+  .card-center {
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%) rotate(2deg);
+  }
+
+  .ticket-row {
+    display: none;
   }
 
   .logo-rail {
@@ -1576,8 +1704,21 @@ figure {
     font-size: 0.8rem;
   }
 
+  h1 {
+    font-size: 2.65rem;
+  }
+
   h2 {
     font-size: 1.9rem;
+  }
+
+  .card-large {
+    width: calc(100% - 34px);
+    bottom: 66px;
+  }
+
+  .card-center {
+    width: 150px;
   }
 
   .stat-card,

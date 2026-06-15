@@ -156,12 +156,20 @@
   height: calc(var(--rail-gap) * 2);
 }
 
-/* Plastic letters: solid glossy faces slotted onto the rails (no shadow). */
+/* Plastic letters: solid glossy faces slotted onto the rails (no shadow).
+   We trim the text box down to the real cap-top and alphabetic baseline
+   (text-box-trim) so the box edges ARE the letter edges, not the font's
+   line box. That lets the caps fill exactly --cap-span rails: cap-top tucks
+   under the upper rail, baseline seats on the lower rail — no magic nudge.
+     --cap-ratio: Bricolage Grotesque cap-height as a fraction of the em.
+     --cap-span:  how many rails the capitals fill (2 = a full two-row slot). */
 .marquee-line-text {
+  --cap-ratio: 0.7;
+  --cap-span: 2;
   position: relative;
   z-index: 1;
   display: inline-block;
-  font-size: calc(var(--rail-gap) * 1.82);
+  font-size: calc(var(--rail-gap) * var(--cap-span) / var(--cap-ratio));
   line-height: 1;
   letter-spacing: 0.012em;
   color: #181410;
@@ -169,7 +177,18 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  transform: translateY(calc(var(--rail-gap) * 0.16));
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+  text-box: trim-both cap alphabetic;
+}
+
+/* Fallback for engines without text-box-trim: approximate the seat with the
+   former line-box sizing plus a baseline nudge so letters still meet a rail. */
+@supports not (text-box-edge: cap alphabetic) {
+  .marquee-line-text {
+    font-size: calc(var(--rail-gap) * 1.82);
+    transform: translateY(calc(var(--rail-gap) * 0.16));
+  }
 }
 
 .marquee-sign .hero-actions {
@@ -299,6 +318,12 @@
     padding-inline: 18px;
   }
 
+  /* Narrower board: ease the caps off a full two-rail fill so the fixed
+     headline text doesn't run past the sign edge. Baseline still seats. */
+  .marquee-line-text {
+    --cap-span: 1.8;
+  }
+
   .marquee-kicker {
     font-size: 0.78rem;
   }
@@ -344,6 +369,10 @@
       0 10px 24px rgba(26, 23, 16, 0.28);
   }
 
+  .marquee-line-text {
+    --cap-span: 1.5;
+  }
+
   .marquee-kicker {
     width: min(250px, 100%);
     font-size: 0.72rem;
@@ -357,5 +386,9 @@
 
   .marquee-sign {
     --rail-gap: clamp(24px, 6.6vw, 32px);
+  }
+
+  .marquee-line-text {
+    --cap-span: 1.3;
   }
 }

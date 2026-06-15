@@ -137,12 +137,15 @@
   letter-spacing: 0.16em;
 }
 
-/* Headline: stacked rows, each two rails tall, ending two rails above the actions. */
+/* Headline: stacked rows, each two rails tall, ending two rails above the actions.
+   container-type makes this the sizing reference for the letters below, so the
+   caps can scale to the board width (via cqw) instead of a fixed multiplier. */
 .marquee-headline {
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 900px;
+  max-width: 1080px;
   margin: 0 0 calc(var(--rail-gap) * 2);
   text-transform: uppercase;
 }
@@ -157,19 +160,22 @@
 }
 
 /* Plastic letters: solid glossy faces slotted onto the rails (no shadow).
-   We trim the text box down to the real cap-top and alphabetic baseline
-   (text-box-trim) so the box edges ARE the letter edges, not the font's
-   line box. That lets the caps fill exactly --cap-span rails: cap-top tucks
-   under the upper rail, baseline seats on the lower rail — no magic nudge.
-     --cap-ratio: Bricolage Grotesque cap-height as a fraction of the em.
-     --cap-span:  how many rails the capitals fill (2 = a full two-row slot). */
+   Real font metrics (measured from Bricolage Grotesque 800) drive the seat:
+     --cap-ratio: cap-height / em = 0.66 (so cap-height = font-size * 0.66).
+     --cap-span:  rails the capitals should fill (2 = a full two-row slot).
+   Size is the SMALLER of "caps fill --cap-span rails" and "text fills the
+   board width" (14.3cqw ~= the headline's longest line). The width clamp keeps
+   the long headline from overflowing; the rail clamp keeps it from exceeding
+   two rows. text-box-trim then trims the box to the true cap-top and alphabetic
+   baseline, so the box edges ARE the letter edges: baseline seats in the lower
+   rail groove and the cap-top meets the upper rail — no magic nudge. */
 .marquee-line-text {
-  --cap-ratio: 0.7;
+  --cap-ratio: 0.66;
   --cap-span: 2;
   position: relative;
   z-index: 1;
   display: inline-block;
-  font-size: calc(var(--rail-gap) * var(--cap-span) / var(--cap-ratio));
+  font-size: min(calc(var(--rail-gap) * var(--cap-span) / var(--cap-ratio)), 14.3cqw);
   line-height: 1;
   letter-spacing: 0.012em;
   color: #181410;
@@ -182,12 +188,12 @@
   text-box: trim-both cap alphabetic;
 }
 
-/* Fallback for engines without text-box-trim: approximate the seat with the
-   former line-box sizing plus a baseline nudge so letters still meet a rail. */
+/* Fallback for engines without text-box-trim: with line-height 1 and this
+   font's ascent/descent (930/-270 per 1000), the baseline sits 0.17em above
+   the line-box bottom, so nudging down 0.17em drops it onto the lower rail. */
 @supports not (text-box-edge: cap alphabetic) {
   .marquee-line-text {
-    font-size: calc(var(--rail-gap) * 1.82);
-    transform: translateY(calc(var(--rail-gap) * 0.16));
+    transform: translateY(0.17em);
   }
 }
 
@@ -318,12 +324,6 @@
     padding-inline: 18px;
   }
 
-  /* Narrower board: ease the caps off a full two-rail fill so the fixed
-     headline text doesn't run past the sign edge. Baseline still seats. */
-  .marquee-line-text {
-    --cap-span: 1.8;
-  }
-
   .marquee-kicker {
     font-size: 0.78rem;
   }
@@ -369,10 +369,6 @@
       0 10px 24px rgba(26, 23, 16, 0.28);
   }
 
-  .marquee-line-text {
-    --cap-span: 1.5;
-  }
-
   .marquee-kicker {
     width: min(250px, 100%);
     font-size: 0.72rem;
@@ -386,9 +382,5 @@
 
   .marquee-sign {
     --rail-gap: clamp(24px, 6.6vw, 32px);
-  }
-
-  .marquee-line-text {
-    --cap-span: 1.3;
   }
 }

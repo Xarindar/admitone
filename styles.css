@@ -118,124 +118,62 @@ button {
 }
 
 .hero-marquee {
+  --bulb-size: clamp(4px, 0.7vw, 6px);
+  --bulb-gap: clamp(22px, 3vw, 30px);
+  --bulb-inset: clamp(12px, 1.8vw, 18px);
+  --rail-gap: clamp(28px, 4vw, 36px);
   position: absolute;
   inset: 88px 26px 26px;
   z-index: 4;
   overflow: hidden;
   border-radius: var(--radius);
   display: grid;
-  place-items: center;
-  padding: clamp(28px, 5vw, 58px);
-  background: #261812;
-  border: 1px solid rgba(200, 149, 42, 0.58);
+  place-items: stretch;
+  padding: clamp(26px, 4vw, 42px);
+  background: var(--black);
   box-shadow:
-    inset 0 0 0 12px rgba(184, 35, 26, 0.5),
-    inset 0 0 0 20px rgba(26, 23, 16, 0.92),
+    inset 0 0 0 1px rgba(200, 149, 42, 0.4),
     0 24px 54px rgba(26, 23, 16, 0.26);
   isolation: isolate;
 }
 
-.hero-marquee::before,
-.hero-marquee::after {
+/* One continuous bulb frame — a single rail of lights around the board */
+.hero-marquee::before {
   content: "";
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.hero-marquee::before {
-  z-index: -2;
-  background:
-    repeating-linear-gradient(90deg, rgba(251, 247, 238, 0.035) 0 1px, transparent 1px 18px),
-    repeating-linear-gradient(0deg, rgba(26, 23, 16, 0.34) 0 1px, transparent 1px 20px);
-}
-
-.hero-marquee::after {
-  z-index: -1;
-  inset: 30px;
-  border: 1px solid rgba(251, 247, 238, 0.16);
-  border-radius: calc(var(--radius) - 2px);
-}
-
-.marquee-bulbs {
-  position: absolute;
+  inset: var(--bulb-inset);
   z-index: 2;
-  color: #ffe2a6;
   pointer-events: none;
+  background:
+    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)) repeat-x top / var(--bulb-gap) calc(var(--bulb-size) * 2),
+    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)) repeat-x bottom / var(--bulb-gap) calc(var(--bulb-size) * 2),
+    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)) repeat-y left / calc(var(--bulb-size) * 2) var(--bulb-gap),
+    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)) repeat-y right / calc(var(--bulb-size) * 2) var(--bulb-gap);
+  filter: drop-shadow(0 0 4px rgba(255, 213, 138, 0.5));
 }
 
-.marquee-bulbs-top,
-.marquee-bulbs-bottom {
-  left: 22px;
-  right: 22px;
-  height: 16px;
-  background-image: radial-gradient(circle, currentColor 0 4px, transparent 4.8px);
-  background-size: 34px 16px;
-  background-position: center;
-}
-
-.marquee-bulbs-top {
-  top: 20px;
-}
-
-.marquee-bulbs-bottom {
-  bottom: 20px;
-}
-
-.marquee-bulbs-left,
-.marquee-bulbs-right {
-  top: 22px;
-  bottom: 22px;
-  width: 16px;
-  background-image: radial-gradient(circle, currentColor 0 4px, transparent 4.8px);
-  background-size: 16px 34px;
-  background-position: center;
-}
-
-.marquee-bulbs-left {
-  left: 20px;
-}
-
-.marquee-bulbs-right {
-  right: 20px;
-}
-
+/* The reader board itself — one cream surface of slotted rails the letters sit on */
 .marquee-sign {
   position: relative;
   z-index: 3;
-  width: min(840px, 100%);
-  min-height: clamp(330px, 48vh, 430px);
   display: grid;
   align-content: center;
   justify-items: center;
-  gap: clamp(16px, 3vw, 24px);
-  padding: clamp(34px, 6vw, 58px) clamp(20px, 5vw, 62px);
+  gap: clamp(18px, 3vw, 26px);
+  padding: clamp(32px, 5vw, 56px) clamp(24px, 5vw, 60px);
   color: var(--black);
   text-align: center;
-  background: var(--paper);
-  border: 1px solid rgba(26, 23, 16, 0.72);
+  border-radius: 3px;
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(26, 23, 16, 0.085) 0 1px,
+    rgba(26, 23, 16, 0) 1px var(--rail-gap)
+  );
   box-shadow:
-    inset 0 0 0 6px rgba(200, 149, 42, 0.42),
-    inset 0 0 0 12px rgba(251, 247, 238, 0.82),
-    0 18px 42px rgba(26, 23, 16, 0.34);
-}
-
-.marquee-sign::before,
-.marquee-sign::after {
-  content: "";
-  position: absolute;
-  left: clamp(18px, 4vw, 42px);
-  right: clamp(18px, 4vw, 42px);
-  height: 1px;
-  background: rgba(26, 23, 16, 0.32);
-}
-
-.marquee-sign::before {
-  top: clamp(72px, 13vw, 106px);
-}
-
-.marquee-sign::after {
-  bottom: clamp(78px, 13vw, 112px);
+    inset 0 0 0 1px rgba(26, 23, 16, 0.55),
+    inset 0 0 26px rgba(26, 23, 16, 0.1),
+    0 12px 30px rgba(26, 23, 16, 0.3);
 }
 
 .marquee-kicker {
@@ -249,6 +187,7 @@ button {
   color: var(--warm);
   background: var(--red);
   border: 1px solid rgba(26, 23, 16, 0.84);
+  box-shadow: 0 2px 0 rgba(26, 23, 16, 0.42);
   font-size: clamp(0.82rem, 1.5vw, 1rem);
   font-weight: 800;
   line-height: 1.1;
@@ -257,7 +196,7 @@ button {
 }
 
 .marquee-sign h1 {
-  max-width: 740px;
+  max-width: 760px;
   margin: 0;
   font-size: clamp(3rem, 9vw, 7.25rem);
   line-height: 0.82;
@@ -265,7 +204,7 @@ button {
 }
 
 .marquee-sign .hero-actions {
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .site-header {
@@ -1632,6 +1571,16 @@ figure {
   transition: opacity 160ms linear;
 }
 
+.showtime-reveal.is-animating-form .showtime-layer-light {
+  transition: clip-path 1500ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.showtime-reveal.is-animating-form .showtime-copy {
+  transition:
+    opacity 700ms ease 1250ms,
+    transform 700ms ease 1250ms;
+}
+
 .showtime-copy::before {
   content: "";
   position: absolute;
@@ -1678,6 +1627,12 @@ figure {
   pointer-events: none;
   transform: translateY(calc((1 - var(--showtime-form-opacity)) * 24px));
   transition: opacity 180ms linear;
+}
+
+.showtime-reveal.is-animating-form .showtime-form-panel {
+  transition:
+    opacity 900ms ease 1900ms,
+    transform 900ms ease 1900ms;
 }
 
 .showtime-reveal.is-form-ready .showtime-form-panel {
@@ -1870,7 +1825,7 @@ figure {
   }
 
   .hero-panel {
-    min-height: clamp(760px, calc(100vh - 16px), 860px);
+    min-height: clamp(520px, calc(100vh - 16px), 620px);
   }
 
   .hero-panel::before {
@@ -1879,63 +1834,22 @@ figure {
 
   .hero-marquee {
     inset: 82px 14px 16px;
-    padding: 42px 22px;
-    box-shadow:
-      inset 0 0 0 8px rgba(184, 35, 26, 0.5),
-      inset 0 0 0 14px rgba(26, 23, 16, 0.92),
-      0 18px 42px rgba(26, 23, 16, 0.24);
-  }
-
-  .hero-marquee::after {
-    inset: 22px;
-  }
-
-  .marquee-bulbs-top,
-  .marquee-bulbs-bottom {
-    left: 16px;
-    right: 16px;
-    background-size: 28px 16px;
-  }
-
-  .marquee-bulbs-top {
-    top: 14px;
-  }
-
-  .marquee-bulbs-bottom {
-    bottom: 14px;
-  }
-
-  .marquee-bulbs-left,
-  .marquee-bulbs-right {
-    top: 18px;
-    bottom: 18px;
-    background-size: 16px 28px;
-  }
-
-  .marquee-bulbs-left {
-    left: 14px;
-  }
-
-  .marquee-bulbs-right {
-    right: 14px;
+    padding: clamp(20px, 5vw, 30px);
+    --bulb-inset: 12px;
   }
 
   .marquee-sign {
-    min-height: clamp(400px, 60vh, 500px);
-    padding: 36px 20px;
-  }
-
-  .marquee-sign::before {
-    top: 82px;
-  }
-
-  .marquee-sign::after {
-    bottom: 96px;
+    padding: 30px 18px;
   }
 
   .marquee-kicker {
     min-height: 36px;
     font-size: 0.78rem;
+  }
+
+  .marquee-sign h1 {
+    font-size: clamp(2.2rem, 11vw, 3.6rem);
+    line-height: 0.88;
   }
 
   .menu-toggle {
@@ -1978,7 +1892,7 @@ figure {
   }
 
   .hero-actions .button {
-    min-width: 136px;
+    min-width: 126px;
   }
 
   .hero-stage {
@@ -2026,6 +1940,60 @@ figure {
     min-height: 62px;
     padding: 0 14px;
     font-size: 0.82rem;
+  }
+
+  @media (max-width: 520px) {
+    .hero-shell,
+    .section,
+    .footer-inner {
+      width: min(100% - 16px, 1120px);
+    }
+
+    .hero-panel {
+      min-height: clamp(500px, calc(100vh - 14px), 590px);
+    }
+
+    .hero-panel::before,
+    .hero-marquee {
+      inset: 78px 10px 12px;
+    }
+
+    .hero-marquee {
+      padding: clamp(16px, 5vw, 24px);
+      --bulb-inset: 10px;
+      --bulb-gap: 22px;
+    }
+
+    .marquee-sign {
+      gap: 14px;
+      padding: 26px 14px;
+      box-shadow:
+        inset 0 0 0 1px rgba(26, 23, 16, 0.5),
+        inset 0 0 18px rgba(26, 23, 16, 0.1),
+        0 10px 24px rgba(26, 23, 16, 0.28);
+    }
+
+    .marquee-kicker {
+      width: min(250px, 100%);
+      min-height: 34px;
+      font-size: 0.72rem;
+    }
+
+    .marquee-sign h1 {
+      font-size: clamp(1.9rem, 10vw, 2.55rem);
+      line-height: 0.9;
+    }
+
+    .hero-actions {
+      gap: 8px;
+    }
+
+    .hero-actions .button {
+      min-width: 116px;
+      min-height: 38px;
+      padding-inline: 13px;
+      font-size: 0.78rem;
+    }
   }
 
   .section {
@@ -2151,7 +2119,7 @@ figure {
 
 @media (max-width: 430px) {
   .hero-panel {
-    min-height: clamp(760px, calc(100vh - 14px), 840px);
+    min-height: clamp(500px, calc(100vh - 14px), 590px);
   }
 
   .nav {

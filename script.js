@@ -45,6 +45,7 @@ function setupShowtimeReveal() {
 
   function holdRevealedForm() {
     delete reveal.dataset.formRevealing;
+    reveal.classList.remove("is-animating-form");
     reveal.dataset.formRevealed = "true";
     reveal.style.setProperty("--showtime-progress", "1");
     reveal.style.setProperty("--showtime-clip", "0%");
@@ -98,48 +99,30 @@ function setupShowtimeReveal() {
 
   function animateFormReveal() {
     reveal.dataset.formRevealing = "true";
+    delete reveal.dataset.formRevealed;
+    reveal.classList.remove("is-form-ready", "is-animating-form");
     setFormAccess(false);
     window.scrollTo({ top: reveal.offsetTop, behavior: "auto" });
+    reveal.style.setProperty("--showtime-progress", "0");
+    reveal.style.setProperty("--showtime-clip", "100%");
+    reveal.style.setProperty("--showtime-copy-opacity", "1");
+    reveal.style.setProperty("--showtime-form-opacity", "0");
 
-    const duration = 2600;
-    const startTime = window.performance.now();
-
-    function easeInOutSine(value) {
-      return -(Math.cos(Math.PI * value) - 1) / 2;
-    }
-
-    function step(now) {
-      const progress = Math.min(1, (now - startTime) / duration);
-      const eased = easeInOutSine(progress);
-      const wipeProgress = smoothStep(eased / 0.72);
-      const copyOpacity = 1 - smoothStep((eased - 0.66) / 0.16);
-      const formOpacity = smoothStep((eased - 0.74) / 0.18);
-
-      reveal.style.setProperty("--showtime-progress", eased.toFixed(3));
-      reveal.style.setProperty("--showtime-clip", `${((1 - wipeProgress) * 100).toFixed(2)}%`);
-      reveal.style.setProperty("--showtime-copy-opacity", copyOpacity.toFixed(3));
-      reveal.style.setProperty("--showtime-form-opacity", formOpacity.toFixed(3));
-
-      if (progress < 1) {
-        window.requestAnimationFrame(step);
-      } else {
-        holdRevealedForm();
-      }
-    }
-
-    window.requestAnimationFrame(step);
+    window.requestAnimationFrame(() => {
+      reveal.classList.add("is-animating-form");
+      reveal.style.setProperty("--showtime-progress", "1");
+      reveal.style.setProperty("--showtime-clip", "0%");
+      reveal.style.setProperty("--showtime-copy-opacity", "0");
+      reveal.style.setProperty("--showtime-form-opacity", "1");
+      window.setTimeout(holdRevealedForm, 3100);
+    });
   }
 
   function finishReveal(event) {
     event.preventDefault();
     setMenu(false);
     window.history.pushState(null, "", "#contact");
-    if (prefersReducedMotion.matches) {
-      scrollToForm();
-      holdRevealedForm();
-    } else {
-      animateFormReveal();
-    }
+    animateFormReveal();
   }
 
   setFormAccess(false);

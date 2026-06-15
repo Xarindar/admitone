@@ -1,6 +1,7 @@
 const menuToggle = document.querySelector(".menu-toggle");
 const navLinks = document.querySelector(".nav-links");
 const navItems = document.querySelectorAll(".nav-links a");
+const siteHeader = document.querySelector(".site-header");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 function setMenu(open) {
@@ -22,6 +23,13 @@ window.addEventListener("keydown", (event) => {
     setMenu(false);
   }
 });
+
+function updateHeaderScrollState() {
+  siteHeader?.classList.toggle("is-scrolled", window.scrollY > 12);
+}
+
+updateHeaderScrollState();
+window.addEventListener("scroll", updateHeaderScrollState, { passive: true });
 
 function setupShowtimeReveal() {
   const reveal = document.querySelector(".showtime-reveal");
@@ -45,7 +53,7 @@ function setupShowtimeReveal() {
 
   function holdRevealedForm() {
     delete reveal.dataset.formRevealing;
-    reveal.classList.remove("is-animating-form");
+    reveal.classList.remove("is-animating-form", "is-scroll-triggering-form");
     reveal.dataset.formRevealed = "true";
     reveal.style.setProperty("--showtime-progress", "1");
     reveal.style.setProperty("--showtime-clip", "0%");
@@ -73,20 +81,18 @@ function setupShowtimeReveal() {
     const travel = Math.max(1, bounds.height - window.innerHeight);
     const progress = Math.min(1, Math.max(0, -bounds.top / travel));
     const curtainProgress = smoothStep(progress / 0.56);
-    const transitionProgress = smoothStep((progress - 0.68) / 0.07);
-    const copyOpacity = 1 - transitionProgress;
-    const formOpacity = transitionProgress;
 
     reveal.style.setProperty("--showtime-progress", curtainProgress.toFixed(3));
     reveal.style.setProperty("--showtime-clip", `${((1 - curtainProgress) * 100).toFixed(2)}%`);
-    reveal.style.setProperty("--showtime-copy-opacity", copyOpacity.toFixed(3));
-    reveal.style.setProperty("--showtime-form-opacity", formOpacity.toFixed(3));
+    reveal.style.setProperty("--showtime-copy-opacity", "1");
+    reveal.style.setProperty("--showtime-form-opacity", "0");
 
-    if (formOpacity > 0.96) {
-      holdRevealedForm();
-    } else {
-      setFormAccess(false);
+    if (progress >= 0.64) {
+      animateFormReveal({ source: "scroll", resetScroll: false });
+      return;
     }
+
+    setFormAccess(false);
   }
 
   function getFormTargetTop() {
@@ -98,24 +104,31 @@ function setupShowtimeReveal() {
     window.scrollTo({ top: getFormTargetTop(), behavior: "auto" });
   }
 
-  function animateFormReveal() {
+  function animateFormReveal({ source = "click", resetScroll = true } = {}) {
     reveal.dataset.formRevealing = "true";
     delete reveal.dataset.formRevealed;
-    reveal.classList.remove("is-form-ready", "is-animating-form");
+    reveal.classList.remove("is-form-ready", "is-animating-form", "is-scroll-triggering-form");
     setFormAccess(false);
-    window.scrollTo({ top: reveal.offsetTop, behavior: "auto" });
-    reveal.style.setProperty("--showtime-progress", "0");
-    reveal.style.setProperty("--showtime-clip", "100%");
+
+    if (resetScroll) {
+      window.scrollTo({ top: reveal.offsetTop, behavior: "auto" });
+      reveal.style.setProperty("--showtime-progress", "0");
+      reveal.style.setProperty("--showtime-clip", "100%");
+    } else {
+      reveal.style.setProperty("--showtime-progress", "1");
+      reveal.style.setProperty("--showtime-clip", "0%");
+    }
+
     reveal.style.setProperty("--showtime-copy-opacity", "1");
     reveal.style.setProperty("--showtime-form-opacity", "0");
 
     window.requestAnimationFrame(() => {
-      reveal.classList.add("is-animating-form");
+      reveal.classList.add(source === "scroll" ? "is-scroll-triggering-form" : "is-animating-form");
       reveal.style.setProperty("--showtime-progress", "1");
       reveal.style.setProperty("--showtime-clip", "0%");
       reveal.style.setProperty("--showtime-copy-opacity", "0");
       reveal.style.setProperty("--showtime-form-opacity", "1");
-      window.setTimeout(holdRevealedForm, 3100);
+      window.setTimeout(holdRevealedForm, source === "scroll" ? 1100 : 3100);
     });
   }
 
@@ -248,6 +261,7 @@ function setupPricingTickets() {
 
   function buildBulbs() {
     const regularCount = Math.max(28, Math.ceil(routeLength / 32));
+    const regularStep = routeLength / regularCount;
     const points = [];
 
     for (let index = 0; index <= regularCount; index += 1) {
@@ -259,7 +273,7 @@ function setupPricingTickets() {
     });
 
     const mergedPoints = [];
-    const mergeDistance = routeLength * 0.004;
+    const mergeDistance = regularStep * 0.82;
 
     points
       .sort((a, b) => a.distance - b.distance)
@@ -307,11 +321,12 @@ function setupPricingTickets() {
   function refreshGeometry() {
     routeLength = routePath.getTotalLength();
 
+    const ticketTriggerPoint = window.innerHeight * 0.58;
     let previousDistance = 0;
     ticketHits = tickets.map((ticket) => {
       const distance = findTicketHitDistance(ticket, previousDistance);
       const bounds = ticket.getBoundingClientRect();
-      const scroll = window.scrollY + bounds.top - window.innerHeight * 0.72;
+      const scroll = window.scrollY + bounds.top - ticketTriggerPoint;
 
       previousDistance = Math.min(routeLength, distance + routeLength * 0.035);
 

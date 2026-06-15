@@ -1,0 +1,405 @@
+/* "Showtime" scroll reveal: curtains part to expose the contact form. */
+
+.showtime-reveal {
+  --showtime-progress: 0;
+  --showtime-copy-opacity: 1;
+  --showtime-form-opacity: 0;
+  position: relative;
+  height: 420vh;
+  margin: 18px 0 0;
+  background: var(--black);
+  isolation: isolate;
+}
+
+.showtime-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 560px;
+  overflow: hidden;
+  border-block: 2px solid var(--black);
+}
+
+.showtime-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 64px 24px;
+}
+
+.showtime-layer::before,
+.showtime-layer::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 22px;
+  background-image: radial-gradient(circle, currentColor 0 5px, transparent 5.5px);
+  background-position: 0 50%;
+  background-size: 34px 22px;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.showtime-layer::before {
+  top: 18px;
+}
+
+.showtime-layer::after {
+  bottom: 18px;
+}
+
+.showtime-layer-dark {
+  color: var(--warm);
+  background:
+    radial-gradient(circle at 50% 46%, rgba(200, 149, 42, 0.34), transparent 34%),
+    linear-gradient(135deg, rgba(184, 35, 26, 0.62), rgba(26, 23, 16, 0.22) 48%, rgba(26, 23, 16, 0.76)),
+    var(--black);
+}
+
+.showtime-layer-light {
+  color: var(--warm);
+  background: transparent;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.showtime-curtain-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 56%;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(251, 247, 238, 0.2), transparent 34%),
+    repeating-linear-gradient(
+      90deg,
+      #5f0d0a 0 10px,
+      #8f1711 10px 28px,
+      #c43529 28px 44px,
+      #7e120d 44px 62px,
+      #4b0907 62px 76px
+    );
+  box-shadow:
+    inset 0 20px 48px rgba(251, 247, 238, 0.08),
+    inset 0 -38px 70px rgba(26, 23, 16, 0.34),
+    0 18px 42px rgba(26, 23, 16, 0.32);
+  filter: drop-shadow(0 -14px 18px rgba(26, 23, 16, 0.22));
+  pointer-events: none;
+  will-change: clip-path, transform;
+}
+
+.showtime-curtain-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(251, 247, 238, 0.12), transparent 12%, rgba(26, 23, 16, 0.34) 24%, transparent 38%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(251, 247, 238, 0.1) 0 2px,
+      transparent 2px 34px,
+      rgba(26, 23, 16, 0.24) 34px 42px,
+      transparent 42px 68px
+    );
+  mix-blend-mode: soft-light;
+  opacity: 0.9;
+}
+
+.showtime-curtain-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: calc(var(--showtime-progress) * 70%);
+  width: 18px;
+  background:
+    linear-gradient(180deg, rgba(251, 247, 238, 0.04), rgba(200, 149, 42, 0.36) 16%, rgba(26, 23, 16, 0.24)),
+    var(--gold);
+  box-shadow: 0 0 24px rgba(26, 23, 16, 0.32);
+  opacity: calc(0.25 + (var(--showtime-progress) * 0.55));
+}
+
+.showtime-curtain-left {
+  left: -1px;
+  transform:
+    translate(
+      calc(var(--showtime-progress) * -18vw),
+      calc(var(--showtime-progress) * -9vh)
+    )
+    rotate(calc(var(--showtime-progress) * -1.6deg));
+  transform-origin: 0 0;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - (var(--showtime-progress) * 68%)),
+    90% calc(100% - (var(--showtime-progress) * 64%)),
+    77% calc(100% - (var(--showtime-progress) * 59%)),
+    62% calc(100% - (var(--showtime-progress) * 55%)),
+    48% calc(100% - (var(--showtime-progress) * 51%)),
+    34% calc(100% - (var(--showtime-progress) * 57%)),
+    21% calc(100% - (var(--showtime-progress) * 66%)),
+    10% calc(100% - (var(--showtime-progress) * 75%)),
+    0 calc(100% - (var(--showtime-progress) * 84%))
+  );
+}
+
+.showtime-curtain-left::after {
+  right: 0;
+}
+
+.showtime-curtain-right {
+  right: -1px;
+  transform:
+    translate(
+      calc(var(--showtime-progress) * 18vw),
+      calc(var(--showtime-progress) * -9vh)
+    )
+    rotate(calc(var(--showtime-progress) * 1.6deg));
+  transform-origin: 100% 0;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - (var(--showtime-progress) * 84%)),
+    90% calc(100% - (var(--showtime-progress) * 75%)),
+    79% calc(100% - (var(--showtime-progress) * 66%)),
+    66% calc(100% - (var(--showtime-progress) * 57%)),
+    52% calc(100% - (var(--showtime-progress) * 51%)),
+    38% calc(100% - (var(--showtime-progress) * 55%)),
+    23% calc(100% - (var(--showtime-progress) * 59%)),
+    10% calc(100% - (var(--showtime-progress) * 64%)),
+    0 calc(100% - (var(--showtime-progress) * 68%))
+  );
+}
+
+.showtime-curtain-right::after {
+  left: 0;
+}
+
+.showtime-copy {
+  position: relative;
+  z-index: 3;
+  width: min(980px, 100%);
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  text-align: center;
+  opacity: var(--showtime-copy-opacity);
+  transform: translateY(calc((1 - var(--showtime-copy-opacity)) * -20px));
+  transition: opacity 160ms linear;
+}
+
+.showtime-reveal.is-animating-form .showtime-curtain-panel {
+  transition:
+    clip-path 1500ms cubic-bezier(0.76, 0, 0.24, 1),
+    transform 1500ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.showtime-reveal.is-animating-form .showtime-copy {
+  transition:
+    opacity 700ms ease 1250ms,
+    transform 700ms ease 1250ms;
+}
+
+.showtime-reveal.is-scroll-triggering-form .showtime-copy {
+  transition:
+    opacity 850ms ease,
+    transform 850ms ease;
+}
+
+.showtime-copy::before {
+  content: "";
+  position: absolute;
+  inset: -48px -28px;
+  z-index: -1;
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.showtime-copy .eyebrow {
+  margin: 0;
+  color: currentColor;
+  opacity: 0.72;
+}
+
+.showtime-copy h2 {
+  max-width: 11ch;
+  margin: 0;
+  color: currentColor;
+  font-size: clamp(4rem, 13vw, 11.5rem);
+  line-height: 0.78;
+  text-transform: uppercase;
+  text-wrap: balance;
+  text-shadow: 0 18px 42px rgba(26, 23, 16, 0.28);
+}
+
+.showtime-layer-light .showtime-copy h2 {
+  text-shadow: 0 18px 44px rgba(26, 23, 16, 0.48);
+}
+
+.showtime-form-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  padding: 74px 24px;
+  background:
+    linear-gradient(180deg, rgba(251, 247, 238, 0.86), rgba(251, 247, 238, 0.96)),
+    var(--paper);
+  opacity: var(--showtime-form-opacity);
+  pointer-events: none;
+  transform: translateY(calc((1 - var(--showtime-form-opacity)) * 24px));
+  transition: opacity 180ms linear;
+}
+
+.showtime-reveal.is-animating-form .showtime-form-panel {
+  transition:
+    opacity 800ms ease 1250ms,
+    transform 800ms ease 1250ms;
+}
+
+.showtime-reveal.is-scroll-triggering-form .showtime-form-panel {
+  transition:
+    opacity 850ms ease,
+    transform 850ms ease;
+}
+
+.showtime-reveal.is-form-ready .showtime-form-panel {
+  pointer-events: auto;
+}
+
+.showtime-form-panel .contact-banner {
+  width: min(1040px, 100%);
+  box-shadow: 0 26px 80px rgba(26, 23, 16, 0.24);
+}
+
+.contact-banner {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 38px;
+  align-items: start;
+  padding: 42px;
+  border: 1px solid var(--black);
+  border-radius: var(--radius);
+  background: var(--black);
+  color: var(--warm);
+}
+
+.contact-banner h2 {
+  max-width: 680px;
+  margin-inline: 0;
+  text-align: left;
+}
+
+.contact-copy p:not(.eyebrow) {
+  max-width: 560px;
+  color: rgba(251, 247, 238, 0.72);
+}
+
+.contact-form {
+  display: grid;
+  gap: 12px;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 7px;
+  color: rgba(251, 247, 238, 0.8);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  border: 1px solid rgba(251, 247, 238, 0.24);
+  border-radius: var(--radius);
+  background: rgba(251, 247, 238, 0.08);
+  color: var(--warm);
+  padding: 12px;
+  resize: vertical;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(251, 247, 238, 0.48);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@media (max-width: 980px) {
+  .contact-banner {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .contact-banner {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 760px) {
+  .contact-copy .button {
+    width: 100%;
+  }
+
+  .contact-banner {
+    grid-template-columns: 1fr;
+  }
+
+  .showtime-reveal {
+    height: 360vh;
+  }
+
+  .showtime-sticky {
+    min-height: 520px;
+  }
+
+  .showtime-layer {
+    padding-inline: 18px;
+  }
+
+  .showtime-form-panel {
+    padding: 64px 12px 24px;
+    align-items: start;
+    overflow-y: auto;
+  }
+
+  .showtime-copy {
+    gap: 16px;
+  }
+
+  .showtime-copy::before {
+    inset: -30px -10px;
+  }
+
+  .showtime-copy h2 {
+    max-width: calc(100vw - 36px);
+    font-size: clamp(2.8rem, 14vw, 4rem);
+    line-height: 0.84;
+  }
+
+  .contact-banner {
+    padding: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showtime-reveal {
+    --showtime-progress: 1;
+    height: auto;
+  }
+
+  .showtime-sticky {
+    position: relative;
+    height: auto;
+    min-height: 520px;
+  }
+}

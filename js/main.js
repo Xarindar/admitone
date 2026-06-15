@@ -4,6 +4,33 @@ const navItems = document.querySelectorAll(".nav-links a");
 const siteHeader = document.querySelector(".site-header");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+// Run every scroll-driven handler once per frame through a single
+// requestAnimationFrame gate, so the header, reveal, and pricing logic don't
+// read and write layout repeatedly on each scroll event.
+const scrollHandlers = new Set();
+let scrollScheduled = false;
+
+function runScrollHandlers() {
+  scrollScheduled = false;
+  scrollHandlers.forEach((handler) => handler());
+}
+
+function onScroll(handler) {
+  scrollHandlers.add(handler);
+}
+
+window.addEventListener(
+  "scroll",
+  () => {
+    if (scrollScheduled) {
+      return;
+    }
+    scrollScheduled = true;
+    window.requestAnimationFrame(runScrollHandlers);
+  },
+  { passive: true },
+);
+
 function setMenu(open) {
   document.body.classList.toggle("menu-open", open);
   navLinks?.classList.toggle("is-open", open);
@@ -29,7 +56,7 @@ function updateHeaderScrollState() {
 }
 
 updateHeaderScrollState();
-window.addEventListener("scroll", updateHeaderScrollState, { passive: true });
+onScroll(updateHeaderScrollState);
 
 function setupShowtimeReveal() {
   const reveal = document.querySelector(".showtime-reveal");
@@ -56,7 +83,6 @@ function setupShowtimeReveal() {
     reveal.classList.remove("is-animating-form", "is-scroll-triggering-form");
     reveal.dataset.formRevealed = "true";
     reveal.style.setProperty("--showtime-progress", "1");
-    reveal.style.setProperty("--showtime-clip", "0%");
     reveal.style.setProperty("--showtime-copy-opacity", "0");
     reveal.style.setProperty("--showtime-form-opacity", "1");
     setFormAccess(true);
@@ -83,7 +109,6 @@ function setupShowtimeReveal() {
     const curtainProgress = smoothStep(progress / 0.56);
 
     reveal.style.setProperty("--showtime-progress", curtainProgress.toFixed(3));
-    reveal.style.setProperty("--showtime-clip", `${((1 - curtainProgress) * 100).toFixed(2)}%`);
     reveal.style.setProperty("--showtime-copy-opacity", "1");
     reveal.style.setProperty("--showtime-form-opacity", "0");
 
@@ -113,10 +138,8 @@ function setupShowtimeReveal() {
     if (resetScroll) {
       window.scrollTo({ top: reveal.offsetTop, behavior: "auto" });
       reveal.style.setProperty("--showtime-progress", "0");
-      reveal.style.setProperty("--showtime-clip", "100%");
     } else {
       reveal.style.setProperty("--showtime-progress", "1");
-      reveal.style.setProperty("--showtime-clip", "0%");
     }
 
     reveal.style.setProperty("--showtime-copy-opacity", "1");
@@ -125,7 +148,6 @@ function setupShowtimeReveal() {
     window.requestAnimationFrame(() => {
       reveal.classList.add(source === "scroll" ? "is-scroll-triggering-form" : "is-animating-form");
       reveal.style.setProperty("--showtime-progress", "1");
-      reveal.style.setProperty("--showtime-clip", "0%");
       reveal.style.setProperty("--showtime-copy-opacity", "0");
       reveal.style.setProperty("--showtime-form-opacity", "1");
       window.setTimeout(holdRevealedForm, source === "scroll" ? 1100 : 3100);
@@ -154,7 +176,7 @@ function setupShowtimeReveal() {
     window.addEventListener("load", () => window.setTimeout(finishHashScroll, 120), { once: true });
   }
 
-  window.addEventListener("scroll", updateReveal, { passive: true });
+  onScroll(updateReveal);
   window.addEventListener("resize", updateReveal);
   prefersReducedMotion.addEventListener("change", updateReveal);
 }
@@ -176,7 +198,6 @@ function setupPricingTickets() {
   let ticketHits = [];
   let timeline = [];
   let routeLength = 1;
-  let isRendering = false;
   let isRefreshing = false;
 
   function clamp(value, min = 0, max = 1) {
@@ -403,18 +424,6 @@ function setupPricingTickets() {
     });
   }
 
-  function requestRender() {
-    if (isRendering) {
-      return;
-    }
-
-    isRendering = true;
-    window.requestAnimationFrame(() => {
-      isRendering = false;
-      renderPricingFlow();
-    });
-  }
-
   function requestRefresh() {
     if (isRefreshing) {
       return;
@@ -431,7 +440,7 @@ function setupPricingTickets() {
   refreshGeometry();
   renderPricingFlow();
   window.addEventListener("load", requestRefresh, { once: true });
-  window.addEventListener("scroll", requestRender, { passive: true });
+  onScroll(renderPricingFlow);
   window.addEventListener("resize", requestRefresh);
   prefersReducedMotion.addEventListener("change", requestRefresh);
 }

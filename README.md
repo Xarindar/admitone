@@ -23,9 +23,21 @@ Admit One is being shaped as a fun, modern, clean web design studio with a small
 ```text
 .
 ├── index.html
-├── styles.css
-├── script.js
-└── README.md
+├── README.md
+├── css/              # component stylesheets, linked in order by index.html
+│   ├── tokens.css    # design tokens (colors, type)
+│   ├── base.css      # reset, elements, typography, buttons, containers
+│   ├── header.css
+│   ├── hero.css      # hero marquee + logo rail
+│   ├── content.css   # intro, stats, services, features, work, notes, testimonials
+│   ├── pricing.css
+│   ├── showtime.css  # scroll reveal + contact form
+│   └── footer.css
+├── js/
+│   └── main.js
+└── assets/
+    ├── ticket.svg
+    └── logos/        # favicon + header/footer brand marks
 ```
 
 ## Local Preview

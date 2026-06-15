@@ -1,0 +1,16 @@
+/* Design tokens — colors, type, and shared primitives. */
+:root {
+  --black: #1a1710;
+  --red: #b8231a;
+  --gold: #c8952a;
+  --warm: #fbf7ee;
+  --paper: #fffdf8;
+  --paper-2: #f1eadf;
+  --muted: #655d50;
+  --line: rgba(26, 23, 16, 0.14);
+  --line-strong: rgba(26, 23, 16, 0.26);
+  --shadow: 0 18px 44px rgba(26, 23, 16, 0.14);
+  --radius: 8px;
+  --sans: "Bricolage Grotesque", "Trebuchet MS", Arial, sans-serif;
+  --serif: "Fraunces", Georgia, serif;
+}

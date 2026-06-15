@@ -72,12 +72,13 @@ function setupShowtimeReveal() {
     const bounds = reveal.getBoundingClientRect();
     const travel = Math.max(1, bounds.height - window.innerHeight);
     const progress = Math.min(1, Math.max(0, -bounds.top / travel));
-    const wipeProgress = smoothStep(progress / 0.64);
-    const copyOpacity = 1 - smoothStep((progress - 0.64) / 0.07);
-    const formOpacity = smoothStep((progress - 0.68) / 0.05);
+    const curtainProgress = smoothStep(progress / 0.56);
+    const transitionProgress = smoothStep((progress - 0.68) / 0.07);
+    const copyOpacity = 1 - transitionProgress;
+    const formOpacity = transitionProgress;
 
-    reveal.style.setProperty("--showtime-progress", progress.toFixed(3));
-    reveal.style.setProperty("--showtime-clip", `${((1 - wipeProgress) * 100).toFixed(2)}%`);
+    reveal.style.setProperty("--showtime-progress", curtainProgress.toFixed(3));
+    reveal.style.setProperty("--showtime-clip", `${((1 - curtainProgress) * 100).toFixed(2)}%`);
     reveal.style.setProperty("--showtime-copy-opacity", copyOpacity.toFixed(3));
     reveal.style.setProperty("--showtime-form-opacity", formOpacity.toFixed(3));
 
@@ -149,46 +150,275 @@ setupShowtimeReveal();
 
 function setupPricingTickets() {
   const stage = document.querySelector(".pricing-stage");
-  const tickets = document.querySelectorAll(".tier-ticket");
+  const tickets = Array.from(document.querySelectorAll(".tier-ticket"));
+  const route = stage?.querySelector(".pricing-route");
+  const routePath = stage?.querySelector(".pricing-route-path");
+  const bulbLayer = stage?.querySelector(".pricing-route-bulbs");
 
-  if (!stage || !tickets.length) {
+  if (!stage || !tickets.length || !route || !routePath || !bulbLayer) {
     return;
   }
 
-  function setTicketProgress() {
-    if (prefersReducedMotion.matches) {
-      stage.style.setProperty("--pricing-path-offset", "0");
-      tickets.forEach((ticket) => ticket.classList.add("is-visible"));
-      return;
-    }
+  let bulbs = [];
+  let ticketHits = [];
+  let timeline = [];
+  let routeLength = 1;
+  let isRendering = false;
+  let isRefreshing = false;
 
-    const bounds = stage.getBoundingClientRect();
-    const travel = Math.max(1, bounds.height + window.innerHeight * 0.36);
-    const progress = Math.min(1, Math.max(0, (window.innerHeight * 0.62 - bounds.top) / travel));
-    stage.style.setProperty("--pricing-path-offset", (1 - progress).toFixed(3));
+  function clamp(value, min = 0, max = 1) {
+    return Math.min(max, Math.max(min, value));
   }
 
-  function setTicketVisibility() {
-    if (prefersReducedMotion.matches) {
-      tickets.forEach((ticket) => ticket.classList.add("is-visible"));
-      return;
+  function pointToSvg(x, y) {
+    const matrix = route.getScreenCTM();
+
+    if (!matrix) {
+      return null;
     }
 
-    tickets.forEach((ticket) => {
-      const bounds = ticket.getBoundingClientRect();
-      const isVisible = bounds.top < window.innerHeight * 0.72 && bounds.bottom > window.innerHeight * 0.18;
-      ticket.classList.toggle("is-visible", isVisible);
+    const point = route.createSVGPoint();
+    point.x = x;
+    point.y = y;
+    return point.matrixTransform(matrix.inverse());
+  }
+
+  function getTicketSvgRect(ticket) {
+    const bounds = ticket.getBoundingClientRect();
+    const points = [
+      pointToSvg(bounds.left, bounds.top),
+      pointToSvg(bounds.right, bounds.top),
+      pointToSvg(bounds.right, bounds.bottom),
+      pointToSvg(bounds.left, bounds.bottom),
+    ].filter(Boolean);
+
+    if (points.length !== 4) {
+      return null;
+    }
+
+    return {
+      left: Math.min(...points.map((point) => point.x)),
+      right: Math.max(...points.map((point) => point.x)),
+      top: Math.min(...points.map((point) => point.y)),
+      bottom: Math.max(...points.map((point) => point.y)),
+    };
+  }
+
+  function distanceToRect(point, rect) {
+    const dx = Math.max(rect.left - point.x, 0, point.x - rect.right);
+    const dy = Math.max(rect.top - point.y, 0, point.y - rect.bottom);
+    return Math.hypot(dx, dy);
+  }
+
+  function findTicketHitDistance(ticket, minimumDistance) {
+    const rect = getTicketSvgRect(ticket);
+
+    if (!rect) {
+      return minimumDistance;
+    }
+
+    const searchStart = clamp(minimumDistance, 0, routeLength);
+    const samples = 360;
+    const roughStep = Math.max(1, (routeLength - searchStart) / samples);
+    let bestDistance = searchStart;
+    let bestScore = Infinity;
+
+    for (let index = 0; index <= samples; index += 1) {
+      const distance = searchStart + (routeLength - searchStart) * (index / samples);
+      const score = distanceToRect(routePath.getPointAtLength(distance), rect);
+
+      if (score < bestScore) {
+        bestDistance = distance;
+        bestScore = score;
+      }
+    }
+
+    for (let index = -14; index <= 14; index += 1) {
+      const distance = clamp(bestDistance + roughStep * (index / 14), searchStart, routeLength);
+      const score = distanceToRect(routePath.getPointAtLength(distance), rect);
+
+      if (score < bestScore) {
+        bestDistance = distance;
+        bestScore = score;
+      }
+    }
+
+    return bestDistance;
+  }
+
+  function buildBulbs() {
+    const regularCount = Math.max(28, Math.ceil(routeLength / 32));
+    const points = [];
+
+    for (let index = 0; index <= regularCount; index += 1) {
+      points.push({ distance: routeLength * (index / regularCount), isHit: false });
+    }
+
+    ticketHits.forEach((hit) => {
+      points.push({ distance: hit.distance, isHit: true });
+    });
+
+    const mergedPoints = [];
+    const mergeDistance = routeLength * 0.004;
+
+    points
+      .sort((a, b) => a.distance - b.distance)
+      .forEach((point) => {
+        const previous = mergedPoints[mergedPoints.length - 1];
+
+        if (previous && Math.abs(previous.distance - point.distance) < mergeDistance) {
+          if (point.isHit) {
+            previous.distance = point.distance;
+            previous.isHit = true;
+          }
+
+          return;
+        }
+
+        mergedPoints.push({ ...point });
+      });
+
+    bulbLayer.replaceChildren();
+    bulbs = mergedPoints.map((point) => {
+      const routePoint = routePath.getPointAtLength(point.distance);
+      const bulb = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+
+      bulb.setAttribute("class", point.isHit ? "pricing-route-bulb is-ticket-hit" : "pricing-route-bulb");
+      bulb.setAttribute("cx", routePoint.x.toFixed(2));
+      bulb.setAttribute("cy", routePoint.y.toFixed(2));
+      bulb.setAttribute("r", point.isHit ? "8.3" : "6.6");
+      bulbLayer.appendChild(bulb);
+
+      return {
+        node: bulb,
+        distance: point.distance,
+      };
     });
   }
 
-  setTicketProgress();
-  setTicketVisibility();
-  window.addEventListener("scroll", setTicketProgress, { passive: true });
-  window.addEventListener("scroll", setTicketVisibility, { passive: true });
-  window.addEventListener("resize", setTicketProgress);
-  window.addEventListener("resize", setTicketVisibility);
-  prefersReducedMotion.addEventListener("change", setTicketProgress);
-  prefersReducedMotion.addEventListener("change", setTicketVisibility);
+  function normalizeTimeline() {
+    for (let index = 1; index < timeline.length; index += 1) {
+      if (timeline[index].scroll <= timeline[index - 1].scroll) {
+        timeline[index].scroll = timeline[index - 1].scroll + 1;
+      }
+    }
+  }
+
+  function refreshGeometry() {
+    routeLength = routePath.getTotalLength();
+
+    let previousDistance = 0;
+    ticketHits = tickets.map((ticket) => {
+      const distance = findTicketHitDistance(ticket, previousDistance);
+      const bounds = ticket.getBoundingClientRect();
+      const scroll = window.scrollY + bounds.top - window.innerHeight * 0.72;
+
+      previousDistance = Math.min(routeLength, distance + routeLength * 0.035);
+
+      return {
+        ticket,
+        distance,
+        scroll,
+      };
+    });
+
+    const stageBounds = stage.getBoundingClientRect();
+    const stageTop = window.scrollY + stageBounds.top;
+    const stageBottom = window.scrollY + stageBounds.bottom;
+    const firstHit = ticketHits[0];
+    const lastHit = ticketHits[ticketHits.length - 1];
+    const startsOnFirstTicket = firstHit.distance <= routeLength * 0.02;
+    const startScroll = startsOnFirstTicket
+      ? firstHit.scroll
+      : Math.min(stageTop - window.innerHeight * 0.18, firstHit.scroll - window.innerHeight * 0.3);
+    const endScroll = Math.max(stageBottom - window.innerHeight * 0.42, lastHit.scroll + window.innerHeight * 0.34);
+
+    timeline = [
+      { scroll: startScroll, distance: 0 },
+      ...ticketHits.map((hit) => ({ scroll: hit.scroll, distance: hit.distance })),
+      { scroll: endScroll, distance: routeLength },
+    ];
+
+    normalizeTimeline();
+    buildBulbs();
+  }
+
+  function getCurrentRouteDistance() {
+    const scrollY = window.scrollY;
+
+    if (!timeline.length || scrollY < timeline[0].scroll) {
+      return -1;
+    }
+
+    for (let index = 1; index < timeline.length; index += 1) {
+      const previous = timeline[index - 1];
+      const next = timeline[index];
+
+      if (scrollY <= next.scroll) {
+        const progress = clamp((scrollY - previous.scroll) / (next.scroll - previous.scroll));
+        return previous.distance + (next.distance - previous.distance) * progress;
+      }
+    }
+
+    return routeLength;
+  }
+
+  function renderPricingFlow() {
+    if (prefersReducedMotion.matches) {
+      tickets.forEach((ticket) => ticket.classList.add("is-visible"));
+      bulbs.forEach((bulb) => bulb.node.classList.add("is-lit"));
+      return;
+    }
+
+    const currentDistance = getCurrentRouteDistance();
+    const hitTolerance = routeLength * 0.008;
+
+    bulbs.forEach((bulb) => {
+      bulb.node.classList.toggle("is-lit", currentDistance >= 0 && bulb.distance <= currentDistance + hitTolerance);
+    });
+
+    ticketHits.forEach((hit) => {
+      const hasArrived = currentDistance >= 0
+        && window.scrollY + 0.5 >= hit.scroll
+        && currentDistance + hitTolerance >= hit.distance;
+      const bounds = hit.ticket.getBoundingClientRect();
+      const isNearViewport = bounds.top < window.innerHeight * 0.88 && bounds.bottom > window.innerHeight * 0.08;
+
+      hit.ticket.classList.toggle("is-visible", hasArrived && isNearViewport);
+    });
+  }
+
+  function requestRender() {
+    if (isRendering) {
+      return;
+    }
+
+    isRendering = true;
+    window.requestAnimationFrame(() => {
+      isRendering = false;
+      renderPricingFlow();
+    });
+  }
+
+  function requestRefresh() {
+    if (isRefreshing) {
+      return;
+    }
+
+    isRefreshing = true;
+    window.requestAnimationFrame(() => {
+      isRefreshing = false;
+      refreshGeometry();
+      renderPricingFlow();
+    });
+  }
+
+  refreshGeometry();
+  renderPricingFlow();
+  window.addEventListener("load", requestRefresh, { once: true });
+  window.addEventListener("scroll", requestRender, { passive: true });
+  window.addEventListener("resize", requestRefresh);
+  prefersReducedMotion.addEventListener("change", requestRefresh);
 }
 
 setupPricingTickets();

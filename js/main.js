@@ -35,6 +35,7 @@ function setMenu(open) {
   document.body.classList.toggle("menu-open", open);
   navLinks?.classList.toggle("is-open", open);
   menuToggle?.setAttribute("aria-expanded", String(open));
+  menuToggle?.setAttribute("aria-label", open ? "Close" : "Menu");
 }
 
 menuToggle?.addEventListener("click", () => {

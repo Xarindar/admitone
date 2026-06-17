@@ -43,18 +43,22 @@
                 </span>
               </a>
 
-              <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span class="sr-only">Menu</span>
+              <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+                <span class="menu-mark" aria-hidden="true">
+                  <span class="menu-line"></span>
+                  <span class="menu-line"></span>
+                  <span class="menu-line"></span>
+                  <span class="menu-close-word">Close</span>
+                </span>
               </button>
 
               <div class="nav-links" id="nav-links">
-                <a href="#services">Services</a>
-                <a href="#work">Work</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#notes">Notes</a>
+                <div class="nav-primary-links">
+                  <a href="#services">Services</a>
+                  <a href="#work">Work</a>
+                  <a href="#pricing">Pricing</a>
+                  <a href="#notes">Notes</a>
+                </div>
                 <a class="nav-cta" href="#contact">Start</a>
               </div>
             </nav>

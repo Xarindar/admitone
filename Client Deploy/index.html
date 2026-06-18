@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AdmitOne Client Deploy</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">AdmitOne</p>
+            <h1>Client Deploy</h1>
+          </div>
+          <div class="summary-strip" aria-label="Deployment summary">
+            <span><strong id="moduleCount">0</strong> modules</span>
+            <span><strong id="clientSlugPreview">client-slug</strong></span>
+          </div>
+        </header>
+
+        <div class="grid">
+          <section class="panel form-panel" aria-labelledby="client-details-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Step 1</p>
+                <h2 id="client-details-title">Client Details</h2>
+              </div>
+              <button class="icon-button" id="resetButton" type="button" title="Reset form" aria-label="Reset form">Reset</button>
+            </div>
+
+            <div class="field-grid">
+              <label>
+                Business name
+                <input id="businessName" type="text" value="Acme Studio" autocomplete="organization" />
+              </label>
+              <label>
+                Client slug
+                <input id="clientSlug" type="text" value="acme-studio" autocomplete="off" />
+              </label>
+              <label>
+                Admin email
+                <input id="adminEmail" type="email" value="owner@example.com" autocomplete="email" />
+              </label>
+              <label>
+                Public app URL
+                <input id="appUrl" type="url" value="https://acme-studio.up.railway.app" autocomplete="url" />
+              </label>
+              <label>
+                Timezone
+                <input id="timezone" type="text" value="America/Chicago" />
+              </label>
+              <label>
+                Theme preset
+                <select id="themePreset">
+                  <option value="clean">Clean</option>
+                  <option value="studio">Studio</option>
+                  <option value="modern">Modern</option>
+                  <option value="classic">Classic</option>
+                </select>
+              </label>
+            </div>
+          </section>
+
+          <section class="panel modules-panel" aria-labelledby="modules-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Step 2</p>
+                <h2 id="modules-title">Included Modules</h2>
+              </div>
+              <div class="button-row">
+                <button id="selectCoreButton" type="button">Core</button>
+                <button id="selectAllButton" type="button">All</button>
+              </div>
+            </div>
+            <div class="module-grid" id="moduleGrid"></div>
+          </section>
+
+          <section class="panel output-panel" aria-labelledby="outputs-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Step 3</p>
+                <h2 id="outputs-title">Deploy Package</h2>
+              </div>
+              <div class="button-row">
+                <button id="downloadPackageButton" type="button">Download package</button>
+              </div>
+            </div>
+
+            <div class="tabs" role="tablist" aria-label="Generated outputs">
+              <button class="tab active" data-tab="env" type="button">Railway env</button>
+              <button class="tab" data-tab="config" type="button">Client config</button>
+              <button class="tab" data-tab="sql" type="button">SQL seed</button>
+              <button class="tab" data-tab="git" type="button">Git handoff</button>
+            </div>
+
+            <div class="output-actions">
+              <button id="copyOutputButton" type="button">Copy current</button>
+              <button id="downloadOutputButton" type="button">Download current</button>
+            </div>
+
+            <pre class="output-box" id="outputBox" tabindex="0"></pre>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

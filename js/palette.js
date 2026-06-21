@@ -241,50 +241,80 @@
     }));
   }
 
-  // --- color names (color.pizza, with graceful fallback) ---------------
+  // --- color names ------------------------------------------------------
+  //
+  // Names are matched locally against a bundled best-of list (color-names.js),
+  // so they appear the same instant the color does — no network round-trip.
+  // Matching is done in CIE Lab space for perceptually sensible picks.
 
   const nameCache = new Map();
-  let nameToken = 0;
-  let nameTimer = 0;
+  let NAME_INDEX = null;
 
-  function paintNames() {
-    const nodes = row.querySelectorAll(".swatch-name");
-    swatches.forEach((s, i) => {
-      if (nodes[i]) {
-        nodes[i].textContent = nameCache.get(keyHex(s.hex)) || "";
-      }
-    });
-    if (editor && !editor.hidden && swatches[activeIndex]) {
-      paintEditorCurrent();
-    }
+  function rgbToLab(r, g, b) {
+    let R = r / 255;
+    let G = g / 255;
+    let B = b / 255;
+    R = R > 0.04045 ? Math.pow((R + 0.055) / 1.055, 2.4) : R / 12.92;
+    G = G > 0.04045 ? Math.pow((G + 0.055) / 1.055, 2.4) : G / 12.92;
+    B = B > 0.04045 ? Math.pow((B + 0.055) / 1.055, 2.4) : B / 12.92;
+    let x = (R * 0.4124 + G * 0.3576 + B * 0.1805) / 0.95047;
+    let y = R * 0.2126 + G * 0.7152 + B * 0.0722;
+    let z = (R * 0.0193 + G * 0.1192 + B * 0.9505) / 1.08883;
+    const f = (t) => (t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116);
+    x = f(x);
+    y = f(y);
+    z = f(z);
+    return [116 * y - 16, 500 * (x - y), 200 * (y - z)];
   }
 
-  function ensureNames() {
-    paintNames();
-    const missing = [...new Set(swatches.map((s) => keyHex(s.hex)).filter((h) => !nameCache.has(h)))];
-    if (!missing.length || typeof fetch !== "function") {
+  function initNameIndex() {
+    if (typeof window.CN === "undefined" || !window.CN.n) {
       return;
     }
-    window.clearTimeout(nameTimer);
-    const token = ++nameToken;
-    nameTimer = window.setTimeout(() => {
-      fetch("https://api.color.pizza/v1/?values=" + missing.join(","))
-        .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-        .then((data) => {
-          const colors = (data && data.colors) || [];
-          colors.forEach((c, i) => {
-            if (missing[i]) {
-              nameCache.set(missing[i], c && c.name ? c.name : "");
-            }
-          });
-          if (token === nameToken) {
-            paintNames();
-          }
-        })
-        .catch(() => {
-          /* offline or blocked — leave names blank, the tool still works */
-        });
-    }, 250);
+    const names = window.CN.n.split("\n");
+    const hex = window.CN.h;
+    const count = names.length;
+    const labs = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const o = i * 6;
+      const lab = rgbToLab(
+        parseInt(hex.slice(o, o + 2), 16),
+        parseInt(hex.slice(o + 2, o + 4), 16),
+        parseInt(hex.slice(o + 4, o + 6), 16),
+      );
+      labs[i * 3] = lab[0];
+      labs[i * 3 + 1] = lab[1];
+      labs[i * 3 + 2] = lab[2];
+    }
+    NAME_INDEX = { names, labs, count };
+  }
+
+  function nameFor(hex) {
+    const key = keyHex(hex);
+    if (nameCache.has(key)) {
+      return nameCache.get(key);
+    }
+    let name = "";
+    const rgb = hexToRgb(hex);
+    if (NAME_INDEX && rgb) {
+      const target = rgbToLab(...rgb);
+      const labs = NAME_INDEX.labs;
+      let best = Infinity;
+      let bestIndex = 0;
+      for (let i = 0; i < NAME_INDEX.count; i++) {
+        const dL = target[0] - labs[i * 3];
+        const dA = target[1] - labs[i * 3 + 1];
+        const dB = target[2] - labs[i * 3 + 2];
+        const dist = dL * dL + dA * dA + dB * dB;
+        if (dist < best) {
+          best = dist;
+          bestIndex = i;
+        }
+      }
+      name = NAME_INDEX.names[bestIndex];
+    }
+    nameCache.set(key, name);
+    return name;
   }
 
   // --- icons -----------------------------------------------------------
@@ -383,7 +413,7 @@
 
       const nameEl = document.createElement("span");
       nameEl.className = "swatch-name";
-      nameEl.textContent = nameCache.get(keyHex(sw.hex)) || "";
+      nameEl.textContent = nameFor(sw.hex);
 
       info.append(hexBtn, nameEl);
       col.append(roleEl, controls, info);
@@ -414,7 +444,6 @@
 
   function afterChange() {
     render();
-    ensureNames();
     syncBrandInput();
     syncHash();
   }
@@ -486,7 +515,7 @@
 
   function paintEditorCurrent() {
     const sw = swatches[activeIndex];
-    const name = nameCache.get(keyHex(sw.hex));
+    const name = nameFor(sw.hex);
     editorEls.current.textContent = sw.hex.toUpperCase() + (name ? " · " + name : "");
   }
 
@@ -642,6 +671,8 @@
   });
 
   // --- init ------------------------------------------------------------
+
+  initNameIndex();
 
   const fromHash = paletteFromHash();
   if (fromHash) {

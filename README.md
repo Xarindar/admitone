@@ -39,8 +39,9 @@ Admit One is being shaped as a fun, modern, clean web design studio with a small
 │   ├── resources.css # Resources hub card grid
 │   └── palette.css   # Color Palette Studio tool
 ├── js/
-│   ├── main.js       # header/menu + homepage scroll behaviors (safe on every page)
-│   └── palette.js    # palette generation, locking, copy, shareable URL
+│   ├── main.js         # header/menu + homepage scroll behaviors (safe on every page)
+│   ├── palette.js      # palette generation, locking, copy, shareable URL
+│   └── color-names.js  # bundled best-of color-name list, matched locally for instant names
 └── assets/
     └── logos/        # favicon + header/footer brand marks
 ```
@@ -59,8 +60,10 @@ from a single brand color rather than five random swatches:
   Analogous, Complementary, Triadic) shapes the Accent.
 - **Lock** any role to hold it while regenerating the rest. **Click a swatch**
   to open an editor and browse its **shades and hues** or set an exact color.
-- **Names** come from the [color.pizza](https://github.com/meodai/color-names)
-  API (client-side, with a graceful fallback if it's unreachable).
+- **Names** appear instantly: a bundled best-of list from
+  [meodai/color-names](https://github.com/meodai/color-names) (`js/color-names.js`,
+  ~4.9k names) is matched locally in CIE Lab space — no network round-trip, works
+  offline.
 - **Copy palette** exports a labeled `Role  #HEX` block for handoff, and **Copy
   link** shares the exact palette via the URL hash.
 

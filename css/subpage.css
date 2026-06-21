@@ -3,7 +3,6 @@
 
 .subpage-hero {
   position: relative;
-  isolation: isolate;
   background:
     radial-gradient(120% 150% at 50% -30%, rgba(200, 149, 42, 0.2), transparent 58%),
     var(--black);
@@ -54,29 +53,6 @@
   justify-content: center;
   gap: 10px;
   margin-top: 26px;
-}
-
-/* Quiet "back to" link used at the top of tool pages. */
-.crumb-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: rgba(251, 247, 238, 0.7);
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.crumb-link:hover,
-.crumb-link:focus-visible {
-  color: var(--gold);
-  outline: 0;
-}
-
-.crumb-link::before {
-  content: "\2190";
-  font-size: 1rem;
 }
 
 @media (max-width: 760px) {

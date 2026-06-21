@@ -242,6 +242,19 @@
   .nav-links {
     grid-row: 1;
   }
+
+  /* Brand and links now share a row, so reserve the brand's width in the
+     overlay grid: that pins the left link group to the same column the spacer
+     occupies and keeps it from sliding under the centered brand. The pill wraps
+     within its own column rather than overlapping if the links ever run long. */
+  .nav-links {
+    grid-template-columns: minmax(0, 1fr) min(230px, 42vw) minmax(0, 1fr);
+  }
+
+  .nav-primary-links {
+    flex-wrap: wrap;
+    min-width: 0;
+  }
 }
 
 .menu-toggle {

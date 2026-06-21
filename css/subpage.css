@@ -1,0 +1,100 @@
+/* Shared chrome for standalone pages (Resources, tools): the dark header band
+   that the light nav sits on, plus the page intro block. */
+
+.subpage-hero {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 150% at 50% -30%, rgba(200, 149, 42, 0.2), transparent 58%),
+    var(--black);
+  color: var(--warm);
+  border-bottom: 2px solid var(--black);
+}
+
+/* A faint marquee-bulb hairline under the band, echoing the hero filmstrip. */
+.subpage-hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background-image: radial-gradient(circle, rgba(255, 231, 180, 0.8) 0 1.6px, transparent 2px);
+  background-size: 22px 4px;
+  background-position: 0 50%;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.page-intro {
+  padding-top: 30px;
+  padding-bottom: 56px;
+  text-align: center;
+}
+
+.page-intro .eyebrow {
+  text-align: center;
+}
+
+.page-intro h1 {
+  font-size: 3.6rem;
+  line-height: 0.96;
+}
+
+.page-intro .lead {
+  max-width: 580px;
+  margin: 16px auto 0;
+  color: rgba(251, 247, 238, 0.74);
+  font-size: 1.08rem;
+}
+
+.page-intro .page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+/* Quiet "back to" link used at the top of tool pages. */
+.crumb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: rgba(251, 247, 238, 0.7);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.crumb-link:hover,
+.crumb-link:focus-visible {
+  color: var(--gold);
+  outline: 0;
+}
+
+.crumb-link::before {
+  content: "\2190";
+  font-size: 1rem;
+}
+
+@media (max-width: 760px) {
+  .page-intro {
+    padding-bottom: 44px;
+  }
+
+  .page-intro h1 {
+    font-size: 2.7rem;
+  }
+
+  .page-intro .lead {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .page-intro h1 {
+    font-size: 2.25rem;
+  }
+}

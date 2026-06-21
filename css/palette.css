@@ -1,0 +1,329 @@
+/* Color Palette Studio — a full-height row of swatches you can lock and
+   regenerate, styled to sit inside the Admit One ticket-window brand. */
+
+.palette-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Compact header band variant: just the nav + a slim title line. */
+.subpage-hero--compact .palette-mast {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 18px;
+  padding-top: 18px;
+  padding-bottom: 24px;
+}
+
+.palette-mast .mast-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.palette-mast .eyebrow {
+  margin: 0;
+}
+
+.palette-mast h1 {
+  margin: 0;
+  max-width: none;
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+/* Toolbar strip directly under the header. */
+.palette-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 14px clamp(16px, 4vw, 40px);
+  background: var(--paper);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.palette-toolbar .toolbar-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.palette-toolbar .toolbar-group.is-end {
+  margin-left: auto;
+}
+
+.palette-toolbar .button {
+  min-height: 40px;
+}
+
+/* Round +/- stepper buttons for color count. */
+.count-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--warm);
+}
+
+.count-stepper button {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--black);
+  color: var(--warm);
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.count-stepper button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.count-stepper span {
+  min-width: 1.4ch;
+  text-align: center;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.toolbar-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--warm);
+  color: var(--black);
+  font-family: var(--sans);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+/* The swatch stage fills the rest of the viewport. */
+.palette-stage {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.palette-row {
+  flex: 1;
+  display: flex;
+  width: 100%;
+}
+
+.swatch {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+  padding: 28px 12px 46px;
+  background: var(--swatch, #ccc);
+  color: var(--ink, #1a1710);
+  transition: flex-grow 320ms ease;
+}
+
+.swatch-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.5;
+  transform: translateY(6px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.swatch:hover .swatch-controls,
+.swatch:focus-within .swatch-controls,
+.swatch.is-locked .swatch-controls {
+  opacity: 1;
+  transform: none;
+}
+
+.swatch-btn {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.swatch-btn svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.swatch-btn:hover,
+.swatch-btn:focus-visible {
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  transform: translateY(-2px);
+  outline: 0;
+}
+
+.swatch.is-locked .swatch-lock {
+  background: color-mix(in srgb, var(--ink) 88%, transparent);
+  color: var(--swatch);
+}
+
+.swatch-hex {
+  background: none;
+  color: inherit;
+  padding: 4px 6px;
+  font-size: 1.06rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 150ms ease;
+}
+
+.swatch-hex:hover,
+.swatch-hex:focus-visible {
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  outline: 0;
+}
+
+/* "Locked" flag so the held state reads at a glance. */
+.swatch::after {
+  content: "Locked";
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translate(-50%, -8px);
+  padding: 3px 11px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 88%, transparent);
+  color: var(--swatch);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 180ms ease, transform 180ms ease;
+  pointer-events: none;
+}
+
+.swatch.is-locked::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Toast feedback for copy actions. */
+.palette-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  z-index: 60;
+  transform: translate(-50%, 18px);
+  padding: 11px 20px;
+  border-radius: 999px;
+  background: var(--black);
+  color: var(--warm);
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease, transform 200ms ease, visibility 200ms ease;
+}
+
+.palette-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swatch,
+  .swatch-controls,
+  .swatch-btn,
+  .swatch::after,
+  .palette-toast {
+    transition: none;
+  }
+}
+
+@media (hover: none) {
+  .swatch-controls {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .palette-row {
+    flex-direction: column;
+  }
+
+  .swatch {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-height: 78px;
+    padding: 12px 18px;
+  }
+
+  .swatch-controls {
+    flex-direction: row;
+    transform: none;
+    opacity: 1;
+  }
+
+  .swatch-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .swatch::after {
+    top: 50%;
+    left: auto;
+    right: 96px;
+    transform: translateY(-50%);
+  }
+
+  .swatch.is-locked::after {
+    transform: translateY(-50%);
+  }
+
+  .palette-toolbar .toolbar-group.is-end {
+    margin-left: 0;
+  }
+
+  .toolbar-hint {
+    display: none;
+  }
+}

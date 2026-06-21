@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Color Palette Studio | Admit One</title>
+    <meta
+      name="description"
+      content="Build a brand color palette in seconds. Generate random colors, lock the ones you like, and let the rest regenerate in harmony with them."
+    />
+    <link rel="icon" href="assets/logos/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:opsz,wght@9..144,500..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/subpage.css" />
+    <link rel="stylesheet" href="css/palette.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to palette</a>
+
+    <div class="palette-page">
+      <div class="subpage-hero subpage-hero--compact">
+        <header class="site-header">
+          <nav class="nav" aria-label="Primary navigation">
+            <div class="nav-spacer" aria-hidden="true"></div>
+
+            <a class="brand" href="index.html" aria-label="Admit One home">
+              <span class="brand-full">
+                <img src="assets/logos/logo-wordmark.svg" alt="" aria-hidden="true" />
+              </span>
+              <span class="brand-compact">
+                <img src="assets/logos/logo-icon.svg" alt="" aria-hidden="true" />
+              </span>
+            </a>
+
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+              <span class="menu-mark" aria-hidden="true">
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-close-word">Close</span>
+              </span>
+            </button>
+
+            <div class="nav-links" id="nav-links">
+              <div class="nav-primary-links">
+                <a href="index.html#services">Services</a>
+                <a href="index.html#work">Work</a>
+                <a href="index.html#pricing">Pricing</a>
+                <a href="index.html#notes">Notes</a>
+                <a href="resources.html">Resources</a>
+              </div>
+              <a class="nav-cta" href="index.html#contact">Start</a>
+            </div>
+          </nav>
+        </header>
+
+        <div class="section palette-mast">
+          <div class="mast-title">
+            <p class="eyebrow">Palette Studio</p>
+            <h1>Build your brand palette.</h1>
+          </div>
+          <a class="crumb-link" href="resources.html">All resources</a>
+        </div>
+      </div>
+
+      <div class="palette-toolbar">
+        <div class="toolbar-group">
+          <button class="button button-gold" id="generateBtn" type="button">Generate</button>
+          <div class="count-stepper" role="group" aria-label="Number of colors">
+            <button id="removeSwatch" type="button" aria-label="Remove a color">&minus;</button>
+            <span id="swatchCount" aria-live="polite">5</span>
+            <button id="addSwatch" type="button" aria-label="Add a color">+</button>
+          </div>
+        </div>
+
+        <div class="toolbar-group is-end">
+          <span class="toolbar-hint"><kbd>Space</kbd> to generate</span>
+          <button class="button button-dark" id="copyAllBtn" type="button">Copy palette</button>
+          <button class="button button-dark" id="shareBtn" type="button">Copy link</button>
+        </div>
+      </div>
+
+      <main class="palette-stage" id="main">
+        <div class="palette-row" id="paletteRow" aria-label="Color palette"></div>
+      </main>
+    </div>
+
+    <div class="palette-toast" id="paletteToast" role="status" aria-live="polite"></div>
+
+    <script src="js/main.js?v=menu-morph"></script>
+    <script src="js/palette.js?v=1"></script>
+  </body>
+</html>

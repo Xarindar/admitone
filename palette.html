@@ -17,59 +17,21 @@
     />
     <link rel="stylesheet" href="css/tokens.css" />
     <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/header.css" />
-    <link rel="stylesheet" href="css/subpage.css" />
     <link rel="stylesheet" href="css/palette.css" />
-    <link rel="stylesheet" href="css/footer.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to palette</a>
 
     <div class="palette-page">
-      <div class="subpage-hero subpage-hero--compact">
-        <header class="site-header">
-          <nav class="nav" aria-label="Primary navigation">
-            <div class="nav-spacer" aria-hidden="true"></div>
-
-            <a class="brand" href="index.html" aria-label="Admit One home">
-              <span class="brand-full">
-                <img src="assets/logos/logo-wordmark.svg" alt="" aria-hidden="true" />
-              </span>
-              <span class="brand-compact">
-                <img src="assets/logos/logo-icon.svg" alt="" aria-hidden="true" />
-              </span>
-            </a>
-
-            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
-              <span class="menu-mark" aria-hidden="true">
-                <span class="menu-line"></span>
-                <span class="menu-line"></span>
-                <span class="menu-line"></span>
-                <span class="menu-close-word">Close</span>
-              </span>
-            </button>
-
-            <div class="nav-links" id="nav-links">
-              <div class="nav-primary-links">
-                <a href="index.html#services">Services</a>
-                <a href="index.html#work">Work</a>
-                <a href="index.html#pricing">Pricing</a>
-                <a href="index.html#notes">Notes</a>
-                <a href="resources.html">Resources</a>
-              </div>
-              <a class="nav-cta" href="index.html#contact">Start</a>
-            </div>
-          </nav>
-        </header>
-
-        <div class="section palette-mast">
-          <div class="mast-title">
-            <p class="eyebrow">Palette Studio</p>
-            <h1>Build your brand palette.</h1>
-          </div>
-          <a class="crumb-link" href="resources.html">All resources</a>
-        </div>
-      </div>
+      <header class="palette-bar">
+        <a class="back-link" href="resources.html">
+          <span class="back-arrow" aria-hidden="true">&larr;</span>
+          Back to resources
+        </a>
+        <a class="bar-brand" href="index.html" aria-label="Admit One home">
+          <img src="assets/logos/logo-wordmark.svg" alt="Admit One" />
+        </a>
+      </header>
 
       <div class="palette-toolbar">
         <div class="toolbar-group">
@@ -95,7 +57,6 @@
 
     <div class="palette-toast" id="paletteToast" role="status" aria-live="polite"></div>
 
-    <script src="js/main.js?v=menu-morph"></script>
-    <script src="js/palette.js?v=1"></script>
+    <script src="js/palette.js?v=2"></script>
   </body>
 </html>

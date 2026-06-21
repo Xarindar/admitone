@@ -8,32 +8,53 @@
   min-height: 100dvh;
 }
 
-/* Compact header band variant: just the nav + a slim title line. */
-.subpage-hero--compact .palette-mast {
+/* Slim, subtle top strip: a back link on the left, the brand mark on the right. */
+.palette-bar {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px 18px;
-  padding-top: 18px;
-  padding-bottom: 24px;
+  gap: 16px;
+  padding: 10px clamp(16px, 4vw, 40px);
+  background: var(--black);
+  border-bottom: 1px solid rgba(251, 247, 238, 0.14);
 }
 
-.palette-mast .mast-title {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.palette-bar .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 16px;
+  border: 1px solid rgba(251, 247, 238, 0.26);
+  border-radius: 999px;
+  color: rgba(251, 247, 238, 0.9);
+  font-size: 0.84rem;
+  font-weight: 800;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 
-.palette-mast .eyebrow {
-  margin: 0;
+.palette-bar .back-link:hover,
+.palette-bar .back-link:focus-visible {
+  background: var(--warm);
+  color: var(--black);
+  border-color: var(--warm);
+  outline: 0;
 }
 
-.palette-mast h1 {
-  margin: 0;
-  max-width: none;
-  font-size: 1.9rem;
+.palette-bar .back-arrow {
+  font-size: 1.1em;
   line-height: 1;
+}
+
+.palette-bar .bar-brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.palette-bar .bar-brand img {
+  width: auto;
+  height: 24px;
+  filter: brightness(0) invert(1);
 }
 
 /* Toolbar strip directly under the header. */

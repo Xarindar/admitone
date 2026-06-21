@@ -1,8 +1,10 @@
 /* Color Palette Studio.
  *
- * Generates harmonious palettes, lets you lock the colors you like, and
- * regenerates only the unlocked slots — choosing new colors that stay in
- * harmony with whatever is held. No build step, no dependencies.
+ * Builds a structured, site-ready brand palette from a single brand color:
+ * a tinted Background and Text (the "white" and "black"), the Primary brand
+ * color, a harmonious Accent, and a Muted support tone. Lock what you like,
+ * regenerate the rest, click any swatch to browse its shades and hues, and
+ * (on the live site) names come from the color.pizza API.
  */
 (function () {
   const row = document.getElementById("paletteRow");
@@ -11,16 +13,11 @@
   }
 
   const toast = document.getElementById("paletteToast");
-  const countLabel = document.getElementById("swatchCount");
-  const addBtn = document.getElementById("addSwatch");
-  const removeBtn = document.getElementById("removeSwatch");
   const generateBtn = document.getElementById("generateBtn");
+  const harmonySelect = document.getElementById("harmonySelect");
+  const brandColor = document.getElementById("brandColor");
   const copyAllBtn = document.getElementById("copyAllBtn");
   const shareBtn = document.getElementById("shareBtn");
-
-  const MIN_SWATCHES = 3;
-  const MAX_SWATCHES = 7;
-  const DEFAULT_SWATCHES = 5;
 
   // --- color math ------------------------------------------------------
 
@@ -62,9 +59,8 @@
     );
   }
 
-  function hslToHex(h, s, l) {
-    return rgbToHex(...hslToRgb(h, s, l));
-  }
+  const hslToHex = (h, s, l) => rgbToHex(...hslToRgb(h, s, l));
+  const toHex = (o) => hslToHex(o.h, o.s, o.l);
 
   function hexToRgb(hex) {
     const match = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -108,7 +104,23 @@
     return rgb ? rgbToHsl(...rgb) : null;
   }
 
-  // WCAG relative luminance, used to pick legible ink (text/icon) per swatch.
+  function normalizeHex(value) {
+    if (!value) {
+      return null;
+    }
+    let x = String(value).trim().replace(/^#/, "").toLowerCase();
+    if (/^[0-9a-f]{3}$/.test(x)) {
+      x = x.replace(/(.)/g, "$1$1");
+    }
+    return /^[0-9a-f]{6}$/.test(x) ? "#" + x : null;
+  }
+
+  const keyHex = (hex) => hex.replace(/^#/, "").toLowerCase();
+
+  // Brand inks and luminance, to label each swatch with the more legible one.
+  const INK_DARK = "#1a1710";
+  const INK_WARM = "#fbf7ee";
+
   function relativeLuminance(r, g, b) {
     const channels = [r, g, b].map((v) => {
       v /= 255;
@@ -117,16 +129,9 @@
     return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
   }
 
-  // Brand inks (almost-black / warm-white) and their luminance, so labels use
-  // whichever gives the stronger WCAG contrast on a given swatch.
-  const INK_DARK = "#1a1710";
-  const INK_WARM = "#fbf7ee";
   const LUM_DARK = relativeLuminance(26, 23, 16);
   const LUM_WARM = relativeLuminance(251, 247, 238);
-
-  function contrastRatio(a, b) {
-    return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
-  }
+  const contrastRatio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 
   function readableInk(hex) {
     const rgb = hexToRgb(hex);
@@ -134,123 +139,407 @@
       return INK_DARK;
     }
     const lum = relativeLuminance(...rgb);
-    return contrastRatio(lum, LUM_DARK) >= contrastRatio(lum, LUM_WARM)
-      ? INK_DARK
-      : INK_WARM;
+    return contrastRatio(lum, LUM_DARK) >= contrastRatio(lum, LUM_WARM) ? INK_DARK : INK_WARM;
   }
 
-  // --- harmony ---------------------------------------------------------
+  // --- palette model ---------------------------------------------------
 
-  // Each scheme is a set of hue offsets (degrees) from a base hue. Generated
-  // colors are placed at these offsets so they relate to the base — and, when
-  // colors are locked, the base is taken from the held colors themselves.
-  const SCHEMES = [
-    { name: "Analogous", offsets: [-34, -17, 0, 17, 34] },
-    { name: "Complementary", offsets: [0, 16, 180, 196, 180] },
-    { name: "Split complementary", offsets: [0, 150, 210, 168, 192] },
-    { name: "Triadic", offsets: [0, 120, 240, 120, 240] },
-    { name: "Tetradic", offsets: [0, 90, 180, 270, 90] },
-    { name: "Monochrome", offsets: [0, 0, 0, 0, 0] },
+  const ROLES = [
+    { key: "background", label: "Background" },
+    { key: "text", label: "Text" },
+    { key: "primary", label: "Primary" },
+    { key: "accent", label: "Accent" },
+    { key: "muted", label: "Muted" },
   ];
 
-  const randItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
-  const jitter = (amount) => (Math.random() * 2 - 1) * amount;
+  let swatches = ROLES.map((r) => ({ key: r.key, label: r.label, hex: "#cccccc", locked: false }));
+  let harmony = harmonySelect ? harmonySelect.value : "analogous";
 
-  function shuffle(arr) {
-    const copy = arr.slice();
-    for (let i = copy.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
+  const ACCENT_OFFSET = {
+    monochrome: 0,
+    analogous: 28,
+    complementary: 180,
+    triadic: 120,
+  };
+
+  // Derive the four supporting roles from a primary color + harmony. The
+  // neutrals borrow the brand hue at low saturation so they feel "of" the
+  // brand; Background is a near-white, Text a near-black, both readable.
+  function deriveRoles(primaryHsl) {
+    const h = primaryHsl.h;
+    const s = primaryHsl.s;
+    const l = primaryHsl.l;
+    const accentHue = mod360(h + (ACCENT_OFFSET[harmony] ?? 0));
+
+    // For a same-hue (monochrome) accent, sit in whichever tonal gap is larger
+    // — toward Text (13) or Muted (73) — so it never collides with the Primary.
+    let accentL = 53;
+    if (harmony === "monochrome") {
+      accentL = l - 13 >= 73 - l ? clamp(l - 16, 20, l - 8) : clamp(l + 16, l + 8, 70);
     }
-    return copy;
+
+    return {
+      background: { h, s: clamp(s * 0.16, 6, 20), l: 96 },
+      text: { h, s: clamp(s * 0.3, 12, 34), l: 13 },
+      accent: { h: accentHue, s: clamp(s * 0.92, 48, 88), l: accentL },
+      muted: { h, s: clamp(s * 0.42, 16, 46), l: 73 },
+    };
   }
 
-  function cycle(arr, length) {
-    const out = [];
-    for (let i = 0; i < length; i++) {
-      out.push(arr[i % arr.length]);
-    }
-    return out;
-  }
-
-  // Circular mean of hues so a set of held colors collapses to one base angle.
-  function meanHue(hues) {
-    if (!hues.length) {
-      return Math.random() * 360;
-    }
-    let x = 0;
-    let y = 0;
-    hues.forEach((h) => {
-      const rad = (h * Math.PI) / 180;
-      x += Math.cos(rad);
-      y += Math.sin(rad);
+  function rederiveFromPrimary() {
+    const primary = swatches.find((s) => s.key === "primary");
+    const derived = deriveRoles(hexToHsl(primary.hex));
+    swatches.forEach((sw) => {
+      if (sw.key !== "primary" && !sw.locked) {
+        sw.hex = toHex(derived[sw.key]);
+      }
     });
-    return mod360((Math.atan2(y, x) * 180) / Math.PI);
   }
-
-  // --- state -----------------------------------------------------------
-
-  let swatches = [];
 
   function generate() {
-    const locked = swatches.filter((s) => s.locked).map((s) => hexToHsl(s.hex)).filter(Boolean);
-    const scheme = randItem(SCHEMES);
-
-    // Anchor hue + vividness to the held colors so new picks belong with them.
-    const baseHue = locked.length ? meanHue(locked.map((c) => c.h)) : Math.random() * 360;
-    const baseSat = locked.length
-      ? clamp(locked.reduce((sum, c) => sum + c.s, 0) / locked.length, 38, 90)
-      : 52 + Math.random() * 30;
-
-    const unlockedIndices = swatches
-      .map((s, i) => (s.locked ? -1 : i))
-      .filter((i) => i !== -1);
-    const count = unlockedIndices.length;
-    const offsetPool = shuffle(cycle(scheme.offsets, count));
-
-    unlockedIndices.forEach((index, ordinal) => {
-      // Spread lightness across the unlocked slots for a usable light→dark range.
-      const ladder = count > 1 ? 32 + 50 * (ordinal / (count - 1)) : 58;
-      const h = mod360(baseHue + offsetPool[ordinal] + jitter(7));
-      const s = clamp(baseSat + jitter(12), 30, 92);
-      const l = clamp(ladder + jitter(7), 20, 90);
-      swatches[index].hex = hslToHex(h, s, l);
-    });
-
-    render();
-  }
-
-  function addSwatch() {
-    if (swatches.length >= MAX_SWATCHES) {
-      return;
+    const primary = swatches.find((s) => s.key === "primary");
+    let primaryHsl;
+    if (primary.locked) {
+      primaryHsl = hexToHsl(primary.hex);
+    } else {
+      primaryHsl = { h: Math.random() * 360, s: 58 + Math.random() * 28, l: 47 + Math.random() * 8 };
+      primary.hex = toHex({ h: primaryHsl.h, s: clamp(primaryHsl.s, 45, 90), l: clamp(primaryHsl.l, 40, 56) });
+      primaryHsl = hexToHsl(primary.hex);
     }
-    // Derive the new color from the current palette so it arrives in harmony.
-    const all = swatches.map((s) => hexToHsl(s.hex)).filter(Boolean);
-    const base = meanHue(all.map((c) => c.h));
-    const avgSat = all.length
-      ? clamp(all.reduce((sum, c) => sum + c.s, 0) / all.length, 35, 90)
-      : 60;
-    const h = mod360(base + randItem([-30, 30, 120, 150, 180, 210]) + jitter(8));
-    const s = clamp(avgSat + jitter(10), 32, 92);
-    const l = clamp(38 + Math.random() * 34, 24, 86);
-    swatches.push({ hex: hslToHex(h, s, l), locked: false });
-    render();
-  }
-
-  function removeSwatch() {
-    if (swatches.length <= MIN_SWATCHES) {
-      return;
-    }
-    // Prefer removing an unlocked color so a held one isn't dropped by surprise.
-    let removeAt = -1;
-    for (let i = swatches.length - 1; i >= 0; i--) {
-      if (!swatches[i].locked) {
-        removeAt = i;
-        break;
+    const derived = deriveRoles(primaryHsl);
+    swatches.forEach((sw) => {
+      if (sw.key !== "primary" && !sw.locked) {
+        sw.hex = toHex(derived[sw.key]);
       }
+    });
+    afterChange();
+  }
+
+  // Setting the brand color directly rebuilds the palette around it.
+  function setPrimary(hex) {
+    const h = normalizeHex(hex);
+    if (!h) {
+      return;
     }
-    swatches.splice(removeAt === -1 ? swatches.length - 1 : removeAt, 1);
+    const primary = swatches.find((s) => s.key === "primary");
+    primary.hex = h;
+    primary.locked = true;
+    rederiveFromPrimary();
+    afterChange();
+  }
+
+  // Variations shown in the per-swatch editor.
+  function shadesOf(hsl) {
+    return [92, 80, 67, 54, 42, 30, 18].map((l) => ({ h: hsl.h, s: clamp(hsl.s, 8, 95), l }));
+  }
+
+  function huesOf(hsl) {
+    return [-45, -30, -15, 0, 15, 30, 45].map((o) => ({
+      h: mod360(hsl.h + o),
+      s: hsl.s,
+      l: clamp(hsl.l, 16, 92),
+    }));
+  }
+
+  // --- color names (color.pizza, with graceful fallback) ---------------
+
+  const nameCache = new Map();
+  let nameToken = 0;
+  let nameTimer = 0;
+
+  function paintNames() {
+    const nodes = row.querySelectorAll(".swatch-name");
+    swatches.forEach((s, i) => {
+      if (nodes[i]) {
+        nodes[i].textContent = nameCache.get(keyHex(s.hex)) || "";
+      }
+    });
+    if (editor && !editor.hidden && swatches[activeIndex]) {
+      paintEditorCurrent();
+    }
+  }
+
+  function ensureNames() {
+    paintNames();
+    const missing = [...new Set(swatches.map((s) => keyHex(s.hex)).filter((h) => !nameCache.has(h)))];
+    if (!missing.length || typeof fetch !== "function") {
+      return;
+    }
+    window.clearTimeout(nameTimer);
+    const token = ++nameToken;
+    nameTimer = window.setTimeout(() => {
+      fetch("https://api.color.pizza/v1/?values=" + missing.join(","))
+        .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+        .then((data) => {
+          const colors = (data && data.colors) || [];
+          colors.forEach((c, i) => {
+            if (missing[i]) {
+              nameCache.set(missing[i], c && c.name ? c.name : "");
+            }
+          });
+          if (token === nameToken) {
+            paintNames();
+          }
+        })
+        .catch(() => {
+          /* offline or blocked — leave names blank, the tool still works */
+        });
+    }, 250);
+  }
+
+  // --- icons -----------------------------------------------------------
+
+  const ICON_LOCK_CLOSED =
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.8a5 5 0 0 0-5 5V10H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V6.8a5 5 0 0 0-5-5Zm3 8.2H9V6.8a3 3 0 0 1 6 0V10Z"/></svg>';
+  const ICON_LOCK_OPEN =
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.8a5 5 0 0 0-5 5 1 1 0 1 0 2 0 3 3 0 0 1 6 0V10H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-5V6.8Z"/></svg>';
+  const ICON_COPY =
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 2a2 2 0 0 0-2 2v1H6a3 3 0 0 0-3 3v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-1h1a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9Zm0 2h10v11h-2V8a3 3 0 0 0-3-3H9V4ZM6 7h8a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/></svg>';
+  const ICON_EDIT =
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m20.7 5.6-2.3-2.3a2 2 0 0 0-2.8 0l-1.6 1.6 5.1 5.1 1.6-1.6a2 2 0 0 0 0-2.8ZM3 16.2V21h4.8l9.4-9.4-4.8-4.8L3 16.2Zm4 2.8H5v-2l8.2-8.2 2 2L7 19Z"/></svg>';
+
+  function makeButton(className, label, title, html) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = className;
+    button.setAttribute("aria-label", label);
+    button.title = title;
+    button.innerHTML = html;
+    return button;
+  }
+
+  // --- render ----------------------------------------------------------
+
+  function render() {
+    row.textContent = "";
+
+    swatches.forEach((sw, index) => {
+      const upper = sw.hex.toUpperCase();
+      const ink = readableInk(sw.hex);
+
+      const col = document.createElement("div");
+      col.className = "swatch" + (sw.locked ? " is-locked" : "");
+      col.style.setProperty("--swatch", sw.hex);
+      col.style.setProperty("--ink", ink);
+      col.dataset.role = sw.key;
+      col.tabIndex = 0;
+      col.setAttribute("role", "group");
+      col.setAttribute(
+        "aria-label",
+        `${sw.label}: ${upper}${sw.locked ? ", locked" : ""}. Press Enter to adjust shades and hues.`,
+      );
+
+      const roleEl = document.createElement("span");
+      roleEl.className = "swatch-role";
+      roleEl.textContent = sw.label;
+
+      const controls = document.createElement("div");
+      controls.className = "swatch-controls";
+
+      const lockBtn = makeButton(
+        "swatch-btn swatch-lock",
+        sw.locked ? `Unlock ${upper}` : `Lock ${upper}`,
+        sw.locked ? "Locked — click to unlock" : "Lock this color",
+        sw.locked ? ICON_LOCK_CLOSED : ICON_LOCK_OPEN,
+      );
+      lockBtn.setAttribute("aria-pressed", String(sw.locked));
+      lockBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        sw.locked = !sw.locked;
+        afterChange();
+      });
+
+      const editBtn = makeButton(
+        "swatch-btn swatch-edit",
+        `Adjust ${sw.label}`,
+        "Adjust shades & hues",
+        ICON_EDIT,
+      );
+      editBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openEditor(index);
+      });
+
+      const copyBtn = makeButton("swatch-btn swatch-copy", `Copy ${upper}`, "Copy hex", ICON_COPY);
+      copyBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        copy(upper);
+      });
+
+      controls.append(lockBtn, editBtn, copyBtn);
+
+      const info = document.createElement("div");
+      info.className = "swatch-info";
+
+      const hexBtn = document.createElement("button");
+      hexBtn.type = "button";
+      hexBtn.className = "swatch-hex";
+      hexBtn.textContent = upper;
+      hexBtn.title = "Copy hex";
+      hexBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        copy(upper);
+      });
+
+      const nameEl = document.createElement("span");
+      nameEl.className = "swatch-name";
+      nameEl.textContent = nameCache.get(keyHex(sw.hex)) || "";
+
+      info.append(hexBtn, nameEl);
+      col.append(roleEl, controls, info);
+
+      col.addEventListener("click", (e) => {
+        if (e.target.closest("button")) {
+          return;
+        }
+        openEditor(index);
+      });
+      col.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          openEditor(index);
+        }
+      });
+
+      row.appendChild(col);
+    });
+  }
+
+  function syncBrandInput() {
+    const primary = swatches.find((s) => s.key === "primary");
+    if (brandColor && primary) {
+      brandColor.value = primary.hex;
+    }
+  }
+
+  function afterChange() {
     render();
+    ensureNames();
+    syncBrandInput();
+    syncHash();
+  }
+
+  // --- per-swatch editor ----------------------------------------------
+
+  let editor = null;
+  let editorEls = {};
+  let activeIndex = -1;
+
+  function buildEditor() {
+    editor = document.createElement("div");
+    editor.className = "shade-editor";
+    editor.hidden = true;
+    editor.innerHTML =
+      '<div class="shade-backdrop" data-close></div>' +
+      '<div class="shade-card" role="dialog" aria-modal="true" aria-label="Adjust color">' +
+      '<div class="shade-head"><div><p class="shade-role"></p><p class="shade-current"></p></div>' +
+      '<button type="button" class="shade-close" aria-label="Close">&times;</button></div>' +
+      '<p class="shade-label">Shades</p><div class="shade-row" data-kind="shades"></div>' +
+      '<p class="shade-label">Hues</p><div class="shade-row" data-kind="hues"></div>' +
+      '<div class="shade-exact"><label class="exact-color"><span>Exact</span>' +
+      '<input type="color" /></label><input type="text" class="exact-hex" maxlength="7" aria-label="Hex value" /></div>' +
+      "</div>";
+    document.body.appendChild(editor);
+
+    editorEls = {
+      role: editor.querySelector(".shade-role"),
+      current: editor.querySelector(".shade-current"),
+      shades: editor.querySelector('[data-kind="shades"]'),
+      hues: editor.querySelector('[data-kind="hues"]'),
+      color: editor.querySelector(".exact-color input"),
+      hex: editor.querySelector(".exact-hex"),
+    };
+
+    editor.addEventListener("click", (e) => {
+      if (e.target.matches("[data-close]") || e.target.closest(".shade-close")) {
+        closeEditor();
+      }
+    });
+    editorEls.color.addEventListener("input", () => applyActive(editorEls.color.value));
+    editorEls.hex.addEventListener("change", () => {
+      const h = normalizeHex(editorEls.hex.value);
+      if (h) applyActive(h);
+      else refreshEditor();
+    });
+    editorEls.hex.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const h = normalizeHex(editorEls.hex.value);
+        if (h) applyActive(h);
+      }
+    });
+  }
+
+  function fillRow(container, list) {
+    container.textContent = "";
+    list.forEach((hsl) => {
+      const hex = toHex(hsl);
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "shade-chip";
+      chip.style.background = hex;
+      chip.title = hex.toUpperCase();
+      chip.setAttribute("aria-label", hex.toUpperCase());
+      chip.addEventListener("click", () => applyActive(hex));
+      container.appendChild(chip);
+    });
+  }
+
+  function paintEditorCurrent() {
+    const sw = swatches[activeIndex];
+    const name = nameCache.get(keyHex(sw.hex));
+    editorEls.current.textContent = sw.hex.toUpperCase() + (name ? " · " + name : "");
+  }
+
+  function refreshEditor() {
+    const sw = swatches[activeIndex];
+    if (!sw) {
+      return;
+    }
+    const hsl = hexToHsl(sw.hex);
+    editorEls.role.textContent = sw.label;
+    paintEditorCurrent();
+    fillRow(editorEls.shades, shadesOf(hsl));
+    fillRow(editorEls.hues, huesOf(hsl));
+    editorEls.color.value = sw.hex;
+    editorEls.hex.value = sw.hex.toUpperCase();
+  }
+
+  function openEditor(index) {
+    if (!editor) {
+      buildEditor();
+    }
+    activeIndex = index;
+    editor.hidden = false;
+    document.body.classList.add("editor-open");
+    refreshEditor();
+    window.setTimeout(() => editor.querySelector(".shade-close")?.focus(), 0);
+  }
+
+  function closeEditor() {
+    if (!editor || editor.hidden) {
+      return;
+    }
+    editor.hidden = true;
+    document.body.classList.remove("editor-open");
+    const col = row.children[activeIndex];
+    activeIndex = -1;
+    col?.focus?.();
+  }
+
+  // Picking any variation pins (locks) that swatch as a deliberate choice.
+  function applyActive(hex) {
+    const h = normalizeHex(hex);
+    if (!h || activeIndex < 0) {
+      return;
+    }
+    const sw = swatches[activeIndex];
+    sw.hex = h;
+    sw.locked = true;
+    if (sw.key === "primary") {
+      rederiveFromPrimary();
+    }
+    afterChange();
+    refreshEditor();
   }
 
   // --- clipboard + toast ----------------------------------------------
@@ -290,98 +579,15 @@
     }
   }
 
-  // --- icons -----------------------------------------------------------
-
-  const ICON_LOCK_CLOSED =
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.8a5 5 0 0 0-5 5V10H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V6.8a5 5 0 0 0-5-5Zm3 8.2H9V6.8a3 3 0 0 1 6 0V10Z"/></svg>';
-  const ICON_LOCK_OPEN =
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.8a5 5 0 0 0-5 5 1 1 0 1 0 2 0 3 3 0 0 1 6 0V10H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-5V6.8Z"/></svg>';
-  const ICON_COPY =
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 2a2 2 0 0 0-2 2v1H6a3 3 0 0 0-3 3v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-1h1a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9Zm0 2h10v11h-2V8a3 3 0 0 0-3-3H9V4ZM6 7h8a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/></svg>';
-
-  // --- render ----------------------------------------------------------
-
-  function makeButton(className, label, title, html) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = className;
-    button.setAttribute("aria-label", label);
-    button.title = title;
-    button.innerHTML = html;
-    return button;
-  }
-
-  function render() {
-    row.textContent = "";
-
-    swatches.forEach((sw, index) => {
-      const upper = sw.hex.toUpperCase();
-      const ink = readableInk(sw.hex);
-
-      const column = document.createElement("div");
-      column.className = "swatch" + (sw.locked ? " is-locked" : "");
-      column.style.setProperty("--swatch", sw.hex);
-      column.style.setProperty("--ink", ink);
-      column.setAttribute("role", "group");
-      column.setAttribute(
-        "aria-label",
-        `Color ${index + 1}, ${upper}${sw.locked ? ", locked" : ""}`,
-      );
-
-      const controls = document.createElement("div");
-      controls.className = "swatch-controls";
-
-      const lockBtn = makeButton(
-        "swatch-btn swatch-lock",
-        sw.locked ? `Unlock ${upper}` : `Lock ${upper}`,
-        sw.locked ? "Locked — click to unlock" : "Lock this color",
-        sw.locked ? ICON_LOCK_CLOSED : ICON_LOCK_OPEN,
-      );
-      lockBtn.setAttribute("aria-pressed", String(sw.locked));
-      lockBtn.addEventListener("click", () => {
-        sw.locked = !sw.locked;
-        render();
-      });
-
-      const copyBtn = makeButton(
-        "swatch-btn swatch-copy",
-        `Copy ${upper}`,
-        "Copy hex",
-        ICON_COPY,
-      );
-      copyBtn.addEventListener("click", () => copy(upper));
-
-      controls.append(lockBtn, copyBtn);
-
-      const hexBtn = document.createElement("button");
-      hexBtn.type = "button";
-      hexBtn.className = "swatch-hex";
-      hexBtn.textContent = upper;
-      hexBtn.title = "Copy hex";
-      hexBtn.addEventListener("click", () => copy(upper));
-
-      column.append(controls, hexBtn);
-      row.appendChild(column);
-    });
-
-    if (countLabel) {
-      countLabel.textContent = String(swatches.length);
-    }
-    if (addBtn) {
-      addBtn.disabled = swatches.length >= MAX_SWATCHES;
-    }
-    if (removeBtn) {
-      removeBtn.disabled = swatches.length <= MIN_SWATCHES;
-    }
-
-    syncHash();
+  function paletteText() {
+    const width = Math.max(...swatches.map((s) => s.label.length)) + 2;
+    return swatches.map((s) => s.label.padEnd(width, " ") + s.hex.toUpperCase()).join("\n");
   }
 
   // --- shareable URL ---------------------------------------------------
 
   function syncHash() {
-    const slug = swatches.map((s) => s.hex.replace("#", "")).join("-");
-    history.replaceState(null, "", "#" + slug);
+    history.replaceState(null, "", "#" + swatches.map((s) => keyHex(s.hex)).join("-"));
   }
 
   function paletteFromHash() {
@@ -391,39 +597,32 @@
     }
     const hexes = raw
       .split("-")
-      .map((part) => part.trim())
-      .map((part) => {
-        if (/^[0-9a-f]{6}$/i.test(part)) {
-          return "#" + part.toLowerCase();
-        }
-        if (/^[0-9a-f]{3}$/i.test(part)) {
-          return "#" + part.toLowerCase().replace(/(.)/g, "$1$1");
-        }
-        return null;
-      })
-      .filter(Boolean)
-      .slice(0, MAX_SWATCHES);
-
-    if (hexes.length < MIN_SWATCHES) {
-      return null;
-    }
-    return hexes.map((hex) => ({ hex, locked: false }));
+      .map((part) => normalizeHex(part))
+      .filter(Boolean);
+    return hexes.length === swatches.length ? hexes : null;
   }
 
   // --- wiring ----------------------------------------------------------
 
   generateBtn?.addEventListener("click", generate);
-  addBtn?.addEventListener("click", addSwatch);
-  removeBtn?.addEventListener("click", removeSwatch);
-  copyAllBtn?.addEventListener("click", () =>
-    copy(swatches.map((s) => s.hex.toUpperCase()).join(", "), "Copied palette"),
-  );
+  harmonySelect?.addEventListener("change", () => {
+    harmony = harmonySelect.value;
+    rederiveFromPrimary();
+    afterChange();
+  });
+  brandColor?.addEventListener("input", () => setPrimary(brandColor.value));
+  copyAllBtn?.addEventListener("click", () => copy(paletteText(), "Copied palette"));
   shareBtn?.addEventListener("click", () => copy(location.href, "Link copied"));
 
-  // Spacebar regenerates, the way Coolors does — but never while a control,
-  // field, or link is focused, so buttons and inputs keep working normally.
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && editor && !editor.hidden) {
+      closeEditor();
+      return;
+    }
     if (event.code !== "Space" && event.key !== " ") {
+      return;
+    }
+    if (editor && !editor.hidden) {
       return;
     }
     const el = document.activeElement;
@@ -431,8 +630,8 @@
     const isInteractive =
       tag === "BUTTON" ||
       tag === "INPUT" ||
-      tag === "TEXTAREA" ||
       tag === "SELECT" ||
+      tag === "TEXTAREA" ||
       tag === "A" ||
       (el && el.isContentEditable);
     if (isInteractive) {
@@ -446,13 +645,11 @@
 
   const fromHash = paletteFromHash();
   if (fromHash) {
-    swatches = fromHash;
-    render();
+    swatches.forEach((s, i) => {
+      s.hex = fromHash[i];
+    });
+    afterChange();
   } else {
-    swatches = Array.from({ length: DEFAULT_SWATCHES }, () => ({
-      hex: "#cccccc",
-      locked: false,
-    }));
     generate();
   }
 })();

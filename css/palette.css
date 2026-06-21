@@ -1,5 +1,5 @@
-/* Color Palette Studio — a full-height row of swatches you can lock and
-   regenerate, styled to sit inside the Admit One ticket-window brand. */
+/* Color Palette Studio — a full-height row of role-based brand swatches you can
+   lock, regenerate, and fine-tune, styled to sit inside the Admit One brand. */
 
 .palette-page {
   display: flex;
@@ -72,7 +72,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 8px 12px;
 }
 
 .palette-toolbar .toolbar-group.is-end {
@@ -83,41 +83,53 @@
   min-height: 40px;
 }
 
-/* Round +/- stepper buttons for color count. */
-.count-stepper {
+/* Brand-color picker and harmony selector. */
+.brand-pick,
+.harmony-pick {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 6px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: var(--warm);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.count-stepper button {
-  width: 30px;
-  height: 30px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--black);
-  color: var(--warm);
-  font-size: 1.1rem;
-  font-weight: 800;
-  line-height: 1;
+.brand-pick input[type="color"] {
+  width: 44px;
+  height: 38px;
+  padding: 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--warm);
   cursor: pointer;
 }
 
-.count-stepper button:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
+.brand-pick input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
 }
 
-.count-stepper span {
-  min-width: 1.4ch;
-  text-align: center;
+.brand-pick input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 7px;
+}
+
+.harmony-pick select {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--warm);
+  color: var(--black);
   font-weight: 800;
-  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.brand-pick input[type="color"]:focus-visible,
+.harmony-pick select:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
 }
 
 .toolbar-hint {
@@ -164,18 +176,22 @@ kbd {
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  gap: 18px;
-  padding: 28px 12px 46px;
+  gap: 16px;
+  padding: 26px 12px 40px;
   background: var(--swatch, #ccc);
   color: var(--ink, #1a1710);
+  cursor: pointer;
   transition: flex-grow 320ms ease;
+}
+
+.swatch:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: -7px;
 }
 
 .swatch-controls {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  gap: 8px;
   opacity: 0.5;
   transform: translateY(6px);
   transition: opacity 180ms ease, transform 180ms ease;
@@ -189,8 +205,8 @@ kbd {
 }
 
 .swatch-btn {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -218,13 +234,30 @@ kbd {
   color: var(--swatch);
 }
 
+.swatch-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  max-width: 100%;
+  text-align: center;
+}
+
+.swatch-role {
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.74;
+}
+
 .swatch-hex {
   background: none;
   color: inherit;
-  padding: 4px 6px;
-  font-size: 1.06rem;
+  padding: 3px 6px;
+  font-size: 1.02rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   cursor: pointer;
   border-radius: 6px;
   transition: background-color 150ms ease;
@@ -236,29 +269,184 @@ kbd {
   outline: 0;
 }
 
-/* "Locked" flag so the held state reads at a glance. */
-.swatch::after {
-  content: "Locked";
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  transform: translate(-50%, -8px);
-  padding: 3px 11px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--ink) 88%, transparent);
-  color: var(--swatch);
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  opacity: 0;
-  transition: opacity 180ms ease, transform 180ms ease;
-  pointer-events: none;
+.swatch-name {
+  max-width: 100%;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  opacity: 0.82;
+  overflow-wrap: anywhere;
 }
 
-.swatch.is-locked::after {
-  opacity: 1;
-  transform: translate(-50%, 0);
+/* Per-swatch editor: browse shades and hues, or set an exact color. */
+body.editor-open {
+  overflow: hidden;
+}
+
+.shade-editor {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.shade-editor[hidden] {
+  display: none;
+}
+
+.shade-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 23, 16, 0.46);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.shade-card {
+  position: relative;
+  z-index: 1;
+  width: min(440px, 100%);
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  padding: 20px;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background: var(--paper);
+  color: var(--black);
+  box-shadow: var(--shadow);
+}
+
+.shade-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.shade-role {
+  margin: 0;
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.shade-current {
+  margin: 3px 0 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.shade-close {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--paper-2);
+  color: var(--black);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.shade-close:hover,
+.shade-close:focus-visible {
+  background: var(--gold);
+  outline: 0;
+}
+
+.shade-label {
+  margin: 14px 0 6px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.shade-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.shade-chip {
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: transform 120ms ease;
+}
+
+.shade-chip:hover,
+.shade-chip:focus-visible {
+  transform: translateY(-2px);
+  outline: 2px solid var(--black);
+  outline-offset: 1px;
+}
+
+.shade-exact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.exact-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.exact-color input[type="color"] {
+  width: 44px;
+  height: 38px;
+  padding: 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: 9px;
+  background: var(--warm);
+  cursor: pointer;
+}
+
+.exact-color input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.exact-color input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+
+.exact-hex {
+  flex: 1;
+  min-width: 0;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 9px;
+  background: var(--warm);
+  color: var(--black);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.exact-hex:focus,
+.exact-color input[type="color"]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
 }
 
 /* Toast feedback for copy actions. */
@@ -266,7 +454,7 @@ kbd {
   position: fixed;
   left: 50%;
   bottom: 26px;
-  z-index: 60;
+  z-index: 90;
   transform: translate(-50%, 18px);
   padding: 11px 20px;
   border-radius: 999px;
@@ -291,7 +479,7 @@ kbd {
   .swatch,
   .swatch-controls,
   .swatch-btn,
-  .swatch::after,
+  .shade-chip,
   .palette-toast {
     transition: none;
   }
@@ -314,12 +502,11 @@ kbd {
     align-items: center;
     justify-content: space-between;
     gap: 14px;
-    min-height: 78px;
+    min-height: 76px;
     padding: 12px 18px;
   }
 
   .swatch-controls {
-    flex-direction: row;
     transform: none;
     opacity: 1;
   }
@@ -329,15 +516,9 @@ kbd {
     height: 38px;
   }
 
-  .swatch::after {
-    top: 50%;
-    left: auto;
-    right: 96px;
-    transform: translateY(-50%);
-  }
-
-  .swatch.is-locked::after {
-    transform: translateY(-50%);
+  .swatch-info {
+    align-items: flex-end;
+    text-align: right;
   }
 
   .palette-toolbar .toolbar-group.is-end {

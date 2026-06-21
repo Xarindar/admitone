@@ -48,16 +48,21 @@ Admit One is being shaped as a fun, modern, clean web design studio with a small
 ## Resources & the Color Palette Studio
 
 `resources.html` is a small hub of no-login brand tools to send clients to. The
-first tool, `palette.html`, is a Coolors-style palette generator:
+first tool, `palette.html`, builds a structured, site-ready **brand palette**
+from a single brand color rather than five random swatches:
 
-- **Generate** random colors with the button or the spacebar.
-- **Lock** any swatch you like; regenerating only replaces the unlocked ones.
-- Locked colors **anchor the harmony** — new colors are picked as harmonic
-  offsets (analogous, complementary, triadic, etc.) around the held hues, at a
-  matching saturation, with lightness spread across the row for a usable range.
-- **Click a swatch** (or its copy button) to copy the hex; **Copy palette**
-  grabs them all, and **Copy link** shares the palette via the URL hash, so a
-  client can open exactly what you built and lock their own favorites.
+- **Five roles** — Background and Text (both near-white / near-black tints of
+  the brand hue, for large areas and body copy), Primary, Accent, and Muted.
+  Background↔Text always meets WCAG AA contrast.
+- **Brand color** picker seeds the palette; **Generate** (or the spacebar)
+  randomizes it. A **Harmony** control (Monochrome → "five shades of one hue",
+  Analogous, Complementary, Triadic) shapes the Accent.
+- **Lock** any role to hold it while regenerating the rest. **Click a swatch**
+  to open an editor and browse its **shades and hues** or set an exact color.
+- **Names** come from the [color.pizza](https://github.com/meodai/color-names)
+  API (client-side, with a graceful fallback if it's unreachable).
+- **Copy palette** exports a labeled `Role  #HEX` block for handoff, and **Copy
+  link** shares the exact palette via the URL hash.
 
 ## Local Preview
 

@@ -52,14 +52,16 @@ Admit One is being shaped as a fun, modern, clean web design studio with a small
 first tool, `palette.html`, builds a structured, site-ready **brand palette**
 from a single brand color rather than five random swatches:
 
-- **Five roles** — Background and Text (both near-white / near-black tints of
-  the brand hue, for large areas and body copy), Primary, Accent, and Muted.
+- **Five roles** — Primary, Accent, Muted, Text, and Background. Text and
+  Background stay near-white / near-black tints of the brand hue for large areas and body copy.
   Background↔Text always meets WCAG AA contrast.
-- **Brand color** picker seeds the palette; **Generate** (or the spacebar)
-  randomizes it. A **Harmony** control (Monochrome → "five shades of one hue",
-  Analogous, Complementary, Triadic) shapes the Accent.
-- **Lock** any role to hold it while regenerating the rest. **Click a swatch**
-  to open an editor and browse its **shades and hues** or set an exact color.
+- **Brand color** picker anchors the Primary; **Generate** (or the spacebar)
+  rolls fresh supporting options around it without claiming there is one perfect
+  companion palette.
+- **Lock** any role to hold it while regenerating the rest. Use the shade
+  button on a swatch to show a seven-step ladder: three lighter options, the
+  current color, and three darker options. Selecting a step makes it the color
+  for that role.
 - **Names** appear instantly: a bundled best-of list from
   [meodai/color-names](https://github.com/meodai/color-names) (`js/color-names.js`,
   ~4.9k names) is matched locally in CIE Lab space — no network round-trip, works

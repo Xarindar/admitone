@@ -1,10 +1,9 @@
 /* Color Palette Studio.
  *
- * Builds a structured, site-ready brand palette from a single brand color:
+ * Builds a structured, site-ready brand palette around a primary color:
  * a tinted Background and Text (the "white" and "black"), the Primary brand
- * color, a harmonious Accent, and a Muted support tone. Lock what you like,
- * regenerate the rest, click any swatch to browse its shades and hues, and
- * (on the live site) names come from the color.pizza API.
+ * color, an Accent, and a Muted support tone. The primary can act as an anchor
+ * while the other roles regenerate as fresh matching options.
  */
 (function () {
   const row = document.getElementById("paletteRow");
@@ -14,15 +13,21 @@
 
   const toast = document.getElementById("paletteToast");
   const generateBtn = document.getElementById("generateBtn");
-  const harmonySelect = document.getElementById("harmonySelect");
   const brandColor = document.getElementById("brandColor");
   const copyAllBtn = document.getElementById("copyAllBtn");
   const shareBtn = document.getElementById("shareBtn");
+  const copyMenu = document.getElementById("copyMenu");
+  const copyMenuToggle = document.getElementById("copyMenuToggle");
+  const copyMenuPanel = document.getElementById("copyMenuPanel");
+  const copyLinkMobileBtn = document.getElementById("copyLinkMobileBtn");
+  const copyPaletteMobileBtn = document.getElementById("copyPaletteMobileBtn");
 
   // --- color math ------------------------------------------------------
 
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
   const mod360 = (n) => ((n % 360) + 360) % 360;
+  const rand = (min, max) => min + Math.random() * (max - min);
+  const pick = (list) => list[Math.floor(Math.random() * list.length)];
 
   function hslToRgb(h, s, l) {
     h = mod360(h) / 360;
@@ -145,50 +150,106 @@
   // --- palette model ---------------------------------------------------
 
   const ROLES = [
-    { key: "background", label: "Background" },
-    { key: "text", label: "Text" },
     { key: "primary", label: "Primary" },
     { key: "accent", label: "Accent" },
     { key: "muted", label: "Muted" },
+    { key: "text", label: "Text" },
+    { key: "background", label: "Background" },
   ];
 
   let swatches = ROLES.map((r) => ({ key: r.key, label: r.label, hex: "#cccccc", locked: false }));
-  let harmony = harmonySelect ? harmonySelect.value : "analogous";
-
-  const ACCENT_OFFSET = {
-    monochrome: 0,
-    analogous: 28,
-    complementary: 180,
-    triadic: 120,
+  const BALANCED_PROFILE = {
+    primaryS: [54, 82],
+    primaryL: [44, 56],
+    fallbackS: [44, 64],
+    accentOffsets: [-42, -30, -22, 24, 34, 46, 142, 168, -150],
+    accentSFactor: [0.78, 1.12],
+    accentS: [46, 88],
+    accentL: [44, 62],
+    mutedSFactor: [0.26, 0.48],
+    mutedS: [16, 42],
+    mutedL: [68, 82],
+    backgroundSFactor: [0.1, 0.22],
+    backgroundS: [5, 20],
+    backgroundL: [95, 98],
+    textSFactor: [0.22, 0.38],
+    textS: [12, 34],
+    textL: [10, 16],
+    mix: [0.08, 0.3],
   };
 
-  // Derive the four supporting roles from a primary color + harmony. The
-  // neutrals borrow the brand hue at low saturation so they feel "of" the
-  // brand; Background is a near-white, Text a near-black, both readable.
+  function inRange(range) {
+    return rand(range[0], range[1]);
+  }
+
+  function scaledSaturation(base, factorRange, clampRange) {
+    return clamp(base * inRange(factorRange), clampRange[0], clampRange[1]);
+  }
+
+  function mixHue(from, to, amount) {
+    const delta = ((to - from + 540) % 360) - 180;
+    return mod360(from + delta * amount);
+  }
+
+  function primaryBaseSaturation(primaryHsl, config) {
+    if (primaryHsl.s < 8) {
+      return inRange(config.fallbackS);
+    }
+    return clamp(primaryHsl.s, 28, 92);
+  }
+
+  function randomPrimaryHsl() {
+    return {
+      h: Math.random() * 360,
+      s: inRange(BALANCED_PROFILE.primaryS),
+      l: inRange(BALANCED_PROFILE.primaryL),
+    };
+  }
+
+  // Build fresh supporting roles from the primary anchor. The relationships are
+  // guided, but intentionally varied so Generate offers multiple viable options
+  // instead of one "correct" color-theory answer.
   function deriveRoles(primaryHsl) {
     const h = primaryHsl.h;
-    const s = primaryHsl.s;
-    const l = primaryHsl.l;
-    const accentHue = mod360(h + (ACCENT_OFFSET[harmony] ?? 0));
-
-    // For a same-hue (monochrome) accent, sit in whichever tonal gap is larger
-    // — toward Text (13) or Muted (73) — so it never collides with the Primary.
-    let accentL = 53;
-    if (harmony === "monochrome") {
-      accentL = l - 13 >= 73 - l ? clamp(l - 16, 20, l - 8) : clamp(l + 16, l + 8, 70);
-    }
+    const baseS = primaryBaseSaturation(primaryHsl, BALANCED_PROFILE);
+    const accentHue = mod360(h + pick(BALANCED_PROFILE.accentOffsets) + rand(-8, 8));
+    const neutralHue = mixHue(h, accentHue, inRange(BALANCED_PROFILE.mix));
+    const mutedHue =
+      Math.random() < 0.72
+        ? mixHue(h, accentHue, rand(0.08, 0.42))
+        : mod360(h + pick([-1, 1]) * rand(12, 34));
 
     return {
-      background: { h, s: clamp(s * 0.16, 6, 20), l: 96 },
-      text: { h, s: clamp(s * 0.3, 12, 34), l: 13 },
-      accent: { h: accentHue, s: clamp(s * 0.92, 48, 88), l: accentL },
-      muted: { h, s: clamp(s * 0.42, 16, 46), l: 73 },
+      background: {
+        h: mod360(neutralHue + rand(-5, 5)),
+        s: scaledSaturation(baseS, BALANCED_PROFILE.backgroundSFactor, BALANCED_PROFILE.backgroundS),
+        l: inRange(BALANCED_PROFILE.backgroundL),
+      },
+      text: {
+        h: mod360(neutralHue + rand(-7, 7)),
+        s: scaledSaturation(baseS, BALANCED_PROFILE.textSFactor, BALANCED_PROFILE.textS),
+        l: inRange(BALANCED_PROFILE.textL),
+      },
+      accent: {
+        h: accentHue,
+        s: scaledSaturation(baseS, BALANCED_PROFILE.accentSFactor, BALANCED_PROFILE.accentS),
+        l: inRange(BALANCED_PROFILE.accentL),
+      },
+      muted: {
+        h: mod360(mutedHue + rand(-6, 6)),
+        s: scaledSaturation(baseS, BALANCED_PROFILE.mutedSFactor, BALANCED_PROFILE.mutedS),
+        l: inRange(BALANCED_PROFILE.mutedL),
+      },
     };
   }
 
   function rederiveFromPrimary() {
     const primary = swatches.find((s) => s.key === "primary");
-    const derived = deriveRoles(hexToHsl(primary.hex));
+    const primaryHsl = hexToHsl(primary.hex);
+    if (!primaryHsl) {
+      return;
+    }
+    const derived = deriveRoles(primaryHsl);
     swatches.forEach((sw) => {
       if (sw.key !== "primary" && !sw.locked) {
         sw.hex = toHex(derived[sw.key]);
@@ -202,9 +263,12 @@
     if (primary.locked) {
       primaryHsl = hexToHsl(primary.hex);
     } else {
-      primaryHsl = { h: Math.random() * 360, s: 58 + Math.random() * 28, l: 47 + Math.random() * 8 };
-      primary.hex = toHex({ h: primaryHsl.h, s: clamp(primaryHsl.s, 45, 90), l: clamp(primaryHsl.l, 40, 56) });
+      primaryHsl = randomPrimaryHsl();
+      primary.hex = toHex(primaryHsl);
       primaryHsl = hexToHsl(primary.hex);
+    }
+    if (!primaryHsl) {
+      return;
     }
     const derived = deriveRoles(primaryHsl);
     swatches.forEach((sw) => {
@@ -228,17 +292,27 @@
     afterChange();
   }
 
-  // Variations shown in the per-swatch editor.
-  function shadesOf(hsl) {
-    return [92, 80, 67, 54, 42, 30, 18].map((l) => ({ h: hsl.h, s: clamp(hsl.s, 8, 95), l }));
-  }
-
-  function huesOf(hsl) {
-    return [-45, -30, -15, 0, 15, 30, 45].map((o) => ({
-      h: mod360(hsl.h + o),
-      s: hsl.s,
-      l: clamp(hsl.l, 16, 92),
+  // Seven visible steps for a swatch: three lighter, the current color, and
+  // three darker. The endpoints scale toward near-white/near-black so very
+  // light or dark colors still get usable neighboring options.
+  function shadeStepsOf(hex) {
+    const hsl = hexToHsl(hex);
+    if (!hsl) {
+      return [];
+    }
+    const lightTarget = 98;
+    const darkTarget = 6;
+    const lighter = [0.78, 0.52, 0.26].map((amount) => ({
+      h: hsl.h,
+      s: clamp(hsl.s, 0, 96),
+      l: clamp(hsl.l + (lightTarget - hsl.l) * amount, 0, 100),
     }));
+    const darker = [0.24, 0.48, 0.72].map((amount) => ({
+      h: hsl.h,
+      s: clamp(hsl.s, 0, 96),
+      l: clamp(hsl.l - (hsl.l - darkTarget) * amount, 0, 100),
+    }));
+    return [...lighter, hsl, ...darker];
   }
 
   // --- color names ------------------------------------------------------
@@ -325,8 +399,8 @@
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.8a5 5 0 0 0-5 5 1 1 0 1 0 2 0 3 3 0 0 1 6 0V10H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-5V6.8Z"/></svg>';
   const ICON_COPY =
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 2a2 2 0 0 0-2 2v1H6a3 3 0 0 0-3 3v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-1h1a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9Zm0 2h10v11h-2V8a3 3 0 0 0-3-3H9V4ZM6 7h8a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/></svg>';
-  const ICON_EDIT =
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m20.7 5.6-2.3-2.3a2 2 0 0 0-2.8 0l-1.6 1.6 5.1 5.1 1.6-1.6a2 2 0 0 0 0-2.8ZM3 16.2V21h4.8l9.4-9.4-4.8-4.8L3 16.2Zm4 2.8H5v-2l8.2-8.2 2 2L7 19Z"/></svg>';
+  const ICON_SHADES =
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h14a2 2 0 0 1 2 2v2H3V5a2 2 0 0 1 2-2Zm-2 6h18v6H3V9Zm0 8h18v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2Z"/></svg>';
 
   function makeButton(className, label, title, html) {
     const button = document.createElement("button");
@@ -340,23 +414,75 @@
 
   // --- render ----------------------------------------------------------
 
+  let activeShadeIndex = -1;
+
+  function toggleShadePanel(index) {
+    activeShadeIndex = activeShadeIndex === index ? -1 : index;
+    render();
+  }
+
+  function selectShade(index, hex) {
+    const h = normalizeHex(hex);
+    const sw = swatches[index];
+    if (!h || !sw) {
+      return;
+    }
+    sw.hex = h;
+    sw.locked = true;
+    activeShadeIndex = -1;
+    if (sw.key === "primary") {
+      rederiveFromPrimary();
+    }
+    afterChange();
+  }
+
+  function buildShadeStack(sw, index) {
+    const stack = document.createElement("div");
+    stack.className = "swatch-shade-stack";
+    stack.setAttribute("aria-label", `${sw.label} shade options`);
+
+    shadeStepsOf(sw.hex).forEach((hsl, stepIndex) => {
+      const hex = toHex(hsl).toUpperCase();
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "shade-step" + (stepIndex === 3 ? " is-current" : "");
+      button.style.setProperty("--shade", hex);
+      button.style.setProperty("--shade-ink", readableInk(hex));
+      const label = document.createElement("span");
+      label.className = "shade-hex";
+      label.textContent = hex;
+      button.appendChild(label);
+      button.title = `Use ${hex}`;
+      button.setAttribute("aria-label", `Use ${hex} for ${sw.label}`);
+      button.setAttribute("aria-pressed", String(stepIndex === 3));
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        selectShade(index, hex);
+      });
+      stack.appendChild(button);
+    });
+
+    return stack;
+  }
+
   function render() {
     row.textContent = "";
 
     swatches.forEach((sw, index) => {
       const upper = sw.hex.toUpperCase();
       const ink = readableInk(sw.hex);
+      const showingShades = activeShadeIndex === index;
 
       const col = document.createElement("div");
-      col.className = "swatch" + (sw.locked ? " is-locked" : "");
+      col.className =
+        "swatch" + (sw.locked ? " is-locked" : "") + (showingShades ? " is-showing-shades" : "");
       col.style.setProperty("--swatch", sw.hex);
       col.style.setProperty("--ink", ink);
       col.dataset.role = sw.key;
-      col.tabIndex = 0;
       col.setAttribute("role", "group");
       col.setAttribute(
         "aria-label",
-        `${sw.label}: ${upper}${sw.locked ? ", locked" : ""}. Press Enter to adjust shades and hues.`,
+        `${sw.label}: ${upper}${sw.locked ? ", locked" : ""}`,
       );
 
       const roleEl = document.createElement("span");
@@ -379,15 +505,16 @@
         afterChange();
       });
 
-      const editBtn = makeButton(
-        "swatch-btn swatch-edit",
-        `Adjust ${sw.label}`,
-        "Adjust shades & hues",
-        ICON_EDIT,
+      const shadesBtn = makeButton(
+        "swatch-btn swatch-shades",
+        showingShades ? `Hide shade options for ${sw.label}` : `Show shade options for ${sw.label}`,
+        showingShades ? "Hide shade options" : "Show shade options",
+        ICON_SHADES,
       );
-      editBtn.addEventListener("click", (e) => {
+      shadesBtn.setAttribute("aria-expanded", String(showingShades));
+      shadesBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-        openEditor(index);
+        toggleShadePanel(index);
       });
 
       const copyBtn = makeButton("swatch-btn swatch-copy", `Copy ${upper}`, "Copy hex", ICON_COPY);
@@ -396,7 +523,7 @@
         copy(upper);
       });
 
-      controls.append(lockBtn, editBtn, copyBtn);
+      controls.append(lockBtn, shadesBtn, copyBtn);
 
       const info = document.createElement("div");
       info.className = "swatch-info";
@@ -416,20 +543,11 @@
       nameEl.textContent = nameFor(sw.hex);
 
       info.append(hexBtn, nameEl);
-      col.append(roleEl, controls, info);
-
-      col.addEventListener("click", (e) => {
-        if (e.target.closest("button")) {
-          return;
-        }
-        openEditor(index);
-      });
-      col.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          openEditor(index);
-        }
-      });
+      col.append(roleEl, controls);
+      if (showingShades) {
+        col.appendChild(buildShadeStack(sw, index));
+      }
+      col.appendChild(info);
 
       row.appendChild(col);
     });
@@ -446,129 +564,6 @@
     render();
     syncBrandInput();
     syncHash();
-  }
-
-  // --- per-swatch editor ----------------------------------------------
-
-  let editor = null;
-  let editorEls = {};
-  let activeIndex = -1;
-
-  function buildEditor() {
-    editor = document.createElement("div");
-    editor.className = "shade-editor";
-    editor.hidden = true;
-    editor.innerHTML =
-      '<div class="shade-backdrop" data-close></div>' +
-      '<div class="shade-card" role="dialog" aria-modal="true" aria-label="Adjust color">' +
-      '<div class="shade-head"><div><p class="shade-role"></p><p class="shade-current"></p></div>' +
-      '<button type="button" class="shade-close" aria-label="Close">&times;</button></div>' +
-      '<p class="shade-label">Shades</p><div class="shade-row" data-kind="shades"></div>' +
-      '<p class="shade-label">Hues</p><div class="shade-row" data-kind="hues"></div>' +
-      '<div class="shade-exact"><label class="exact-color"><span>Exact</span>' +
-      '<input type="color" /></label><input type="text" class="exact-hex" maxlength="7" aria-label="Hex value" /></div>' +
-      "</div>";
-    document.body.appendChild(editor);
-
-    editorEls = {
-      role: editor.querySelector(".shade-role"),
-      current: editor.querySelector(".shade-current"),
-      shades: editor.querySelector('[data-kind="shades"]'),
-      hues: editor.querySelector('[data-kind="hues"]'),
-      color: editor.querySelector(".exact-color input"),
-      hex: editor.querySelector(".exact-hex"),
-    };
-
-    editor.addEventListener("click", (e) => {
-      if (e.target.matches("[data-close]") || e.target.closest(".shade-close")) {
-        closeEditor();
-      }
-    });
-    editorEls.color.addEventListener("input", () => applyActive(editorEls.color.value));
-    editorEls.hex.addEventListener("change", () => {
-      const h = normalizeHex(editorEls.hex.value);
-      if (h) applyActive(h);
-      else refreshEditor();
-    });
-    editorEls.hex.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        const h = normalizeHex(editorEls.hex.value);
-        if (h) applyActive(h);
-      }
-    });
-  }
-
-  function fillRow(container, list) {
-    container.textContent = "";
-    list.forEach((hsl) => {
-      const hex = toHex(hsl);
-      const chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = "shade-chip";
-      chip.style.background = hex;
-      chip.title = hex.toUpperCase();
-      chip.setAttribute("aria-label", hex.toUpperCase());
-      chip.addEventListener("click", () => applyActive(hex));
-      container.appendChild(chip);
-    });
-  }
-
-  function paintEditorCurrent() {
-    const sw = swatches[activeIndex];
-    const name = nameFor(sw.hex);
-    editorEls.current.textContent = sw.hex.toUpperCase() + (name ? " · " + name : "");
-  }
-
-  function refreshEditor() {
-    const sw = swatches[activeIndex];
-    if (!sw) {
-      return;
-    }
-    const hsl = hexToHsl(sw.hex);
-    editorEls.role.textContent = sw.label;
-    paintEditorCurrent();
-    fillRow(editorEls.shades, shadesOf(hsl));
-    fillRow(editorEls.hues, huesOf(hsl));
-    editorEls.color.value = sw.hex;
-    editorEls.hex.value = sw.hex.toUpperCase();
-  }
-
-  function openEditor(index) {
-    if (!editor) {
-      buildEditor();
-    }
-    activeIndex = index;
-    editor.hidden = false;
-    document.body.classList.add("editor-open");
-    refreshEditor();
-    window.setTimeout(() => editor.querySelector(".shade-close")?.focus(), 0);
-  }
-
-  function closeEditor() {
-    if (!editor || editor.hidden) {
-      return;
-    }
-    editor.hidden = true;
-    document.body.classList.remove("editor-open");
-    const col = row.children[activeIndex];
-    activeIndex = -1;
-    col?.focus?.();
-  }
-
-  // Picking any variation pins (locks) that swatch as a deliberate choice.
-  function applyActive(hex) {
-    const h = normalizeHex(hex);
-    if (!h || activeIndex < 0) {
-      return;
-    }
-    const sw = swatches[activeIndex];
-    sw.hex = h;
-    sw.locked = true;
-    if (sw.key === "primary") {
-      rederiveFromPrimary();
-    }
-    afterChange();
-    refreshEditor();
   }
 
   // --- clipboard + toast ----------------------------------------------
@@ -608,6 +603,21 @@
     }
   }
 
+  function setCopyMenu(open, focusToggle = false) {
+    if (!copyMenuToggle || !copyMenuPanel) {
+      return;
+    }
+    copyMenuToggle.setAttribute("aria-expanded", String(open));
+    copyMenuPanel.hidden = !open;
+    if (!open && focusToggle) {
+      copyMenuToggle.focus();
+    }
+  }
+
+  function isCopyMenuOpen() {
+    return copyMenuToggle?.getAttribute("aria-expanded") === "true";
+  }
+
   function paletteText() {
     const width = Math.max(...swatches.map((s) => s.label.length)) + 2;
     return swatches.map((s) => s.label.padEnd(width, " ") + s.hex.toUpperCase()).join("\n");
@@ -634,24 +644,47 @@
   // --- wiring ----------------------------------------------------------
 
   generateBtn?.addEventListener("click", generate);
-  harmonySelect?.addEventListener("change", () => {
-    harmony = harmonySelect.value;
-    rederiveFromPrimary();
-    afterChange();
-  });
   brandColor?.addEventListener("input", () => setPrimary(brandColor.value));
   copyAllBtn?.addEventListener("click", () => copy(paletteText(), "Copied palette"));
   shareBtn?.addEventListener("click", () => copy(location.href, "Link copied"));
+  copyMenuToggle?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    setCopyMenu(!isCopyMenuOpen());
+  });
+  copyMenuPanel?.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+  copyLinkMobileBtn?.addEventListener("click", () => {
+    setCopyMenu(false);
+    copy(location.href, "Link copied");
+  });
+  copyPaletteMobileBtn?.addEventListener("click", () => {
+    setCopyMenu(false);
+    copy(paletteText(), "Copied palette");
+  });
+  document.addEventListener("click", (event) => {
+    if (isCopyMenuOpen() && copyMenu && !copyMenu.contains(event.target)) {
+      setCopyMenu(false);
+    }
+  });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && editor && !editor.hidden) {
-      closeEditor();
-      return;
+    if (event.key === "Escape") {
+      let handled = false;
+      if (activeShadeIndex >= 0) {
+        activeShadeIndex = -1;
+        render();
+        handled = true;
+      }
+      if (isCopyMenuOpen()) {
+        setCopyMenu(false, true);
+        handled = true;
+      }
+      if (handled) {
+        return;
+      }
     }
     if (event.code !== "Space" && event.key !== " ") {
-      return;
-    }
-    if (editor && !editor.hidden) {
       return;
     }
     const el = document.activeElement;

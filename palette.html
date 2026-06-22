@@ -6,7 +6,7 @@
     <title>Color Palette Studio | Admit One</title>
     <meta
       name="description"
-      content="Build a brand color palette in seconds. Generate random colors, lock the ones you like, and let the rest regenerate in harmony with them."
+      content="Build a brand color palette in seconds. Pick a primary color, lock what you like, and generate fresh matching options around it."
     />
     <link rel="icon" href="assets/logos/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,39 +33,55 @@
         </a>
       </header>
 
+      <main class="palette-stage" id="main">
+        <div class="palette-row" id="paletteRow" aria-label="Color palette"></div>
+      </main>
+
       <div class="palette-toolbar">
         <div class="toolbar-group">
           <button class="button button-gold" id="generateBtn" type="button">Generate</button>
           <label class="brand-pick">
-            Brand color
+            <span class="brand-pick-label">Brand color</span>
             <input type="color" id="brandColor" value="#2f8f5b" />
           </label>
-          <label class="harmony-pick">
-            Harmony
-            <select id="harmonySelect">
-              <option value="monochrome">Monochrome</option>
-              <option value="analogous" selected>Analogous</option>
-              <option value="complementary">Complementary</option>
-              <option value="triadic">Triadic</option>
-            </select>
-          </label>
+        </div>
+
+        <div class="toolbar-cue" aria-hidden="true">
+          <span class="toolbar-hint toolbar-hint-desktop"><kbd>Space</kbd> to generate</span>
         </div>
 
         <div class="toolbar-group is-end">
-          <span class="toolbar-hint"><kbd>Space</kbd> to generate</span>
-          <button class="button button-dark" id="copyAllBtn" type="button">Copy palette</button>
-          <button class="button button-dark" id="shareBtn" type="button">Copy link</button>
+          <button class="button button-dark copy-desktop" id="copyAllBtn" type="button">Copy palette</button>
+          <button class="button button-dark copy-desktop" id="shareBtn" type="button">Copy link</button>
+          <div class="copy-menu" id="copyMenu">
+            <button
+              class="copy-menu-toggle"
+              id="copyMenuToggle"
+              type="button"
+              aria-label="Copy options"
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-controls="copyMenuPanel"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M9 2a2 2 0 0 0-2 2v1H6a3 3 0 0 0-3 3v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-1h1a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9Zm0 2h10v11h-2V8a3 3 0 0 0-3-3H9V4ZM6 7h8a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"
+                />
+              </svg>
+            </button>
+            <div class="copy-menu-panel" id="copyMenuPanel" role="menu" hidden>
+              <button type="button" id="copyLinkMobileBtn" role="menuitem">Copy link</button>
+              <button type="button" id="copyPaletteMobileBtn" role="menuitem">Copy palette</button>
+            </div>
+          </div>
         </div>
       </div>
-
-      <main class="palette-stage" id="main">
-        <div class="palette-row" id="paletteRow" aria-label="Color palette"></div>
-      </main>
     </div>
 
     <div class="palette-toast" id="paletteToast" role="status" aria-live="polite"></div>
 
     <script src="js/color-names.js?v=1"></script>
-    <script src="js/palette.js?v=4"></script>
+    <script src="js/palette.js?v=9"></script>
   </body>
 </html>

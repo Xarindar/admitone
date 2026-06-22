@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Admit One Logo Showcase</title>
+  <desc id="desc">A graphic presentation of the Admit One logo assets with official brand colors.</desc>
+  <defs>
+    <style>
+      :root {
+        --black: #1a1710;
+        --logo-black: #1b1811;
+        --red: #b8231a;
+        --icon-red: #b72626;
+        --gold: #c8952a;
+        --warm: #fbf7ee;
+        --paper: #fffdf8;
+        --paper-2: #f1eadf;
+        --muted: #655d50;
+        --line: rgba(26, 23, 16, 0.14);
+      }
+
+      .bg { fill: var(--warm); }
+      .panel { fill: var(--paper); stroke: rgba(26, 23, 16, 0.12); stroke-width: 2; }
+      .panel-dark { fill: var(--black); }
+      .panel-red { fill: var(--red); }
+      .rule { stroke: rgba(26, 23, 16, 0.18); stroke-width: 2; }
+      .label {
+        fill: var(--muted);
+        font: 700 24px Arial, sans-serif;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      .title {
+        fill: var(--black);
+        font: 800 74px Georgia, serif;
+      }
+      .subtitle {
+        fill: var(--muted);
+        font: 400 30px Arial, sans-serif;
+      }
+      .caption {
+        fill: var(--black);
+        font: 700 28px Arial, sans-serif;
+      }
+      .meta {
+        fill: var(--muted);
+        font: 400 22px Arial, sans-serif;
+      }
+      .meta-light { fill: rgba(255, 253, 248, 0.76); }
+      .caption-light { fill: var(--paper); }
+      .hex {
+        fill: var(--black);
+        font: 700 22px Arial, sans-serif;
+      }
+      .name {
+        fill: var(--muted);
+        font: 400 19px Arial, sans-serif;
+      }
+      .swatch-border { stroke: rgba(26, 23, 16, 0.16); stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1600" height="1200"/>
+  <path d="M0 0H1600V1200H0Z" fill="none"/>
+
+  <g transform="translate(86 78)">
+    <text class="label" x="0" y="0">Logo System</text>
+    <text class="title" x="0" y="82">Admit One</text>
+    <text class="subtitle" x="4" y="132">Official logo assets and brand color palette</text>
+    <line class="rule" x1="0" y1="175" x2="1428" y2="175"/>
+  </g>
+
+  <g transform="translate(86 304)">
+    <rect class="panel" x="0" y="0" width="1428" height="250" rx="8"/>
+    <image href="logo-wordmark.svg" x="92" y="80" width="1244" height="90" preserveAspectRatio="xMidYMid meet"/>
+    <text class="caption" x="42" y="48">Primary Wordmark</text>
+    <text class="meta" x="42" y="218">Asset: logo-wordmark.svg</text>
+  </g>
+
+  <g transform="translate(86 596)">
+    <rect class="panel" x="0" y="0" width="450" height="318" rx="8"/>
+    <image href="logo-icon.svg" x="94" y="62" width="262" height="188" preserveAspectRatio="xMidYMid meet"/>
+    <text class="caption" x="34" y="44">Icon Mark</text>
+    <text class="meta" x="34" y="282">Asset: logo-icon.svg</text>
+
+    <rect class="panel-dark" x="489" y="0" width="450" height="318" rx="8"/>
+    <image href="logo-footer.svg" x="142" y="48" width="166" height="154" preserveAspectRatio="xMidYMid meet" transform="translate(489 0)"/>
+    <text class="caption-light" x="523" y="44">Footer Mark</text>
+    <text class="meta meta-light" x="523" y="282">Asset: logo-footer.svg</text>
+
+    <rect class="panel-red" x="978" y="0" width="450" height="318" rx="8"/>
+    <rect x="1130" y="64" width="146" height="146" rx="73" fill="#fffdf8"/>
+    <image href="favicon.svg" x="1166" y="88" width="74" height="102" preserveAspectRatio="xMidYMid meet"/>
+    <text class="caption-light" x="1012" y="44">Favicon</text>
+    <text class="meta meta-light" x="1012" y="282">Asset: favicon.svg</text>
+  </g>
+
+  <g transform="translate(86 980)">
+    <text class="caption" x="0" y="-28">Brand Colors</text>
+
+    <g transform="translate(0 0)">
+      <rect class="swatch-border" x="0" y="0" width="196" height="112" rx="8" fill="#1a1710"/>
+      <text class="hex" x="0" y="150">#1A1710</text>
+      <text class="name" x="0" y="181">Black</text>
+    </g>
+
+    <g transform="translate(231 0)">
+      <rect class="swatch-border" x="0" y="0" width="196" height="112" rx="8" fill="#1b1811"/>
+      <text class="hex" x="0" y="150">#1B1811</text>
+      <text class="name" x="0" y="181">Wordmark Black</text>
+    </g>
+
+    <g transform="translate(462 0)">
+      <rect class="swatch-border" x="0" y="0" width="196" height="112" rx="8" fill="#b8231a"/>
+      <text class="hex" x="0" y="150">#B8231A</text>
+      <text class="name" x="0" y="181">Red</text>
+    </g>
+
+    <g transform="translate(693 0)">
+      <rect class="swatch-border" x="0" y="0" width="196" height="112" rx="8" fill="#c8952a"/>
+      <text class="hex" x="0" y="150">#C8952A</text>
+      <text class="name" x="0" y="181">Gold</text>
+    </g>
+
+    <g transform="translate(924 0)">
+      <rect class="swatch-border" x="0" y="0" width="196" height="112" rx="8" fill="#fbf7ee"/>
+      <text class="hex" x="0" y="150">#FBF7EE</text>
+      <text class="name" x="0" y="181">Warm</text>
+    </g>
+
+    <g transform="translate(1155 0)">
+      <rect class="swatch-border" x="0" y="0" width="196" height="112" rx="8" fill="#fffdf8"/>
+      <text class="hex" x="0" y="150">#FFFDF8</text>
+      <text class="name" x="0" y="181">Paper</text>
+    </g>
+  </g>
+</svg>

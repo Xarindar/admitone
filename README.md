@@ -25,6 +25,7 @@ Admit One is being shaped as a fun, modern, clean web design studio with a small
 ├── index.html        # homepage
 ├── resources.html    # Resources hub (brand tools we hand to clients)
 ├── palette.html      # Color Palette Studio tool
+├── railway-setup-guide.html # Client guide for Railway + GitHub setup
 ├── README.md
 ├── css/              # component stylesheets, linked in order by each page
 │   ├── tokens.css    # design tokens (colors, type)
@@ -37,9 +38,11 @@ Admit One is being shaped as a fun, modern, clean web design studio with a small
 │   ├── footer.css
 │   ├── subpage.css   # shared dark header band + page intro for standalone pages
 │   ├── resources.css # Resources hub card grid
+│   ├── guide.css     # Reusable long-form client setup guide layout
 │   └── palette.css   # Color Palette Studio tool
 ├── js/
 │   ├── main.js         # header/menu + homepage scroll behaviors (safe on every page)
+│   ├── guide.js        # guide progress + copy interactions
 │   ├── palette.js      # palette generation, locking, copy, shareable URL
 │   └── color-names.js  # bundled best-of color-name list, matched locally for instant names
 └── assets/
@@ -48,8 +51,12 @@ Admit One is being shaped as a fun, modern, clean web design studio with a small
 
 ## Resources & the Color Palette Studio
 
-`resources.html` is a small hub of no-login brand tools to send clients to. The
-first tool, `palette.html`, builds a structured, site-ready **brand palette**
+`resources.html` is a small hub of setup guides and no-login brand tools to send
+clients to. The setup guide pattern uses a web-native reading page with guide
+metadata, a progress checklist, anchored sections, callouts, and related-guide
+slots so additional setup guides can be added consistently.
+
+The first tool, `palette.html`, builds a structured, site-ready **brand palette**
 from a single brand color rather than five random swatches:
 
 - **Five roles** — Primary, Accent, Muted, Text, and Background. Text and

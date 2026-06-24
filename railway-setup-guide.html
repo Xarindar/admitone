@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Railway Setup Guide | Admit One</title>
+    <meta
+      name="description"
+      content="A client-friendly setup guide for creating a Railway account, connecting GitHub, deploying a project, and inviting Admit One as a collaborator."
+    />
+    <link rel="icon" href="assets/logos/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:opsz,wght@9..144,500..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/subpage.css" />
+    <link rel="stylesheet" href="css/guide.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to guide</a>
+
+    <div class="subpage-hero guide-subpage-hero">
+      <header class="site-header">
+        <nav class="nav" aria-label="Primary navigation">
+          <div class="nav-spacer" aria-hidden="true"></div>
+
+          <a class="brand" href="index.html" aria-label="Admit One home">
+            <span class="brand-full">
+              <img src="assets/logos/logo-wordmark.svg" alt="" aria-hidden="true" />
+            </span>
+            <span class="brand-compact">
+              <img src="assets/logos/logo-icon.svg" alt="" aria-hidden="true" />
+            </span>
+          </a>
+
+          <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+            <span class="menu-mark" aria-hidden="true">
+              <span class="menu-line"></span>
+              <span class="menu-line"></span>
+              <span class="menu-line"></span>
+              <span class="menu-close-word">Close</span>
+            </span>
+          </button>
+
+          <div class="nav-links" id="nav-links">
+            <div class="nav-primary-links">
+              <a href="index.html#services">Services</a>
+              <a href="index.html#work">Work</a>
+              <a href="index.html#pricing">Pricing</a>
+              <a href="index.html#notes">Notes</a>
+              <a href="resources.html">Resources</a>
+            </div>
+            <a class="nav-cta" href="index.html#contact">Start</a>
+          </div>
+        </nav>
+      </header>
+
+      <div class="section page-intro guide-intro">
+        <p class="eyebrow">Setting things up</p>
+        <h1>Railway Setup Guide</h1>
+        <p class="lead">
+          Connect Railway to GitHub, deploy your project, and invite Admit One to collaborate.
+        </p>
+        <div class="guide-meta" aria-label="Guide details">
+          <span>Guide 2 of 2</span>
+          <span>4 steps</span>
+          <span>About 12 min</span>
+        </div>
+      </div>
+    </div>
+
+    <main id="main">
+      <section class="section guide-shell" data-guide-progress>
+        <aside class="guide-sidebar" aria-label="Guide navigation">
+          <a class="guide-back" href="resources.html">Back to resources</a>
+
+          <div class="guide-progress">
+            <div class="guide-progress-label">
+              <span>Progress</span>
+              <span data-progress-count>0 of 4 steps</span>
+            </div>
+            <div
+              class="guide-progress-track"
+              role="progressbar"
+              aria-label="Guide progress"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+              data-progress-bar
+            >
+              <span></span>
+            </div>
+          </div>
+
+          <nav class="guide-toc" aria-label="On this guide">
+            <p>On this guide</p>
+            <a href="#before-you-start">Before you start</a>
+            <a href="#create-account">Create account</a>
+            <a href="#connect-github">Connect GitHub</a>
+            <a href="#deploy-project">Deploy project</a>
+            <a href="#add-collaborator">Add collaborator</a>
+            <a href="#all-done">All done</a>
+          </nav>
+        </aside>
+
+        <article class="guide-content">
+          <section class="guide-section" id="before-you-start">
+            <p class="guide-step-kicker">Before you start</p>
+            <h2>Start with the GitHub guide complete</h2>
+            <p>
+              Railway is the platform that takes your project files from GitHub and publishes them live on
+              the internet. Think of GitHub as the filing cabinet and Railway as the display case.
+            </p>
+
+            <div class="guide-callout">
+              <strong>What you need first</strong>
+              <p>
+                Make sure you have completed Guide 1. You should already have a GitHub account and a
+                private repository set up before starting here.
+              </p>
+            </div>
+
+            <ol class="guide-plan" aria-label="Guide steps and estimated time">
+              <li>
+                <span>Step 1 - 3 min</span>
+                <strong>Create a Railway account</strong>
+              </li>
+              <li>
+                <span>Step 2 - 5 min</span>
+                <strong>Connect your GitHub account</strong>
+              </li>
+              <li>
+                <span>Step 3 - 2 min</span>
+                <strong>Deploy your project</strong>
+              </li>
+              <li>
+                <span>Step 4 - 2 min</span>
+                <strong>Add your collaborator</strong>
+              </li>
+            </ol>
+          </section>
+
+          <section class="guide-section" id="create-account">
+            <div class="guide-step-header">
+              <div>
+                <span class="guide-step-kicker">Step 1</span>
+                <h2>Create your Railway account</h2>
+                <p>Sign up at Railway using your GitHub account.</p>
+              </div>
+              <label class="guide-step-check">
+                <input type="checkbox" data-progress-step />
+                <span>Mark done</span>
+              </label>
+            </div>
+
+            <p>
+              Railway will host your project and make it visible on the internet. The easiest way to set
+              it up is by signing in with the GitHub account you just created.
+            </p>
+
+            <ol class="guide-instructions">
+              <li>Open your web browser and go to <a href="https://railway.com">railway.com</a>.</li>
+              <li>Click the large Deploy button near the top center of the page.</li>
+              <li>On the screen that appears, look for GitHub Repository in the list of options and click it.</li>
+              <li>Railway will ask you to connect your GitHub account. Click Configure GitHub App.</li>
+              <li>A GitHub sign-in window will open. Enter your GitHub username and password and sign in.</li>
+            </ol>
+
+            <div class="guide-callout">
+              <strong>What is this screen?</strong>
+              <p>
+                GitHub is asking Railway for permission to access your files. This is normal. It is how
+                the two services talk to each other.
+              </p>
+            </div>
+          </section>
+
+          <section class="guide-section" id="connect-github">
+            <div class="guide-step-header">
+              <div>
+                <span class="guide-step-kicker">Step 2</span>
+                <h2>Connect your GitHub account</h2>
+                <p>Verify your identity and grant Railway access.</p>
+              </div>
+              <label class="guide-step-check">
+                <input type="checkbox" data-progress-step />
+                <span>Mark done</span>
+              </label>
+            </div>
+
+            <p>
+              GitHub may ask you to confirm your identity by email before allowing Railway to connect.
+              Follow the prompts carefully and you will be through it quickly.
+            </p>
+
+            <ol class="guide-instructions">
+              <li>After signing in to GitHub, scroll down and click Install and Allow.</li>
+              <li>GitHub will ask you to verify your identity by email. Click Verify via Email.</li>
+              <li>Check the inbox for the email address you used when signing up for GitHub.</li>
+              <li>Copy the short verification code, paste it into the box on screen, and click Verify.</li>
+              <li>On the permissions screen, leave the option set to All Repositories and click Save.</li>
+              <li>Railway will redirect you back to its home page. That means the connection worked.</li>
+            </ol>
+
+            <div class="guide-callout">
+              <strong>Why All Repositories?</strong>
+              <p>
+                This lets Railway see your projects. It does not do anything with them unless you choose a
+                specific repository to deploy.
+              </p>
+            </div>
+          </section>
+
+          <section class="guide-section" id="deploy-project">
+            <div class="guide-step-header">
+              <div>
+                <span class="guide-step-kicker">Step 3</span>
+                <h2>Deploy your project</h2>
+                <p>Select your repository and launch it on Railway.</p>
+              </div>
+              <label class="guide-step-check">
+                <input type="checkbox" data-progress-step />
+                <span>Mark done</span>
+              </label>
+            </div>
+
+            <p>
+              Now that Railway and GitHub are connected, select the repository you created in Guide 1.
+              Railway will use that repository to put your project live on the internet.
+            </p>
+
+            <ol class="guide-instructions">
+              <li>From the Railway home page, click the Deploy button again.</li>
+              <li>Click GitHub Repository from the list of options.</li>
+              <li>You should now see a list of your GitHub repositories.</li>
+              <li>Click the repository you created in Guide 1.</li>
+              <li>Railway will begin setting up and deploying your project automatically.</li>
+            </ol>
+
+            <div class="guide-callout">
+              <strong>You are live</strong>
+              <p>
+                Once Railway finishes, your project is deployed and running. Admit One will be able to
+                see it and begin work.
+              </p>
+            </div>
+          </section>
+
+          <section class="guide-section" id="add-collaborator">
+            <div class="guide-step-header">
+              <div>
+                <span class="guide-step-kicker">Step 4</span>
+                <h2>Add your collaborator</h2>
+                <p>Invite Admit One Design Studio to your Railway project.</p>
+              </div>
+              <label class="guide-step-check">
+                <input type="checkbox" data-progress-step />
+                <span>Mark done</span>
+              </label>
+            </div>
+
+            <p>
+              The final step is to invite your designer so they can access your Railway project and get
+              to work.
+            </p>
+
+            <ol class="guide-instructions">
+              <li>From inside your Railway project, look at the bottom-right corner of the screen.</li>
+              <li>Just above your profile picture, click the Settings icon.</li>
+              <li>In the settings menu, click Members from the sidebar on the left.</li>
+              <li>Click into the Invite Member email box and type the collaborator email address below.</li>
+              <li>Leave the permission dropdown set to Can Edit.</li>
+              <li>Click Invite to send the invitation.</li>
+            </ol>
+
+            <div class="copy-box">
+              <div>
+                <span>Invite this email address</span>
+                <strong>abrahamtannenbaum@gmail.com</strong>
+              </div>
+              <button
+                class="button button-dark"
+                type="button"
+                data-copy-value="abrahamtannenbaum@gmail.com"
+                data-copy-message="Email copied"
+              >
+                Copy email
+              </button>
+            </div>
+
+            <div class="guide-callout">
+              <strong>What happens next?</strong>
+              <p>
+                Admit One will receive an email invitation from Railway. Once accepted, we will have
+                access to your project and can begin working immediately.
+              </p>
+            </div>
+          </section>
+
+          <section class="guide-section" id="all-done">
+            <p class="guide-step-kicker">All done</p>
+            <h2>Both guides complete</h2>
+            <p>
+              You have now finished both setup guides. Your GitHub repository is live, your project is
+              deployed on Railway, and Admit One has been invited to collaborate on both platforms.
+            </p>
+
+            <ul class="guide-complete-list">
+              <li><span>1</span>GitHub account created<strong>Complete</strong></li>
+              <li><span>2</span>GitHub repository created<strong>Complete</strong></li>
+              <li><span>3</span>Collaborator added on GitHub<strong>Complete</strong></li>
+              <li><span>4</span>Railway account created and GitHub connected<strong>Complete</strong></li>
+              <li><span>5</span>Project deployed on Railway<strong>Complete</strong></li>
+              <li><span>6</span>Collaborator added on Railway<strong>Complete</strong></li>
+            </ul>
+
+            <div class="guide-help">
+              <h2>Need help?</h2>
+              <p>
+                If anything does not look quite right or you get stuck, reach out to Admit One. We are
+                happy to walk through it live over a quick call.
+              </p>
+              <div class="guide-actions">
+                <a class="button button-light" href="resources.html">Back to resources</a>
+                <a class="button button-gold" href="index.html#contact">Ask for help</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="guide-section guide-related" aria-labelledby="related-guides">
+            <p class="guide-step-kicker">More setup guides</p>
+            <h2 id="related-guides">Coming next</h2>
+            <p>
+              More project setup walkthroughs will live here as they are finalized.
+            </p>
+
+            <div class="guide-related-grid">
+              <article class="guide-related-card">
+                <p class="tag">Guide 1 of 2</p>
+                <h3>GitHub Setup Guide</h3>
+                <p>Create your GitHub account, make a private repository, and invite Admit One.</p>
+                <span class="soon-pill">Coming soon</span>
+              </article>
+
+              <article class="guide-related-card">
+                <p class="tag">Launch prep</p>
+                <h3>Domain Handoff Guide</h3>
+                <p>Share domain access and DNS details so launch day is smooth.</p>
+                <span class="soon-pill">Coming soon</span>
+              </article>
+            </div>
+          </section>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <a class="brand" href="index.html" aria-label="Admit One home">
+          <span class="brand-mark">
+            <img src="assets/logos/logo-footer.svg" alt="" aria-hidden="true" />
+          </span>
+          <span class="brand-name">Admit One</span>
+        </a>
+        <p>Web design for clean launches and memorable first impressions.</p>
+        <nav aria-label="Footer navigation">
+          <a href="index.html#services">Services</a>
+          <a href="index.html#work">Work</a>
+          <a href="index.html#pricing">Pricing</a>
+          <a href="resources.html">Resources</a>
+          <a href="index.html#contact">Contact</a>
+        </nav>
+      </div>
+    </footer>
+
+    <div class="guide-toast" role="status" aria-live="polite" data-guide-toast></div>
+
+    <script src="js/main.js?v=menu-morph"></script>
+    <script src="js/guide.js?v=1"></script>
+  </body>
+</html>

@@ -227,6 +227,10 @@
   list-style: none;
 }
 
+.guide-plan-three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .guide-plan li {
   display: grid;
   gap: 18px;
@@ -432,6 +436,20 @@
   background: var(--paper);
 }
 
+a.guide-related-card {
+  color: var(--black);
+  text-decoration: none;
+  transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+a.guide-related-card:hover,
+a.guide-related-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--black);
+  box-shadow: var(--shadow);
+  outline: 0;
+}
+
 .guide-related-card .tag {
   margin: 0;
   color: var(--muted);
@@ -487,8 +505,13 @@
   transform: translate(-50%, 0);
 }
 
+.guide-mobile-progress {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .guide-progress-track span,
+  .guide-mobile-progress-light,
   .guide-toast {
     transition: none;
   }
@@ -516,9 +539,17 @@
   .guide-plan {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .guide-plan-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 760px) {
+  body.has-guide-mobile-progress {
+    padding-bottom: 94px;
+  }
+
   .guide-meta span {
     min-height: 30px;
     font-size: 0.7rem;
@@ -559,6 +590,7 @@
   }
 
   .guide-plan,
+  .guide-plan-three,
   .guide-related-grid {
     grid-template-columns: 1fr;
   }
@@ -579,6 +611,79 @@
 
   .guide-complete-list strong {
     grid-column: 2;
+  }
+
+  .guide-mobile-progress {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 70;
+    display: grid;
+    grid-template-columns: minmax(112px, auto) minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid rgba(251, 247, 238, 0.18);
+    border-radius: var(--radius);
+    background: rgba(26, 23, 16, 0.94);
+    box-shadow: var(--shadow);
+    color: var(--warm);
+    backdrop-filter: blur(14px);
+  }
+
+  .guide-mobile-progress-copy {
+    display: grid;
+    gap: 2px;
+  }
+
+  .guide-mobile-progress-copy span {
+    color: rgba(251, 247, 238, 0.62);
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .guide-mobile-progress-copy strong {
+    color: var(--warm);
+    font-size: 0.9rem;
+    line-height: 1.1;
+  }
+
+  .guide-mobile-progress-lights {
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(9px, 3vw, 14px);
+    padding: 8px 10px;
+    border: 1px solid rgba(200, 149, 42, 0.28);
+    border-radius: 999px;
+    background:
+      linear-gradient(180deg, rgba(251, 247, 238, 0.08), rgba(251, 247, 238, 0)),
+      rgba(251, 247, 238, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(26, 23, 16, 0.34);
+  }
+
+  .guide-mobile-progress-light {
+    width: 13px;
+    height: 13px;
+    display: block;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--marquee-bulb-off);
+    box-shadow: var(--marquee-bulb-off-shadow);
+    opacity: 0.62;
+    transform: scale(0.92);
+    transition: background 180ms ease, box-shadow 180ms ease, opacity 180ms ease, transform 180ms ease;
+  }
+
+  .guide-mobile-progress-light.is-complete {
+    background: var(--marquee-bulb-on);
+    box-shadow: var(--marquee-bulb-on-shadow);
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

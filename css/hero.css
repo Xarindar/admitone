@@ -30,6 +30,11 @@
   --bulb-size: clamp(4px, 0.7vw, 6px);
   --bulb-gap: clamp(22px, 3vw, 30px);
   --bulb-inset: clamp(12px, 1.8vw, 18px);
+  --marquee-bulb-rail: radial-gradient(
+    circle,
+    var(--marquee-bulb-lit) 0 var(--bulb-size),
+    var(--marquee-bulb-clear) calc(var(--bulb-size) + 0.7px)
+  );
   position: absolute;
   inset: 88px 26px 26px;
   z-index: 4;
@@ -55,15 +60,15 @@
   position: absolute;
   z-index: 2;
   pointer-events: none;
-  filter: drop-shadow(0 0 4px rgba(255, 213, 138, 0.5));
+  filter: drop-shadow(0 0 4px var(--marquee-bulb-glow-soft));
 }
 
 /* Split rails keep the corner bulbs from stacking or clipping. */
 .hero-marquee::before {
   inset: var(--bulb-inset);
   background-image:
-    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)),
-    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px));
+    var(--marquee-bulb-rail),
+    var(--marquee-bulb-rail);
   background-repeat: space no-repeat, space no-repeat;
   background-position: left top, left bottom;
   background-size:
@@ -74,8 +79,8 @@
 .hero-marquee::after {
   inset: calc(var(--bulb-inset) + (var(--bulb-gap) * 0.7)) var(--bulb-inset);
   background-image:
-    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px)),
-    radial-gradient(circle, #ffe7b4 0 var(--bulb-size), rgba(255, 231, 180, 0) calc(var(--bulb-size) + 0.7px));
+    var(--marquee-bulb-rail),
+    var(--marquee-bulb-rail);
   background-repeat: no-repeat space, no-repeat space;
   background-position: left top, right top;
   background-size:

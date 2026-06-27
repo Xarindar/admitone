@@ -25,6 +25,7 @@ Admit One is being shaped as a fun, modern, clean web design studio with a small
 ├── index.html        # homepage
 ├── resources.html    # Resources hub (brand tools we hand to clients)
 ├── palette.html      # Color Palette Studio tool
+├── github-setup-guide.html # Client guide for GitHub account + repository setup
 ├── railway-setup-guide.html # Client guide for Railway + GitHub setup
 ├── README.md
 ├── css/              # component stylesheets, linked in order by each page

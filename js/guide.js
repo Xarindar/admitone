@@ -5,6 +5,35 @@ const progressCount = document.querySelector("[data-progress-count]");
 const copyButtons = document.querySelectorAll("[data-copy-value]");
 const guideToast = document.querySelector("[data-guide-toast]");
 let guideToastTimer = null;
+let mobileProgressCount = null;
+let mobileProgressLights = [];
+
+function createMobileProgressFooter() {
+  if (!guideRoot || !progressSteps.length) {
+    return;
+  }
+
+  const footer = document.createElement("div");
+  footer.className = "guide-mobile-progress";
+  footer.setAttribute("role", "region");
+  footer.setAttribute("aria-label", "Guide progress");
+  const stepLights = progressSteps
+    .map((_, index) => `<span class="guide-mobile-progress-light" style="--light-index: ${index}"></span>`)
+    .join("");
+
+  footer.innerHTML = `
+    <div class="guide-mobile-progress-copy">
+      <span>Progress</span>
+      <strong data-mobile-progress-count>0 of ${progressSteps.length} steps</strong>
+    </div>
+    <div class="guide-mobile-progress-lights" aria-hidden="true">${stepLights}</div>
+  `;
+
+  document.body.append(footer);
+  document.body.classList.add("has-guide-mobile-progress");
+  mobileProgressCount = footer.querySelector("[data-mobile-progress-count]");
+  mobileProgressLights = Array.from(footer.querySelectorAll(".guide-mobile-progress-light"));
+}
 
 function showGuideToast(message) {
   if (!guideToast) {
@@ -34,6 +63,14 @@ function updateGuideProgress() {
   if (progressCount) {
     progressCount.textContent = `${completed} of ${total} steps`;
   }
+
+  if (mobileProgressCount) {
+    mobileProgressCount.textContent = `${completed} of ${total} steps`;
+  }
+
+  mobileProgressLights.forEach((light, index) => {
+    light.classList.toggle("is-complete", index < completed);
+  });
 }
 
 async function copyText(value) {
@@ -78,4 +115,5 @@ copyButtons.forEach((button) => {
   });
 });
 
+createMobileProgressFooter();
 updateGuideProgress();

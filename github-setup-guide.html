@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>GitHub Setup Guide | Admit One</title>
+    <title>Set up GitHub | Admit One Help Center</title>
     <meta
       name="description"
-      content="A client-friendly setup guide for creating a GitHub account, starting a private repository, and inviting Admit One as a collaborator."
+      content="A client-friendly walkthrough for creating a GitHub account, starting a private repository, and inviting Admit One as a collaborator."
     />
     <link rel="icon" href="assets/logos/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/subpage.css" />
-    <link rel="stylesheet" href="css/guide.css?v=marquee-lights" />
+    <link rel="stylesheet" href="css/guide.css?v=help-center" />
     <link rel="stylesheet" href="css/footer.css" />
   </head>
   <body>
@@ -54,35 +54,41 @@
               <a href="index.html#work">Work</a>
               <a href="index.html#pricing">Pricing</a>
               <a href="index.html#notes">Notes</a>
-              <a href="resources.html">Resources</a>
+              <a href="resources.html">Help</a>
             </div>
             <a class="nav-cta" href="index.html#contact">Start</a>
           </div>
         </nav>
       </header>
 
-      <div class="section page-intro guide-intro">
-        <p class="eyebrow">Setting things up</p>
-        <h1>GitHub Setup Guide</h1>
+      <div class="section guide-intro">
+        <nav class="guide-crumbs" aria-label="Breadcrumb">
+          <a href="resources.html">Help Center</a>
+          <span aria-hidden="true">/</span>
+          <a href="resources.html#setup-guides">Setup guides</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">GitHub</span>
+        </nav>
+        <h1>Set up GitHub</h1>
         <p class="lead">
-          Create your GitHub account, set up a private repository, and invite Admit One to collaborate.
+          Create your account, start a private repository for the project, and invite Admit One to
+          collaborate.
         </p>
         <div class="guide-meta" aria-label="Guide details">
-          <span>Guide 1 of 2</span>
+          <span class="guide-meta-no">Guide No. 01</span>
           <span>3 steps</span>
-          <span>About 15-20 min</span>
+          <span>15&ndash;20 min</span>
+          <span>Updated July 2026</span>
         </div>
       </div>
     </div>
 
     <main id="main">
-      <section class="section guide-shell" data-guide-progress>
+      <section class="section guide-shell" data-guide-progress data-guide-key="github-setup">
         <aside class="guide-sidebar" aria-label="Guide navigation">
-          <a class="guide-back" href="resources.html">Back to resources</a>
-
           <div class="guide-progress">
             <div class="guide-progress-label">
-              <span>Progress</span>
+              <span>Your progress</span>
               <span data-progress-count>0 of 3 steps</span>
             </div>
             <div
@@ -96,16 +102,23 @@
             >
               <span></span>
             </div>
+            <p class="guide-progress-hint">Saved in this browser, so you can leave and come back.</p>
           </div>
 
-          <nav class="guide-toc" aria-label="On this guide">
-            <p>On this guide</p>
+          <nav class="guide-toc" aria-label="On this page" data-guide-toc>
+            <p>On this page</p>
             <a href="#before-you-start">Before you start</a>
-            <a href="#create-account">Create account</a>
-            <a href="#create-repository">Create repository</a>
-            <a href="#add-collaborator">Add collaborator</a>
+            <a href="#create-account">1. Create account</a>
+            <a href="#create-repository">2. Create repository</a>
+            <a href="#add-collaborator">3. Add collaborator</a>
             <a href="#all-done">All done</a>
           </nav>
+
+          <p class="guide-sidebar-help">
+            Stuck on a step?
+            <a href="mailto:hello@admitone.studio?subject=Stuck%20on%20the%20GitHub%20guide">Email us</a>
+            and a person answers.
+          </p>
         </aside>
 
         <article class="guide-content">
@@ -120,22 +133,22 @@
             <div class="guide-callout">
               <strong>What you need</strong>
               <p>
-                You only need an internet connection, a web browser, and about 15-20 minutes. Chrome,
+                An internet connection, a web browser, and about 15&ndash;20 minutes. Chrome,
                 Safari, and Firefox all work fine.
               </p>
             </div>
 
             <ol class="guide-plan guide-plan-three" aria-label="Guide steps and estimated time">
               <li>
-                <span>Step 1 - 5 min</span>
+                <span>Step 1 &middot; 5 min</span>
                 <strong>Create a GitHub account</strong>
               </li>
               <li>
-                <span>Step 2 - 5 min</span>
+                <span>Step 2 &middot; 5 min</span>
                 <strong>Create a repository</strong>
               </li>
               <li>
-                <span>Step 3 - 3 min</span>
+                <span>Step 3 &middot; 3 min</span>
                 <strong>Add your collaborator</strong>
               </li>
             </ol>
@@ -235,10 +248,10 @@
             </div>
 
             <div class="guide-callout">
-              <strong>Pro tip</strong>
+              <strong>Keep it private</strong>
               <p>
-                Keep your repository private for now. Your collaborator can still access it once you add
-                them in Step 3.
+                Private is the right setting. Your collaborator can still access the repository once
+                you add them in Step 3.
               </p>
             </div>
           </section>
@@ -322,10 +335,10 @@
 
           <section class="guide-section" id="all-done">
             <p class="guide-step-kicker">All done</p>
-            <h2>You have completed setup</h2>
+            <h2>That's GitHub handled</h2>
             <p>
-              You now have a GitHub account, a private repository, and your designer has been invited to
-              collaborate.
+              You now have a GitHub account, a private repository, and your designer has been invited
+              to collaborate. The Railway guide picks up exactly here.
             </p>
 
             <ul class="guide-complete-list">
@@ -334,42 +347,34 @@
               <li><span>3</span>Collaborator added on GitHub<strong>Complete</strong></li>
             </ul>
 
-            <div class="guide-help">
-              <h2>Need help?</h2>
-              <p>
-                If anything does not look quite right or you get stuck, reach out to Admit One. We are
-                happy to walk through it live over a quick call.
-              </p>
-              <div class="guide-actions">
-                <a class="button button-light" href="resources.html">Back to resources</a>
-                <a class="button button-gold" href="index.html#contact">Ask for help</a>
+            <div class="guide-feedback" data-guide-feedback>
+              <p class="guide-feedback-question">Did this guide get you all the way there?</p>
+              <div class="guide-feedback-actions">
+                <button class="button button-dark" type="button" data-feedback-yes>Yes, all set</button>
+                <button class="button button-light" type="button" data-feedback-no>Not quite</button>
               </div>
+              <p class="guide-feedback-note" hidden data-feedback-yes-note>
+                Good to hear. The Railway guide is next when you're ready.
+              </p>
+              <p class="guide-feedback-note" hidden data-feedback-no-note>
+                Sorry about that.
+                <a href="mailto:hello@admitone.studio?subject=The%20GitHub%20guide%20lost%20me">
+                  Tell us where it lost you</a>
+                &mdash; we'll get you unstuck and fix the guide for the next person.
+              </p>
             </div>
           </section>
 
-          <section class="guide-section guide-related" aria-labelledby="related-guides">
-            <p class="guide-step-kicker">More setup guides</p>
-            <h2 id="related-guides">Next guide</h2>
-            <p>
-              After GitHub is ready, Railway is the next setup step for deploying your project.
-            </p>
-
-            <div class="guide-related-grid">
-              <a class="guide-related-card" href="railway-setup-guide.html">
-                <p class="tag">Guide 2 of 2</p>
-                <h3>Railway Setup Guide</h3>
-                <p>Create a Railway account, connect GitHub, deploy your project, and invite Admit One.</p>
-                <span class="soon-pill">Open guide</span>
-              </a>
-
-              <article class="guide-related-card">
-                <p class="tag">Launch prep</p>
-                <h3>Domain Handoff Guide</h3>
-                <p>Share domain access and DNS details so launch day is smooth.</p>
-                <span class="soon-pill">Coming soon</span>
-              </article>
-            </div>
-          </section>
+          <nav class="guide-pagination" aria-label="More guides">
+            <a class="guide-page-link is-prev" href="resources.html">
+              <span>Back to</span>
+              <strong>Help Center</strong>
+            </a>
+            <a class="guide-page-link is-next" href="railway-setup-guide.html">
+              <span>Next guide</span>
+              <strong>Set up Railway</strong>
+            </a>
+          </nav>
         </article>
       </section>
     </main>
@@ -387,7 +392,7 @@
           <a href="index.html#services">Services</a>
           <a href="index.html#work">Work</a>
           <a href="index.html#pricing">Pricing</a>
-          <a href="resources.html">Resources</a>
+          <a href="resources.html">Help Center</a>
           <a href="index.html#contact">Contact</a>
         </nav>
       </div>
@@ -396,6 +401,6 @@
     <div class="guide-toast" role="status" aria-live="polite" data-guide-toast></div>
 
     <script src="js/main.js?v=menu-morph"></script>
-    <script src="js/guide.js?v=marquee-lights"></script>
+    <script src="js/guide.js?v=help-center"></script>
   </body>
 </html>

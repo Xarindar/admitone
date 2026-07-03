@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Railway Setup Guide | Admit One</title>
+    <title>Railway Setup Guide | Admit One Help Center</title>
     <meta
       name="description"
       content="A client-friendly setup guide for creating a Railway account, connecting GitHub, deploying a project, and inviting Admit One as a collaborator."
@@ -19,13 +19,13 @@
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/subpage.css" />
-    <link rel="stylesheet" href="css/guide.css?v=marquee-lights" />
+    <link rel="stylesheet" href="css/help-center.css?v=help-center" />
     <link rel="stylesheet" href="css/footer.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to guide</a>
 
-    <div class="subpage-hero guide-subpage-hero">
+    <div class="subpage-hero help-article-band">
       <header class="site-header">
         <nav class="nav" aria-label="Primary navigation">
           <div class="nav-spacer" aria-hidden="true"></div>
@@ -60,317 +60,405 @@
           </div>
         </nav>
       </header>
+    </div>
 
-      <div class="section page-intro guide-intro">
-        <p class="eyebrow">Setting things up</p>
-        <h1>Railway Setup Guide</h1>
-        <p class="lead">
-          Connect Railway to GitHub, deploy your project, and invite Admit One to collaborate.
-        </p>
-        <div class="guide-meta" aria-label="Guide details">
-          <span>Guide 2 of 2</span>
-          <span>4 steps</span>
-          <span>About 12 min</span>
-        </div>
-      </div>
+    <div class="help-breadcrumb-bar">
+      <nav class="help-breadcrumbs" aria-label="Breadcrumb">
+        <a href="resources.html">Help Center</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <a href="resources.html">Setting things up</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <span aria-current="page">Railway Setup Guide</span>
+      </nav>
     </div>
 
     <main id="main">
-      <section class="section guide-shell" data-guide-progress>
-        <aside class="guide-sidebar" aria-label="Guide navigation">
-          <a class="guide-back" href="resources.html">Back to resources</a>
+      <div class="section help-shell">
+        <aside class="help-sidebar" aria-label="Help Center navigation">
+          <details class="help-sidebar-browse" open>
+            <summary>Browse the Help Center</summary>
+            <div class="help-sidebar-browse-body">
+              <form class="help-search" data-help-search role="search" aria-label="Search the help center">
+                <div class="help-search-field">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-3.5-3.5" />
+                  </svg>
+                  <input
+                    type="search"
+                    data-help-search-input
+                    placeholder="Search&hellip;"
+                    aria-label="Search guides and tools"
+                    autocomplete="off"
+                  />
+                </div>
+                <ul class="help-search-results" data-help-search-results role="listbox" aria-label="Search results" hidden></ul>
+              </form>
 
-          <div class="guide-progress">
-            <div class="guide-progress-label">
-              <span>Progress</span>
-              <span data-progress-count>0 of 4 steps</span>
+              <nav class="help-nav-group" aria-label="Setting things up">
+                <p>Setting things up</p>
+                <a href="github-setup-guide.html">GitHub setup</a>
+                <a href="railway-setup-guide.html" aria-current="page">Railway deploy</a>
+                <span class="help-nav-soon">Domain handoff <small>Soon</small></span>
+              </nav>
+
+              <nav class="help-nav-group" aria-label="Brand tools">
+                <p>Brand tools</p>
+                <a href="palette.html">Color Palette Studio</a>
+                <span class="help-nav-soon">Type pairing <small>Soon</small></span>
+                <span class="help-nav-soon">Contrast checker <small>Soon</small></span>
+                <span class="help-nav-soon">Logo export <small>Soon</small></span>
+              </nav>
             </div>
-            <div
-              class="guide-progress-track"
-              role="progressbar"
-              aria-label="Guide progress"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              aria-valuenow="0"
-              data-progress-bar
-            >
-              <span></span>
-            </div>
+          </details>
+
+          <div class="help-sidebar-contact">
+            <p>Stuck on a step? We are happy to walk through it live.</p>
+            <a href="index.html#contact">Contact Admit One</a>
           </div>
-
-          <nav class="guide-toc" aria-label="On this guide">
-            <p>On this guide</p>
-            <a href="#before-you-start">Before you start</a>
-            <a href="#create-account">Create account</a>
-            <a href="#connect-github">Connect GitHub</a>
-            <a href="#deploy-project">Deploy project</a>
-            <a href="#add-collaborator">Add collaborator</a>
-            <a href="#all-done">All done</a>
-          </nav>
         </aside>
 
-        <article class="guide-content">
-          <section class="guide-section" id="before-you-start">
-            <p class="guide-step-kicker">Before you start</p>
-            <h2>Start with the GitHub guide complete</h2>
-            <p>
-              Railway is the platform that takes your project files from GitHub and publishes them live on
-              the internet. Think of GitHub as the filing cabinet and Railway as the display case.
+        <article class="help-article" data-help-article="railway-setup">
+          <header class="help-article-header">
+            <p class="eyebrow">Setting things up</p>
+            <h1>Railway Setup Guide</h1>
+            <p class="help-article-lead">
+              Connect Railway to GitHub, deploy your project, and invite Admit One to collaborate.
             </p>
-
-            <div class="guide-callout">
-              <strong>What you need first</strong>
-              <p>
-                Make sure you have completed Guide 1. You should already have a GitHub account and a
-                private repository set up before starting here.
-              </p>
+            <div class="help-article-chips" aria-label="Guide details">
+              <span>4 steps</span>
+              <span>About 12 min</span>
+              <span>Needs the GitHub guide first</span>
             </div>
 
-            <ol class="guide-plan" aria-label="Guide steps and estimated time">
-              <li>
-                <span>Step 1 - 3 min</span>
-                <strong>Create a Railway account</strong>
-              </li>
-              <li>
-                <span>Step 2 - 5 min</span>
-                <strong>Connect your GitHub account</strong>
-              </li>
-              <li>
-                <span>Step 3 - 2 min</span>
-                <strong>Deploy your project</strong>
-              </li>
-              <li>
-                <span>Step 4 - 2 min</span>
-                <strong>Add your collaborator</strong>
-              </li>
-            </ol>
-          </section>
-
-          <section class="guide-section" id="create-account">
-            <div class="guide-step-header">
-              <div>
-                <span class="guide-step-kicker">Step 1</span>
-                <h2>Create your Railway account</h2>
-                <p>Sign up at Railway using the GitHub account that owns your project.</p>
+            <div class="help-progress-card">
+              <div class="help-progress-label">
+                <span>Your progress &middot; <span data-progress-count>0 of 4 steps</span></span>
+                <button type="button" data-progress-reset hidden>Start over</button>
               </div>
-              <label class="guide-step-check">
-                <input type="checkbox" data-progress-step />
-                <span>Mark done</span>
-              </label>
-            </div>
-
-            <p>
-              Railway will host your project and make it visible on the internet. The current signup
-              flow starts from Railway's sign-in screen and uses GitHub to create your Railway account.
-            </p>
-
-            <ol class="guide-instructions">
-              <li>Open your web browser and go to <a href="https://railway.com">railway.com</a>.</li>
-              <li>Click Sign in in the top-right corner of the page.</li>
-              <li>In the Railway sign-in window, click Continue with GitHub.</li>
-              <li>
-                GitHub will open a page that says Sign in to GitHub to continue to Railway App.
-              </li>
-              <li>Enter your GitHub username or email address and your GitHub password.</li>
-              <li>Click Sign in.</li>
-              <li>Complete any GitHub security prompts, such as two-factor authentication or a passkey.</li>
-              <li>
-                If GitHub asks you to authorize Railway App, review the screen and click Authorize
-                Railway App.
-              </li>
-              <li>
-                After GitHub sends you back to Railway, your Railway account has been created and you
-                should be signed in.
-              </li>
-            </ol>
-
-            <div class="guide-callout">
-              <strong>Why GitHub opens</strong>
-              <p>
-                GitHub is confirming that Railway can use your GitHub account to sign you in. This is
-                normal, and it keeps the Railway account tied to the same GitHub account that owns your
-                project files.
-              </p>
-            </div>
-          </section>
-
-          <section class="guide-section" id="connect-github">
-            <div class="guide-step-header">
-              <div>
-                <span class="guide-step-kicker">Step 2</span>
-                <h2>Connect your GitHub account</h2>
-                <p>Verify your identity and grant Railway access.</p>
-              </div>
-              <label class="guide-step-check">
-                <input type="checkbox" data-progress-step />
-                <span>Mark done</span>
-              </label>
-            </div>
-
-            <p>
-              GitHub may ask you to confirm your identity by email before allowing Railway to connect.
-              Follow the prompts carefully and you will be through it quickly.
-            </p>
-
-            <ol class="guide-instructions">
-              <li>After signing in to GitHub, scroll down and click Install and Allow.</li>
-              <li>GitHub will ask you to verify your identity by email. Click Verify via Email.</li>
-              <li>Check the inbox for the email address you used when signing up for GitHub.</li>
-              <li>Copy the short verification code, paste it into the box on screen, and click Verify.</li>
-              <li>On the permissions screen, leave the option set to All Repositories and click Save.</li>
-              <li>Railway will redirect you back to its home page. That means the connection worked.</li>
-            </ol>
-
-            <div class="guide-callout">
-              <strong>Why All Repositories?</strong>
-              <p>
-                This lets Railway see your projects. It does not do anything with them unless you choose a
-                specific repository to deploy.
-              </p>
-            </div>
-          </section>
-
-          <section class="guide-section" id="deploy-project">
-            <div class="guide-step-header">
-              <div>
-                <span class="guide-step-kicker">Step 3</span>
-                <h2>Deploy your project</h2>
-                <p>Select your repository and launch it on Railway.</p>
-              </div>
-              <label class="guide-step-check">
-                <input type="checkbox" data-progress-step />
-                <span>Mark done</span>
-              </label>
-            </div>
-
-            <p>
-              Now that Railway and GitHub are connected, select the repository you created in Guide 1.
-              Railway will use that repository to put your project live on the internet.
-            </p>
-
-            <ol class="guide-instructions">
-              <li>From the Railway home page, click the Deploy button again.</li>
-              <li>Click GitHub Repository from the list of options.</li>
-              <li>You should now see a list of your GitHub repositories.</li>
-              <li>Click the repository you created in Guide 1.</li>
-              <li>Railway will begin setting up and deploying your project automatically.</li>
-            </ol>
-
-            <div class="guide-callout">
-              <strong>You are live</strong>
-              <p>
-                Once Railway finishes, your project is deployed and running. Admit One will be able to
-                see it and begin work.
-              </p>
-            </div>
-          </section>
-
-          <section class="guide-section" id="add-collaborator">
-            <div class="guide-step-header">
-              <div>
-                <span class="guide-step-kicker">Step 4</span>
-                <h2>Add your collaborator</h2>
-                <p>Invite Admit One Design Studio to your Railway project.</p>
-              </div>
-              <label class="guide-step-check">
-                <input type="checkbox" data-progress-step />
-                <span>Mark done</span>
-              </label>
-            </div>
-
-            <p>
-              The final step is to invite your designer so they can access your Railway project and get
-              to work.
-            </p>
-
-            <ol class="guide-instructions">
-              <li>From inside your Railway project, look at the bottom-right corner of the screen.</li>
-              <li>Just above your profile picture, click the Settings icon.</li>
-              <li>In the settings menu, click Members from the sidebar on the left.</li>
-              <li>Click into the Invite Member email box and type the collaborator email address below.</li>
-              <li>Leave the permission dropdown set to Can Edit.</li>
-              <li>Click Invite to send the invitation.</li>
-            </ol>
-
-            <div class="copy-box">
-              <div>
-                <span>Invite this email address</span>
-                <strong>abrahamtannenbaum@gmail.com</strong>
-              </div>
-              <button
-                class="button button-dark"
-                type="button"
-                data-copy-value="abrahamtannenbaum@gmail.com"
-                data-copy-message="Email copied"
+              <div
+                class="help-progress-track"
+                role="progressbar"
+                aria-label="Guide progress"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                data-progress-bar
               >
-                Copy email
-              </button>
+                <span></span>
+              </div>
+              <p class="help-progress-hint">
+                Mark each step done as you go. Progress saves in this browser, so you can leave and
+                pick up where you stopped.
+              </p>
             </div>
+          </header>
 
-            <div class="guide-callout">
-              <strong>What happens next?</strong>
+          <section class="help-section" id="before-you-start">
+            <h2>Before you start</h2>
+            <p>
+              Railway is the platform that takes your project files from GitHub and publishes them
+              live on the internet. Think of GitHub as the filing cabinet and Railway as the display
+              case.
+            </p>
+
+            <div class="help-callout">
+              <strong>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 3.5 10.9c-.7.5-1 1.3-1 2.1h-5c0-.8-.3-1.6-1-2.1A6 6 0 0 1 12 3Z" />
+                </svg>
+                What you need first
+              </strong>
               <p>
-                Admit One will receive an email invitation from Railway. Once accepted, we will have
-                access to your project and can begin working immediately.
+                Make sure you have completed the
+                <a href="github-setup-guide.html">GitHub Setup Guide</a>. You should already have a
+                GitHub account and a private repository before starting here.
               </p>
             </div>
           </section>
 
-          <section class="guide-section" id="all-done">
-            <p class="guide-step-kicker">All done</p>
-            <h2>Both guides complete</h2>
+          <section class="help-step" id="create-account">
+            <div class="help-step-head">
+              <span class="help-step-num" aria-hidden="true">1</span>
+              <div>
+                <h2>Create your Railway account</h2>
+                <p>Sign up at Railway using your GitHub account &mdash; about 3 minutes.</p>
+              </div>
+              <label class="help-step-check">
+                <input type="checkbox" value="create-account" data-progress-step />
+                <span>Mark done</span>
+              </label>
+            </div>
+
+            <div class="help-step-body">
+              <p>
+                Railway will host your project and make it visible on the internet. The current signup
+                flow starts from Railway's sign-in screen and uses GitHub to create your Railway
+                account.
+              </p>
+
+              <ol class="help-instructions">
+                <li>Open your web browser and go to <a href="https://railway.com">railway.com</a>.</li>
+                <li>Click Sign in in the top-right corner of the page.</li>
+                <li>In the Railway sign-in window, click Continue with GitHub.</li>
+                <li>GitHub will open a page that says Sign in to GitHub to continue to Railway App.</li>
+                <li>Enter your GitHub username or email address and your GitHub password.</li>
+                <li>Click Sign in.</li>
+                <li>Complete any GitHub security prompts, such as two-factor authentication or a passkey.</li>
+                <li>
+                  If GitHub asks you to authorize Railway App, review the screen and click Authorize
+                  Railway App.
+                </li>
+                <li>
+                  After GitHub sends you back to Railway, your Railway account has been created and
+                  you should be signed in.
+                </li>
+              </ol>
+
+              <div class="help-callout">
+                <strong>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 3.5 10.9c-.7.5-1 1.3-1 2.1h-5c0-.8-.3-1.6-1-2.1A6 6 0 0 1 12 3Z" />
+                  </svg>
+                  Why GitHub opens
+                </strong>
+                <p>
+                  GitHub is confirming that Railway can use your GitHub account to sign you in. This is
+                  normal, and it keeps the Railway account tied to the same GitHub account that owns
+                  your project files.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="help-step" id="connect-github">
+            <div class="help-step-head">
+              <span class="help-step-num" aria-hidden="true">2</span>
+              <div>
+                <h2>Connect your GitHub account</h2>
+                <p>Verify your identity and grant Railway access &mdash; about 5 minutes.</p>
+              </div>
+              <label class="help-step-check">
+                <input type="checkbox" value="connect-github" data-progress-step />
+                <span>Mark done</span>
+              </label>
+            </div>
+
+            <div class="help-step-body">
+              <p>
+                GitHub may ask you to confirm your identity by email before allowing Railway to
+                connect. Follow the prompts carefully and you will be through it quickly.
+              </p>
+
+              <ol class="help-instructions">
+                <li>After signing in to GitHub, scroll down and click Install and Allow.</li>
+                <li>GitHub will ask you to verify your identity by email. Click Verify via Email.</li>
+                <li>Check the inbox for the email address you used when signing up for GitHub.</li>
+                <li>Copy the short verification code, paste it into the box on screen, and click Verify.</li>
+                <li>On the permissions screen, leave the option set to All Repositories and click Save.</li>
+                <li>Railway will redirect you back to its home page. That means the connection worked.</li>
+              </ol>
+
+              <div class="help-callout">
+                <strong>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 3.5 10.9c-.7.5-1 1.3-1 2.1h-5c0-.8-.3-1.6-1-2.1A6 6 0 0 1 12 3Z" />
+                  </svg>
+                  Why All Repositories?
+                </strong>
+                <p>
+                  This lets Railway see your projects. It does not do anything with them unless you
+                  choose a specific repository to deploy.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="help-step" id="deploy-project">
+            <div class="help-step-head">
+              <span class="help-step-num" aria-hidden="true">3</span>
+              <div>
+                <h2>Deploy your project</h2>
+                <p>Select your repository and launch it on Railway &mdash; about 2 minutes.</p>
+              </div>
+              <label class="help-step-check">
+                <input type="checkbox" value="deploy-project" data-progress-step />
+                <span>Mark done</span>
+              </label>
+            </div>
+
+            <div class="help-step-body">
+              <p>
+                Now that Railway and GitHub are connected, select the repository you created in the
+                GitHub guide. Railway will use that repository to put your project live on the
+                internet.
+              </p>
+
+              <ol class="help-instructions">
+                <li>From the Railway home page, click the Deploy button again.</li>
+                <li>Click GitHub Repository from the list of options.</li>
+                <li>You should now see a list of your GitHub repositories.</li>
+                <li>Click the repository you created in the GitHub guide.</li>
+                <li>Railway will begin setting up and deploying your project automatically.</li>
+              </ol>
+
+              <div class="help-callout is-check">
+                <strong>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+                  </svg>
+                  You are live
+                </strong>
+                <p>
+                  Once Railway finishes, your project is deployed and running. Admit One will be able
+                  to see it and begin work.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="help-step" id="add-collaborator">
+            <div class="help-step-head">
+              <span class="help-step-num" aria-hidden="true">4</span>
+              <div>
+                <h2>Add your collaborator</h2>
+                <p>Invite Admit One Design Studio to your Railway project &mdash; about 2 minutes.</p>
+              </div>
+              <label class="help-step-check">
+                <input type="checkbox" value="add-collaborator" data-progress-step />
+                <span>Mark done</span>
+              </label>
+            </div>
+
+            <div class="help-step-body">
+              <p>
+                The final step is to invite your designer so they can access your Railway project and
+                get to work.
+              </p>
+
+              <ol class="help-instructions">
+                <li>From inside your Railway project, look at the bottom-right corner of the screen.</li>
+                <li>Just above your profile picture, click the Settings icon.</li>
+                <li>In the settings menu, click Members from the sidebar on the left.</li>
+                <li>Click into the Invite Member email box and type the collaborator email address below.</li>
+                <li>Leave the permission dropdown set to Can Edit.</li>
+                <li>Click Invite to send the invitation.</li>
+              </ol>
+
+              <div class="help-copy-box">
+                <div>
+                  <span>Invite this email address</span>
+                  <strong>abrahamtannenbaum@gmail.com</strong>
+                </div>
+                <button
+                  class="button button-dark"
+                  type="button"
+                  data-copy-value="abrahamtannenbaum@gmail.com"
+                  data-copy-message="Email copied"
+                >
+                  Copy email
+                </button>
+              </div>
+
+              <div class="help-callout">
+                <strong>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 3.5 10.9c-.7.5-1 1.3-1 2.1h-5c0-.8-.3-1.6-1-2.1A6 6 0 0 1 12 3Z" />
+                  </svg>
+                  What happens next
+                </strong>
+                <p>
+                  Admit One will receive an email invitation from Railway. Once accepted, we will have
+                  access to your project and can begin working immediately.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="help-section" id="all-done">
+            <h2>All done</h2>
             <p>
               You have now finished both setup guides. Your GitHub repository is live, your project is
               deployed on Railway, and Admit One has been invited to collaborate on both platforms.
             </p>
 
-            <ul class="guide-complete-list">
-              <li><span>1</span>GitHub account created<strong>Complete</strong></li>
-              <li><span>2</span>GitHub repository created<strong>Complete</strong></li>
-              <li><span>3</span>Collaborator added on GitHub<strong>Complete</strong></li>
-              <li><span>4</span>Railway account created and GitHub connected<strong>Complete</strong></li>
-              <li><span>5</span>Project deployed on Railway<strong>Complete</strong></li>
-              <li><span>6</span>Collaborator added on Railway<strong>Complete</strong></li>
+            <ul class="help-complete-list">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+                </svg>
+                GitHub account and private repository created
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+                </svg>
+                Railway account created and connected to GitHub
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+                </svg>
+                Project deployed on Railway
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+                </svg>
+                Admit One invited on GitHub and Railway
+              </li>
             </ul>
 
-            <div class="guide-help">
-              <h2>Need help?</h2>
-              <p>
-                If anything does not look quite right or you get stuck, reach out to Admit One. We are
-                happy to walk through it live over a quick call.
-              </p>
-              <div class="guide-actions">
-                <a class="button button-light" href="resources.html">Back to resources</a>
-                <a class="button button-gold" href="index.html#contact">Ask for help</a>
+            <p>
+              That is everything we need to get started. If a domain handoff is part of your project,
+              that guide is coming soon &mdash; we will send it along when it is time.
+            </p>
+          </section>
+
+          <div class="help-feedback" data-help-feedback>
+            <div data-feedback-prompt>
+              <p>Was this guide helpful?</p>
+              <div class="help-feedback-actions">
+                <button class="button button-dark" type="button" data-feedback-vote="yes">Yes</button>
+                <button class="button button-light" type="button" data-feedback-vote="no">Not really</button>
               </div>
             </div>
-          </section>
-
-          <section class="guide-section guide-related" aria-labelledby="related-guides">
-            <p class="guide-step-kicker">More setup guides</p>
-            <h2 id="related-guides">Other setup guides</h2>
-            <p>
-              Use the GitHub guide before this one if the account or repository is not ready yet.
+            <p class="help-feedback-response" data-feedback-thanks hidden>
+              Thanks! Glad it helped.
             </p>
+            <p class="help-feedback-response" data-feedback-sorry hidden>
+              Sorry about that. <a href="index.html#contact">Tell us where you got stuck</a> and we
+              will walk you through it live.
+            </p>
+          </div>
 
-            <div class="guide-related-grid">
-              <a class="guide-related-card" href="github-setup-guide.html">
-                <p class="tag">Guide 1 of 2</p>
-                <h3>GitHub Setup Guide</h3>
-                <p>Create your GitHub account, make a private repository, and invite Admit One.</p>
-                <span class="soon-pill">Open guide</span>
-              </a>
-
-              <article class="guide-related-card">
-                <p class="tag">Launch prep</p>
-                <h3>Domain Handoff Guide</h3>
-                <p>Share domain access and DNS details so launch day is smooth.</p>
-                <span class="soon-pill">Coming soon</span>
-              </article>
-            </div>
-          </section>
+          <nav class="help-pagination" aria-label="Guide navigation">
+            <a href="github-setup-guide.html">
+              <span class="help-pagination-label">Previous guide</span>
+              <span class="help-pagination-title">Set up GitHub and invite Admit One</span>
+            </a>
+            <a class="is-next" href="resources.html">
+              <span class="help-pagination-label">Back to</span>
+              <span class="help-pagination-title">Help Center</span>
+            </a>
+          </nav>
         </article>
-      </section>
+
+        <nav class="help-toc" data-toc aria-label="On this page">
+          <p>On this page</p>
+          <a href="#before-you-start">Before you start</a>
+          <a href="#create-account" data-toc-step="create-account">1. Create account</a>
+          <a href="#connect-github" data-toc-step="connect-github">2. Connect GitHub</a>
+          <a href="#deploy-project" data-toc-step="deploy-project">3. Deploy project</a>
+          <a href="#add-collaborator" data-toc-step="add-collaborator">4. Add collaborator</a>
+          <a href="#all-done">All done</a>
+        </nav>
+      </div>
     </main>
 
     <footer class="footer">
@@ -392,9 +480,10 @@
       </div>
     </footer>
 
-    <div class="guide-toast" role="status" aria-live="polite" data-guide-toast></div>
+    <div class="help-toast" role="status" aria-live="polite" data-help-toast></div>
 
     <script src="js/main.js?v=menu-morph"></script>
-    <script src="js/guide.js?v=marquee-lights"></script>
+    <script src="js/help-center.js?v=help-center"></script>
+    <script src="js/help-article.js?v=help-center"></script>
   </body>
 </html>

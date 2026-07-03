@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Resources | Admit One</title>
+    <title>Help Center | Admit One</title>
     <meta
       name="description"
-      content="Setup guides and free brand-building tools from Admit One, including client launch guides and a color palette studio."
+      content="The Admit One Help Center: searchable setup guides and free brand-building tools, including client launch guides and a color palette studio."
     />
     <link rel="icon" href="assets/logos/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,13 +19,13 @@
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/subpage.css" />
-    <link rel="stylesheet" href="css/resources.css" />
+    <link rel="stylesheet" href="css/help-center.css?v=help-center" />
     <link rel="stylesheet" href="css/footer.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <div class="subpage-hero">
+    <div class="subpage-hero help-hero">
       <header class="site-header">
         <nav class="nav" aria-label="Primary navigation">
           <div class="nav-spacer" aria-hidden="true"></div>
@@ -62,146 +62,212 @@
       </header>
 
       <div class="section page-intro">
-        <h1>Need some help?</h1>
-        <p class="lead">We know a thing or two</p>
+        <p class="eyebrow">Admit One Help Center</p>
+        <h1>How can we help?</h1>
+        <p class="lead">
+          Step-by-step guides and free tools for getting your project set up, launched, and looking
+          right.
+        </p>
+
+        <form class="help-search" data-help-search role="search" aria-label="Search the help center">
+          <div class="help-search-field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+            <input
+              type="search"
+              data-help-search-input
+              placeholder="Search guides and tools&hellip;"
+              aria-label="Search guides and tools"
+              autocomplete="off"
+            />
+          </div>
+          <ul class="help-search-results" data-help-search-results role="listbox" aria-label="Search results" hidden></ul>
+        </form>
+
+        <div class="help-popular">
+          <span>Popular:</span>
+          <a href="github-setup-guide.html">GitHub setup</a>
+          <a href="railway-setup-guide.html">Deploying your site</a>
+          <a href="palette.html">Brand colors</a>
+        </div>
       </div>
     </div>
 
     <main id="main">
-      <section class="section resources">
-        <p class="resources-intro">
-          Client setup guides and simple tools we can send along when a project needs a clean next step.
-        </p>
-
-        <div class="resource-category">
-          <div class="resource-heading">
-            <div>
-              <p class="eyebrow">Setting things up</p>
-              <h2>Client setup guides</h2>
-            </div>
+      <section class="section help-home">
+        <div class="help-collection">
+          <div class="help-collection-head">
+            <p class="eyebrow">Guides</p>
+            <h2>Setting things up</h2>
             <p>
               Short, plain-language walkthroughs for the accounts, permissions, and launch prep that
               happen before design work can move.
             </p>
           </div>
 
-          <div class="setup-guide-grid">
-            <a class="setup-guide-card is-live" href="github-setup-guide.html">
-              <div class="guide-card-copy">
-                <p class="tag">Guide 1 of 2</p>
-                <h3>GitHub Setup Guide</h3>
-                <p>
-                  Create a GitHub account, start a private repository, and invite Admit One as a
-                  collaborator.
-                </p>
-                <div class="guide-card-meta" aria-label="Guide details">
-                  <span>3 steps</span>
-                  <span>About 15-20 min</span>
-                  <span>Web guide</span>
-                </div>
-                <span class="guide-card-link">Open guide</span>
-              </div>
+          <ol class="help-article-list">
+            <li>
+              <a class="help-article-row" href="github-setup-guide.html">
+                <span class="help-article-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="6" cy="6" r="2.5" />
+                    <circle cx="6" cy="18" r="2.5" />
+                    <circle cx="18" cy="6" r="2.5" />
+                    <path d="M6 8.5v7M18 8.5a7 7 0 0 1-7 7h-.5" />
+                  </svg>
+                </span>
+                <span class="help-article-copy">
+                  <h3>Set up GitHub and invite Admit One</h3>
+                  <p>Create a free GitHub account, start a private repository, and add us as a collaborator.</p>
+                  <span class="help-article-meta">
+                    <span>3 steps</span>
+                    <span>15&ndash;20 min</span>
+                    <span class="help-progress-badge" data-progress-badge="github-setup" data-progress-total="3" hidden></span>
+                  </span>
+                </span>
+                <span class="help-article-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14m-6-6 6 6-6 6" />
+                  </svg>
+                </span>
+              </a>
+            </li>
 
-              <div class="guide-card-steps" aria-hidden="true">
-                <span>Create account</span>
-                <span>Create repository</span>
-                <span>Add collaborator</span>
-              </div>
-            </a>
+            <li>
+              <a class="help-article-row" href="railway-setup-guide.html">
+                <span class="help-article-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m21 3-9.5 9.5M21 3l-6.5 18-3-7.5L4 10.5Z" />
+                  </svg>
+                </span>
+                <span class="help-article-copy">
+                  <h3>Deploy your project with Railway</h3>
+                  <p>Connect Railway to GitHub, deploy your repository, and invite us to the project.</p>
+                  <span class="help-article-meta">
+                    <span>4 steps</span>
+                    <span>12 min</span>
+                    <span class="help-progress-badge" data-progress-badge="railway-setup" data-progress-total="4" hidden></span>
+                  </span>
+                </span>
+                <span class="help-article-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14m-6-6 6 6-6 6" />
+                  </svg>
+                </span>
+              </a>
+            </li>
 
-            <a class="setup-guide-card is-live" href="railway-setup-guide.html">
-              <div class="guide-card-copy">
-                <p class="tag">Guide 2 of 2</p>
-                <h3>Railway Setup Guide</h3>
-                <p>
-                  Create a Railway account, connect GitHub, deploy your project, and invite Admit One as
-                  a collaborator.
-                </p>
-                <div class="guide-card-meta" aria-label="Guide details">
-                  <span>4 steps</span>
-                  <span>About 12 min</span>
-                  <span>Web guide</span>
-                </div>
-                <span class="guide-card-link">Open guide</span>
+            <li>
+              <div class="help-article-row is-soon">
+                <span class="help-article-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M3 12h18M12 3a14.5 14.5 0 0 1 0 18 14.5 14.5 0 0 1 0-18Z" />
+                  </svg>
+                </span>
+                <span class="help-article-copy">
+                  <h3>Hand off your domain for launch</h3>
+                  <p>Share registrar access and DNS details so launch day has fewer surprises.</p>
+                </span>
+                <span class="help-soon-pill">Coming soon</span>
               </div>
-
-              <div class="guide-card-steps" aria-hidden="true">
-                <span>Create account</span>
-                <span>Connect GitHub</span>
-                <span>Deploy project</span>
-                <span>Add collaborator</span>
-              </div>
-            </a>
-
-            <article class="setup-guide-card is-soon">
-              <p class="tag">Launch prep</p>
-              <h3>Domain Handoff Guide</h3>
-              <p>Share registrar access and DNS details so launch day has fewer surprises.</p>
-              <span class="soon-pill">Coming soon</span>
-            </article>
-          </div>
+            </li>
+          </ol>
         </div>
 
-        <div class="resource-category">
-          <div class="resource-heading">
-            <div>
-              <p class="eyebrow">Brand tools</p>
-              <h2>Tools for cleaner handoff</h2>
-            </div>
+        <div class="help-collection">
+          <div class="help-collection-head">
+            <p class="eyebrow">Tools</p>
+            <h2>Brand tools</h2>
             <p>
-              Lightweight resources for brand decisions, launch assets, and common checks clients ask
+              Lightweight tools for brand decisions, launch assets, and common checks clients ask
               about along the way.
             </p>
           </div>
 
-          <div class="resource-grid">
-            <article class="resource-card is-featured">
-              <div class="feature-copy">
-                <p class="tag">Featured tool</p>
-                <h3>Color Palette Studio</h3>
-                <p>
-                  Pick one brand color and get a site-ready set of roles: Primary, Accent,
-                  Muted, Text, and Background. Lock what you love, regenerate fresh matching options,
-                  use the shade button to pick lighter or darker steps, and share the whole palette
-                  with a link.
-                </p>
-                <div class="card-actions">
-                  <a class="button button-light" href="palette.html">Open the studio</a>
-                  <a class="button button-dark" href="palette.html#b8231a-c8952a-e9dcc2-1a1710-fbf7ee">
-                    Start from our palette
-                  </a>
-                </div>
+          <ol class="help-article-list">
+            <li>
+              <a class="help-article-row" href="palette.html">
+                <span class="help-article-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z" />
+                  </svg>
+                </span>
+                <span class="help-article-copy">
+                  <h3>Build a brand palette in the Color Palette Studio</h3>
+                  <p>Pick one brand color and get a site-ready set of roles you can share with a link.</p>
+                  <span class="help-article-meta">
+                    <span>Free tool</span>
+                    <span>Works in your browser</span>
+                  </span>
+                </span>
+                <span class="help-article-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14m-6-6 6 6-6 6" />
+                  </svg>
+                </span>
+              </a>
+            </li>
+
+            <li>
+              <div class="help-article-row is-soon">
+                <span class="help-article-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 20 12 5l6 15M8.5 14h7" />
+                  </svg>
+                </span>
+                <span class="help-article-copy">
+                  <h3>Pick font pairings that hold up</h3>
+                  <p>A short, opinionated set of font pairings that work across a whole site.</p>
+                </span>
+                <span class="help-soon-pill">Coming soon</span>
               </div>
-              <div class="palette-preview" aria-hidden="true">
-                <span style="background: #b8231a; color: #fbf7ee">Primary</span>
-                <span style="background: #c8952a; color: #1a1710">Accent</span>
-                <span style="background: #e9dcc2; color: #1a1710">Muted</span>
-                <span style="background: #1a1710; color: #fbf7ee">Text</span>
-                <span style="background: #fbf7ee; color: #1a1710">Background</span>
+            </li>
+
+            <li>
+              <div class="help-article-row is-soon">
+                <span class="help-article-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor" stroke="none" />
+                  </svg>
+                </span>
+                <span class="help-article-copy">
+                  <h3>Check text contrast for readability</h3>
+                  <p>Drop in two colors and see whether text stays readable against its background.</p>
+                </span>
+                <span class="help-soon-pill">Coming soon</span>
               </div>
-            </article>
+            </li>
 
-            <article class="resource-card is-soon">
-              <p class="tag">Typography</p>
-              <h3>Type Pairing Guide</h3>
-              <p>A short, opinionated set of font pairings that hold up across a whole site.</p>
-              <span class="soon-pill">Coming soon</span>
-            </article>
+            <li>
+              <div class="help-article-row is-soon">
+                <span class="help-article-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m4 6 1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11.5 6H20M11.5 12H20M11.5 18H20" />
+                  </svg>
+                </span>
+                <span class="help-article-copy">
+                  <h3>Export logo files the right way</h3>
+                  <p>The file formats, sizes, and clear-space rules to hand a printer or developer.</p>
+                </span>
+                <span class="help-soon-pill">Coming soon</span>
+              </div>
+            </li>
+          </ol>
+        </div>
 
-            <article class="resource-card is-soon">
-              <p class="tag">Accessibility</p>
-              <h3>Contrast Checker</h3>
-              <p>Drop in two colors and see whether text stays readable against its background.</p>
-              <span class="soon-pill">Coming soon</span>
-            </article>
-
-            <article class="resource-card is-soon">
-              <p class="tag">Handoff</p>
-              <h3>Logo Export Checklist</h3>
-              <p>The file formats, sizes, and clear-space rules to hand a printer or developer.</p>
-              <span class="soon-pill">Coming soon</span>
-            </article>
+        <div class="help-contact-band">
+          <div>
+            <h2>Still stuck?</h2>
+            <p>
+              No guide beats a quick conversation. Reach out and we will walk through it live with
+              you over a call.
+            </p>
           </div>
+          <a class="button button-gold" href="index.html#contact">Contact Admit One</a>
         </div>
       </section>
     </main>
@@ -226,5 +292,6 @@
     </footer>
 
     <script src="js/main.js?v=menu-morph"></script>
+    <script src="js/help-center.js?v=help-center"></script>
   </body>
 </html>

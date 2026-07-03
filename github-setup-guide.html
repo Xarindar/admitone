@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>GitHub Setup Guide | Admit One</title>
+    <title>GitHub Setup Guide | Admit One Help Center</title>
     <meta
       name="description"
       content="A client-friendly setup guide for creating a GitHub account, starting a private repository, and inviting Admit One as a collaborator."
@@ -19,13 +19,13 @@
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/subpage.css" />
-    <link rel="stylesheet" href="css/guide.css?v=marquee-lights" />
+    <link rel="stylesheet" href="css/help-center.css?v=help-center" />
     <link rel="stylesheet" href="css/footer.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to guide</a>
 
-    <div class="subpage-hero guide-subpage-hero">
+    <div class="subpage-hero help-article-band">
       <header class="site-header">
         <nav class="nav" aria-label="Primary navigation">
           <div class="nav-spacer" aria-hidden="true"></div>
@@ -60,318 +60,406 @@
           </div>
         </nav>
       </header>
+    </div>
 
-      <div class="section page-intro guide-intro">
-        <p class="eyebrow">Setting things up</p>
-        <h1>GitHub Setup Guide</h1>
-        <p class="lead">
-          Create your GitHub account, set up a private repository, and invite Admit One to collaborate.
-        </p>
-        <div class="guide-meta" aria-label="Guide details">
-          <span>Guide 1 of 2</span>
-          <span>3 steps</span>
-          <span>About 15-20 min</span>
-        </div>
-      </div>
+    <div class="help-breadcrumb-bar">
+      <nav class="help-breadcrumbs" aria-label="Breadcrumb">
+        <a href="resources.html">Help Center</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <a href="resources.html">Setting things up</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <span aria-current="page">GitHub Setup Guide</span>
+      </nav>
     </div>
 
     <main id="main">
-      <section class="section guide-shell" data-guide-progress>
-        <aside class="guide-sidebar" aria-label="Guide navigation">
-          <a class="guide-back" href="resources.html">Back to resources</a>
+      <div class="section help-shell">
+        <aside class="help-sidebar" aria-label="Help Center navigation">
+          <details class="help-sidebar-browse" open>
+            <summary>Browse the Help Center</summary>
+            <div class="help-sidebar-browse-body">
+              <form class="help-search" data-help-search role="search" aria-label="Search the help center">
+                <div class="help-search-field">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-3.5-3.5" />
+                  </svg>
+                  <input
+                    type="search"
+                    data-help-search-input
+                    placeholder="Search&hellip;"
+                    aria-label="Search guides and tools"
+                    autocomplete="off"
+                  />
+                </div>
+                <ul class="help-search-results" data-help-search-results role="listbox" aria-label="Search results" hidden></ul>
+              </form>
 
-          <div class="guide-progress">
-            <div class="guide-progress-label">
-              <span>Progress</span>
-              <span data-progress-count>0 of 3 steps</span>
+              <nav class="help-nav-group" aria-label="Setting things up">
+                <p>Setting things up</p>
+                <a href="github-setup-guide.html" aria-current="page">GitHub setup</a>
+                <a href="railway-setup-guide.html">Railway deploy</a>
+                <span class="help-nav-soon">Domain handoff <small>Soon</small></span>
+              </nav>
+
+              <nav class="help-nav-group" aria-label="Brand tools">
+                <p>Brand tools</p>
+                <a href="palette.html">Color Palette Studio</a>
+                <span class="help-nav-soon">Type pairing <small>Soon</small></span>
+                <span class="help-nav-soon">Contrast checker <small>Soon</small></span>
+                <span class="help-nav-soon">Logo export <small>Soon</small></span>
+              </nav>
             </div>
-            <div
-              class="guide-progress-track"
-              role="progressbar"
-              aria-label="Guide progress"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              aria-valuenow="0"
-              data-progress-bar
-            >
-              <span></span>
-            </div>
+          </details>
+
+          <div class="help-sidebar-contact">
+            <p>Stuck on a step? We are happy to walk through it live.</p>
+            <a href="index.html#contact">Contact Admit One</a>
           </div>
-
-          <nav class="guide-toc" aria-label="On this guide">
-            <p>On this guide</p>
-            <a href="#before-you-start">Before you start</a>
-            <a href="#create-account">Create account</a>
-            <a href="#create-repository">Create repository</a>
-            <a href="#add-collaborator">Add collaborator</a>
-            <a href="#all-done">All done</a>
-          </nav>
         </aside>
 
-        <article class="guide-content">
-          <section class="guide-section" id="before-you-start">
-            <p class="guide-step-kicker">Before you start</p>
-            <h2>Welcome to GitHub</h2>
+        <article class="help-article" data-help-article="github-setup">
+          <header class="help-article-header">
+            <p class="eyebrow">Setting things up</p>
+            <h1>GitHub Setup Guide</h1>
+            <p class="help-article-lead">
+              Create your GitHub account, set up a private repository, and invite Admit One to
+              collaborate.
+            </p>
+            <div class="help-article-chips" aria-label="Guide details">
+              <span>3 steps</span>
+              <span>About 15&ndash;20 min</span>
+              <span>No experience needed</span>
+            </div>
+
+            <div class="help-progress-card">
+              <div class="help-progress-label">
+                <span>Your progress &middot; <span data-progress-count>0 of 3 steps</span></span>
+                <button type="button" data-progress-reset hidden>Start over</button>
+              </div>
+              <div
+                class="help-progress-track"
+                role="progressbar"
+                aria-label="Guide progress"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                data-progress-bar
+              >
+                <span></span>
+              </div>
+              <p class="help-progress-hint">
+                Mark each step done as you go. Progress saves in this browser, so you can leave and
+                pick up where you stopped.
+              </p>
+            </div>
+          </header>
+
+          <section class="help-section" id="before-you-start">
+            <h2>Before you start</h2>
             <p>
               GitHub is where your project files will live. Think of it like a very organized Google
-              Drive that is built specifically for websites and software projects.
+              Drive that is built specifically for websites and software projects. This guide walks
+              you through creating an account, making a private project folder, and letting us in.
             </p>
 
-            <div class="guide-callout">
-              <strong>What you need</strong>
+            <div class="help-callout">
+              <strong>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 3.5 10.9c-.7.5-1 1.3-1 2.1h-5c0-.8-.3-1.6-1-2.1A6 6 0 0 1 12 3Z" />
+                </svg>
+                What you need
+              </strong>
               <p>
-                You only need an internet connection, a web browser, and about 15-20 minutes. Chrome,
+                Just an internet connection, a web browser, and about 15&ndash;20 minutes. Chrome,
                 Safari, and Firefox all work fine.
               </p>
             </div>
-
-            <ol class="guide-plan guide-plan-three" aria-label="Guide steps and estimated time">
-              <li>
-                <span>Step 1 - 5 min</span>
-                <strong>Create a GitHub account</strong>
-              </li>
-              <li>
-                <span>Step 2 - 5 min</span>
-                <strong>Create a repository</strong>
-              </li>
-              <li>
-                <span>Step 3 - 3 min</span>
-                <strong>Add your collaborator</strong>
-              </li>
-            </ol>
           </section>
 
-          <section class="guide-section" id="create-account">
-            <div class="guide-step-header">
+          <section class="help-step" id="create-account">
+            <div class="help-step-head">
+              <span class="help-step-num" aria-hidden="true">1</span>
               <div>
-                <span class="guide-step-kicker">Step 1</span>
                 <h2>Create your GitHub account</h2>
-                <p>Sign up for a free account at github.com.</p>
+                <p>Sign up for a free account at github.com &mdash; about 5 minutes.</p>
               </div>
-              <label class="guide-step-check">
-                <input type="checkbox" data-progress-step />
+              <label class="help-step-check">
+                <input type="checkbox" value="create-account" data-progress-step />
                 <span>Mark done</span>
               </label>
             </div>
 
-            <p>
-              This account will own your project repository and will let you invite Admit One into the
-              project when it is ready.
-            </p>
-
-            <ol class="guide-instructions">
-              <li>Open your web browser and go to <a href="https://github.com">github.com</a>.</li>
-              <li>Click the green Sign up button in the top-right corner of the page.</li>
-              <li>Enter your email address when prompted. Use any email address you check regularly.</li>
-              <li>Create a password. Use at least 8 characters with a mix of letters and numbers.</li>
-              <li>
-                Choose a username. This is your public handle on GitHub, so something simple and
-                professional works great, such as your name or business name.
-              </li>
-              <li>When GitHub asks if you want product updates by email, you can select No to skip.</li>
-              <li>Complete the puzzle verification by following the on-screen prompt.</li>
-              <li>Click Create account.</li>
-              <li>Check your email inbox for a verification code from GitHub and type it in when asked.</li>
-              <li>
-                On the welcome screens that follow, click Skip personalization at the bottom. You do not
-                need to answer the questions.
-              </li>
-            </ol>
-
-            <div class="guide-callout">
-              <strong>You are in</strong>
+            <div class="help-step-body">
               <p>
-                Once you see your GitHub dashboard, your account is ready. Bookmark the page so it is
-                easy to find later.
+                This account will own your project repository and will let you invite Admit One into
+                the project when it is ready.
               </p>
+
+              <ol class="help-instructions">
+                <li>Open your web browser and go to <a href="https://github.com">github.com</a>.</li>
+                <li>Click the green Sign up button in the top-right corner of the page.</li>
+                <li>Enter your email address when prompted. Use any email address you check regularly.</li>
+                <li>Create a password. Use at least 8 characters with a mix of letters and numbers.</li>
+                <li>
+                  Choose a username. This is your public handle on GitHub, so something simple and
+                  professional works great, such as your name or business name.
+                </li>
+                <li>When GitHub asks if you want product updates by email, you can select No to skip.</li>
+                <li>Complete the puzzle verification by following the on-screen prompt.</li>
+                <li>Click Create account.</li>
+                <li>Check your email inbox for a verification code from GitHub and type it in when asked.</li>
+                <li>
+                  On the welcome screens that follow, click Skip personalization at the bottom. You do
+                  not need to answer the questions.
+                </li>
+              </ol>
+
+              <div class="help-callout is-check">
+                <strong>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+                  </svg>
+                  You are in
+                </strong>
+                <p>
+                  Once you see your GitHub dashboard, your account is ready. Bookmark the page so it
+                  is easy to find later.
+                </p>
+              </div>
             </div>
           </section>
 
-          <section class="guide-section" id="create-repository">
-            <div class="guide-step-header">
+          <section class="help-step" id="create-repository">
+            <div class="help-step-head">
+              <span class="help-step-num" aria-hidden="true">2</span>
               <div>
-                <span class="guide-step-kicker">Step 2</span>
                 <h2>Create a repository</h2>
-                <p>A repository is the folder that holds your project files.</p>
+                <p>Make the private folder that holds your project files &mdash; about 5 minutes.</p>
               </div>
-              <label class="guide-step-check">
-                <input type="checkbox" data-progress-step />
+              <label class="help-step-check">
+                <input type="checkbox" value="create-repository" data-progress-step />
                 <span>Mark done</span>
               </label>
             </div>
 
-            <p>
-              A repository, often called a repo, is simply a project folder on GitHub. Your website
-              files, images, and documents can live here.
-            </p>
-
-            <ol class="guide-instructions">
-              <li>Make sure you are logged in to GitHub at <a href="https://github.com">github.com</a>.</li>
-              <li>
-                Look for the plus (+) icon in the top-right corner of the page, next to your profile
-                picture, and click it.
-              </li>
-              <li>In the dropdown menu that appears, click New repository.</li>
-              <li>
-                For Repository name, use your business name in lowercase with hyphens instead of spaces.
-                For example: acme-studio or janes-bakery. Avoid generic names like my-website.
-              </li>
-              <li>
-                For Description, you can add a brief note such as: My project with Admit One Design
-                Studio. This is just for your reference.
-              </li>
-              <li>Under Visibility, make sure Private is selected.</li>
-              <li>Check the box that says Add a README file.</li>
-              <li>Leave all other settings as their defaults.</li>
-              <li>Click the green Create repository button at the bottom of the page.</li>
-            </ol>
-
-            <div class="guide-callout">
-              <strong>What you should see</strong>
+            <div class="help-step-body">
               <p>
-                A new page will appear showing your repository. You should see a file called README.md.
-                That means everything worked.
+                A repository, often called a repo, is simply a project folder on GitHub. Your website
+                files, images, and documents can live here.
               </p>
-            </div>
 
-            <div class="guide-callout">
-              <strong>Pro tip</strong>
-              <p>
-                Keep your repository private for now. Your collaborator can still access it once you add
-                them in Step 3.
-              </p>
+              <ol class="help-instructions">
+                <li>Make sure you are logged in to GitHub at <a href="https://github.com">github.com</a>.</li>
+                <li>
+                  Look for the plus (+) icon in the top-right corner of the page, next to your profile
+                  picture, and click it.
+                </li>
+                <li>In the dropdown menu that appears, click New repository.</li>
+                <li>
+                  For Repository name, use your business name in lowercase with hyphens instead of
+                  spaces. For example: acme-studio or janes-bakery. Avoid generic names like
+                  my-website.
+                </li>
+                <li>
+                  For Description, you can add a brief note such as: My project with Admit One Design
+                  Studio. This is just for your reference.
+                </li>
+                <li>Under Visibility, make sure Private is selected.</li>
+                <li>Check the box that says Add a README file.</li>
+                <li>Leave all other settings as their defaults.</li>
+                <li>Click the green Create repository button at the bottom of the page.</li>
+              </ol>
+
+              <div class="help-callout is-check">
+                <strong>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+                  </svg>
+                  What you should see
+                </strong>
+                <p>
+                  A new page will appear showing your repository. You should see a file called
+                  README.md. That means everything worked.
+                </p>
+              </div>
+
+              <div class="help-callout">
+                <strong>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 3.5 10.9c-.7.5-1 1.3-1 2.1h-5c0-.8-.3-1.6-1-2.1A6 6 0 0 1 12 3Z" />
+                  </svg>
+                  Pro tip
+                </strong>
+                <p>
+                  Keep your repository private for now. Your collaborator can still access it once you
+                  add them in Step 3.
+                </p>
+              </div>
             </div>
           </section>
 
-          <section class="guide-section" id="add-collaborator">
-            <div class="guide-step-header">
+          <section class="help-step" id="add-collaborator">
+            <div class="help-step-head">
+              <span class="help-step-num" aria-hidden="true">3</span>
               <div>
-                <span class="guide-step-kicker">Step 3</span>
                 <h2>Add your collaborator</h2>
-                <p>Give Admit One Design Studio access to your repository.</p>
+                <p>Give Admit One Design Studio access to your repository &mdash; about 3 minutes.</p>
               </div>
-              <label class="guide-step-check">
-                <input type="checkbox" data-progress-step />
+              <label class="help-step-check">
+                <input type="checkbox" value="add-collaborator" data-progress-step />
                 <span>Mark done</span>
               </label>
             </div>
 
-            <p>
-              Now you will invite your designer so they can access your repository and begin working on
-              your project. You can search by GitHub username or by email address.
-            </p>
-
-            <ol class="guide-instructions">
-              <li>
-                From inside your repository page, click the Settings tab. It is in the row of tabs near
-                the top of the page, and you may need to scroll the tab bar right to find it.
-              </li>
-              <li>
-                In the left-hand sidebar, click Collaborators. It may also appear as Collaborators and
-                teams on some accounts.
-              </li>
-              <li>GitHub may ask you to confirm your password again as a security step.</li>
-              <li>Click the green Add people button.</li>
-              <li>In the search box, type your collaborator's username or email address from the boxes below.</li>
-              <li>When the correct profile appears in the dropdown, click it to select it.</li>
-              <li>Click Add to this repository.</li>
-              <li>
-                Your collaborator will receive an email invitation. Once they accept, they will have
-                access to your repository.
-              </li>
-            </ol>
-
-            <div class="copy-box">
-              <div>
-                <span>Search by username</span>
-                <strong>@Xarindar</strong>
-              </div>
-              <button
-                class="button button-dark"
-                type="button"
-                data-copy-value="@Xarindar"
-                data-copy-message="Username copied"
-              >
-                Copy username
-              </button>
-            </div>
-
-            <div class="copy-box">
-              <div>
-                <span>Search by email</span>
-                <strong>abrahamtannenbaum@gmail.com</strong>
-              </div>
-              <button
-                class="button button-dark"
-                type="button"
-                data-copy-value="abrahamtannenbaum@gmail.com"
-                data-copy-message="Email copied"
-              >
-                Copy email
-              </button>
-            </div>
-
-            <div class="guide-callout">
-              <strong>What happens next</strong>
+            <div class="help-step-body">
               <p>
-                The invitation will show up under your repository's Collaborators list after Admit One
-                accepts it. The process usually takes just a few minutes.
+                Now you will invite your designer so they can access your repository and begin working
+                on your project. You can search by GitHub username or by email address.
               </p>
+
+              <ol class="help-instructions">
+                <li>
+                  From inside your repository page, click the Settings tab. It is in the row of tabs
+                  near the top of the page, and you may need to scroll the tab bar right to find it.
+                </li>
+                <li>
+                  In the left-hand sidebar, click Collaborators. It may also appear as Collaborators
+                  and teams on some accounts.
+                </li>
+                <li>GitHub may ask you to confirm your password again as a security step.</li>
+                <li>Click the green Add people button.</li>
+                <li>In the search box, type your collaborator's username or email address from the boxes below.</li>
+                <li>When the correct profile appears in the dropdown, click it to select it.</li>
+                <li>Click Add to this repository.</li>
+                <li>
+                  Your collaborator will receive an email invitation. Once they accept, they will have
+                  access to your repository.
+                </li>
+              </ol>
+
+              <div class="help-copy-box">
+                <div>
+                  <span>Search by username</span>
+                  <strong>@Xarindar</strong>
+                </div>
+                <button
+                  class="button button-dark"
+                  type="button"
+                  data-copy-value="@Xarindar"
+                  data-copy-message="Username copied"
+                >
+                  Copy username
+                </button>
+              </div>
+
+              <div class="help-copy-box">
+                <div>
+                  <span>Search by email</span>
+                  <strong>abrahamtannenbaum@gmail.com</strong>
+                </div>
+                <button
+                  class="button button-dark"
+                  type="button"
+                  data-copy-value="abrahamtannenbaum@gmail.com"
+                  data-copy-message="Email copied"
+                >
+                  Copy email
+                </button>
+              </div>
+
+              <div class="help-callout">
+                <strong>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 3.5 10.9c-.7.5-1 1.3-1 2.1h-5c0-.8-.3-1.6-1-2.1A6 6 0 0 1 12 3Z" />
+                  </svg>
+                  What happens next
+                </strong>
+                <p>
+                  The invitation will show up under your repository's Collaborators list after Admit
+                  One accepts it. The process usually takes just a few minutes.
+                </p>
+              </div>
             </div>
           </section>
 
-          <section class="guide-section" id="all-done">
-            <p class="guide-step-kicker">All done</p>
-            <h2>You have completed setup</h2>
+          <section class="help-section" id="all-done">
+            <h2>All done</h2>
             <p>
-              You now have a GitHub account, a private repository, and your designer has been invited to
-              collaborate.
+              You now have a GitHub account, a private repository, and your designer has been invited
+              to collaborate. Here is everything this guide covered:
             </p>
 
-            <ul class="guide-complete-list">
-              <li><span>1</span>GitHub account created<strong>Complete</strong></li>
-              <li><span>2</span>Private repository created<strong>Complete</strong></li>
-              <li><span>3</span>Collaborator added on GitHub<strong>Complete</strong></li>
+            <ul class="help-complete-list">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+                </svg>
+                GitHub account created
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+                </svg>
+                Private repository created
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+                </svg>
+                Admit One invited as a collaborator
+              </li>
             </ul>
 
-            <div class="guide-help">
-              <h2>Need help?</h2>
-              <p>
-                If anything does not look quite right or you get stuck, reach out to Admit One. We are
-                happy to walk through it live over a quick call.
-              </p>
-              <div class="guide-actions">
-                <a class="button button-light" href="resources.html">Back to resources</a>
-                <a class="button button-gold" href="index.html#contact">Ask for help</a>
+            <p>
+              Next up is Railway, the platform that takes your project from GitHub and puts it live on
+              the internet.
+            </p>
+          </section>
+
+          <div class="help-feedback" data-help-feedback>
+            <div data-feedback-prompt>
+              <p>Was this guide helpful?</p>
+              <div class="help-feedback-actions">
+                <button class="button button-dark" type="button" data-feedback-vote="yes">Yes</button>
+                <button class="button button-light" type="button" data-feedback-vote="no">Not really</button>
               </div>
             </div>
-          </section>
-
-          <section class="guide-section guide-related" aria-labelledby="related-guides">
-            <p class="guide-step-kicker">More setup guides</p>
-            <h2 id="related-guides">Next guide</h2>
-            <p>
-              After GitHub is ready, Railway is the next setup step for deploying your project.
+            <p class="help-feedback-response" data-feedback-thanks hidden>
+              Thanks! Glad it helped.
             </p>
+            <p class="help-feedback-response" data-feedback-sorry hidden>
+              Sorry about that. <a href="index.html#contact">Tell us where you got stuck</a> and we
+              will walk you through it live.
+            </p>
+          </div>
 
-            <div class="guide-related-grid">
-              <a class="guide-related-card" href="railway-setup-guide.html">
-                <p class="tag">Guide 2 of 2</p>
-                <h3>Railway Setup Guide</h3>
-                <p>Create a Railway account, connect GitHub, deploy your project, and invite Admit One.</p>
-                <span class="soon-pill">Open guide</span>
-              </a>
-
-              <article class="guide-related-card">
-                <p class="tag">Launch prep</p>
-                <h3>Domain Handoff Guide</h3>
-                <p>Share domain access and DNS details so launch day is smooth.</p>
-                <span class="soon-pill">Coming soon</span>
-              </article>
-            </div>
-          </section>
+          <nav class="help-pagination" aria-label="Guide navigation">
+            <a href="resources.html">
+              <span class="help-pagination-label">Back to</span>
+              <span class="help-pagination-title">Help Center</span>
+            </a>
+            <a class="is-next" href="railway-setup-guide.html">
+              <span class="help-pagination-label">Next guide</span>
+              <span class="help-pagination-title">Deploy your project with Railway</span>
+            </a>
+          </nav>
         </article>
-      </section>
+
+        <nav class="help-toc" data-toc aria-label="On this page">
+          <p>On this page</p>
+          <a href="#before-you-start">Before you start</a>
+          <a href="#create-account" data-toc-step="create-account">1. Create account</a>
+          <a href="#create-repository" data-toc-step="create-repository">2. Create repository</a>
+          <a href="#add-collaborator" data-toc-step="add-collaborator">3. Add collaborator</a>
+          <a href="#all-done">All done</a>
+        </nav>
+      </div>
     </main>
 
     <footer class="footer">
@@ -393,9 +481,10 @@
       </div>
     </footer>
 
-    <div class="guide-toast" role="status" aria-live="polite" data-guide-toast></div>
+    <div class="help-toast" role="status" aria-live="polite" data-help-toast></div>
 
     <script src="js/main.js?v=menu-morph"></script>
-    <script src="js/guide.js?v=marquee-lights"></script>
+    <script src="js/help-center.js?v=help-center"></script>
+    <script src="js/help-article.js?v=help-center"></script>
   </body>
 </html>

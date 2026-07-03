@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/subpage.css" />
-    <link rel="stylesheet" href="css/resources.css?v=help-center" />
+    <link rel="stylesheet" href="css/resources.css?v=domain-handoff" />
     <link rel="stylesheet" href="css/footer.css" />
   </head>
   <body>
@@ -157,19 +157,29 @@
             </a>
           </li>
           <li>
-            <div class="guide-row is-pending">
+            <a
+              class="guide-row"
+              href="domain-handoff-guide.html"
+              data-guide-slug="domain-handoff"
+              data-guide-steps="4"
+            >
               <span class="guide-row-no" aria-hidden="true"><i>No.</i>03</span>
               <span class="guide-row-body">
                 <span class="guide-row-title">Hand off your domain</span>
                 <span class="guide-row-desc">
-                  Share registrar access and DNS details so launch day has no surprises. We're
-                  writing this one now.
+                  Find your registrar, check the account, and pick how we connect the domain at
+                  launch. Works with any provider &mdash; and skippable if you don't have a domain
+                  yet.
                 </span>
                 <span class="guide-row-meta">
-                  <span>In the works</span>
+                  <span>4 steps</span>
+                  <span>About 15 min</span>
+                  <span class="guide-row-flag">Optional</span>
+                  <span class="guide-row-progress" data-guide-progress-note hidden></span>
                 </span>
               </span>
-            </div>
+              <span class="guide-row-go" data-guide-action>Open guide</span>
+            </a>
           </li>
         </ol>
       </section>
@@ -251,10 +261,12 @@
             <summary>I already own a domain. What should I do with it?</summary>
             <div class="help-faq-answer">
               <p>
-                Nothing yet &mdash; just don't let it expire. Mention the domain and where it's
-                registered (GoDaddy, Namecheap, Google, wherever) in your kickoff email, and we'll
-                walk through connecting it when the site is ready. A proper handoff guide for this
-                is in the works.
+                Keep it renewed, then follow the
+                <a href="domain-handoff-guide.html">domain handoff guide</a> whenever you're ready
+                &mdash; it works with any provider and takes about fifteen minutes. It helps you
+                find your registrar, check the account is healthy, and pick how we'll connect the
+                domain at launch. No domain yet? Skip it entirely: your site can launch on its
+                free Railway address and connect a domain any time later.
               </p>
             </div>
           </details>
@@ -342,6 +354,6 @@
     </footer>
 
     <script src="js/main.js?v=menu-morph"></script>
-    <script src="js/resources.js?v=help-center"></script>
+    <script src="js/resources.js?v=domain-handoff"></script>
   </body>
 </html>

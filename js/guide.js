@@ -225,11 +225,7 @@
     }, 2200);
   }
 
-  function copyText(value) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(value);
-    }
-
+  function legacyCopy(value) {
     var textarea = document.createElement("textarea");
     textarea.value = value;
     textarea.setAttribute("readonly", "");
@@ -238,18 +234,38 @@
     document.body.append(textarea);
     textarea.select();
 
+    var copied = false;
     try {
-      document.execCommand("copy");
+      copied = document.execCommand("copy");
     } finally {
       textarea.remove();
     }
 
-    return Promise.resolve();
+    return copied;
   }
 
-  document.querySelectorAll("[data-copy-value]").forEach(function (button) {
+  function copyText(value) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      /* The clipboard API can reject on file:// pages and odd embeds even
+         with a real click, so fall back to the old textarea trick. */
+      return navigator.clipboard.writeText(value).catch(function () {
+        if (!legacyCopy(value)) {
+          throw new Error("copy-failed");
+        }
+      });
+    }
+
+    return legacyCopy(value) ? Promise.resolve() : Promise.reject(new Error("copy-failed"));
+  }
+
+  document.querySelectorAll("[data-copy-value], [data-copy-from]").forEach(function (button) {
     button.addEventListener("click", function () {
       var value = button.dataset.copyValue;
+
+      if (button.dataset.copyFrom) {
+        var source = document.querySelector(button.dataset.copyFrom);
+        value = source ? source.textContent : null;
+      }
 
       if (!value) {
         return;

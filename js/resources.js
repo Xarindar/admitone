@@ -24,6 +24,13 @@
       keywords: "railway hosting host deploy publish live server guide two second",
     },
     {
+      group: "Guides",
+      title: "Hand off your domain",
+      hint: "Find your registrar and pick how we connect it — optional",
+      url: "domain-handoff-guide.html",
+      keywords: "domain dns registrar url address website launch optional guide three third",
+    },
+    {
       group: "Guide steps",
       title: "Create your GitHub account",
       hint: "Step 1 of the GitHub guide",
@@ -73,6 +80,34 @@
       keywords: "invite member members email settings collaborator can edit access",
     },
     {
+      group: "Guide steps",
+      title: "Find out where your domain lives",
+      hint: "Step 1 of the domain guide",
+      url: "domain-handoff-guide.html#find-registrar",
+      keywords: "registrar who manages domain whois icann lookup godaddy namecheap squarespace",
+    },
+    {
+      group: "Guide steps",
+      title: "Give the domain account a health check",
+      hint: "Step 2 of the domain guide",
+      url: "domain-handoff-guide.html#health-check",
+      keywords: "expire expiration renew auto-renew login dns settings account email",
+    },
+    {
+      group: "Guide steps",
+      title: "Send us your domain details",
+      hint: "Step 3 of the domain guide",
+      url: "domain-handoff-guide.html#send-details",
+      keywords: "checklist email details template send domain information",
+    },
+    {
+      group: "Guide steps",
+      title: "Choose how the DNS changes get made",
+      hint: "Step 4 of the domain guide",
+      url: "domain-handoff-guide.html#choose-route",
+      keywords: "dns records paste delegate access share access screen share call cname txt",
+    },
+    {
       group: "Quick answers",
       title: "Does any of this cost money?",
       hint: "What's free, what isn't, and when we flag it",
@@ -110,7 +145,7 @@
     {
       group: "Quick answers",
       title: "I already own a domain",
-      hint: "Hold onto it; handoff comes later",
+      hint: "Keep it renewed, then follow the handoff guide",
       url: "#faq-domain",
       keywords: "domain dns registrar godaddy namecheap url website address transfer",
     },

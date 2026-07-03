@@ -401,6 +401,97 @@
   overflow-wrap: anywhere;
 }
 
+/* ---------- Checklist template (copy-paste email) ---------- */
+
+.guide-template {
+  margin-top: 20px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.guide-template-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 12px 16px;
+  border-bottom: 1px dashed var(--line-strong);
+}
+
+.guide-template-head > span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.guide-template-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.guide-template-actions .button {
+  min-height: 36px;
+  font-size: 0.78rem;
+  text-decoration: none;
+}
+
+.guide-template pre {
+  margin: 0;
+  padding: 16px;
+  color: var(--black);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Route options (pick one, no numbering) ---------- */
+
+.guide-routes {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.guide-routes li {
+  padding: 16px 18px;
+  border-top: 1px solid var(--line);
+}
+
+.guide-routes li:first-child {
+  border-top: 0;
+}
+
+.guide-routes strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--black);
+  font-size: 1rem;
+}
+
+.guide-routes strong::before {
+  content: "→ ";
+  color: var(--red);
+}
+
+.guide-routes p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
 /* ---------- Completion list ---------- */
 
 .guide-complete-list {

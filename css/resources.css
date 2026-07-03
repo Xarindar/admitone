@@ -305,6 +305,14 @@ a.guide-row:focus-visible .guide-row-no {
   color: var(--line-strong);
 }
 
+.guide-row-flag {
+  color: var(--gold);
+  font-style: italic;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 0.84rem;
+}
+
 .guide-row-progress {
   color: var(--gold);
 }

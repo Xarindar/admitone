@@ -295,6 +295,45 @@
   pointer-events: none;
 }
 
+/* Static, centered filmstrip: three real client frames */
+.logo-rail-static .logo-rail-track {
+  width: 100%;
+  justify-content: center;
+  animation: none;
+}
+
+.logo-cell {
+  flex: 0 0 clamp(180px, 24vw, 260px);
+  min-height: 96px;
+}
+
+.client-logo {
+  max-height: 60px;
+  max-width: 168px;
+  width: auto;
+  object-fit: contain;
+}
+
+.client-logo--hive {
+  max-height: 58px;
+  max-width: 96px;
+}
+
+.logo-cell--script .client-wordmark {
+  font-family: "Great Vibes", "Fraunces", cursive;
+  font-size: clamp(1.55rem, 3.4vw, 2.15rem);
+  line-height: 1;
+  color: var(--black);
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .logo-rail-static .logo-rail-track {
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+}
+
 @keyframes filmstrip-scroll {
   from {
     transform: translate3d(0, 0, 0);

@@ -268,3 +268,228 @@ function setupPricingTickets() {
 }
 
 setupPricingTickets();
+
+function setupCaseStudies() {
+  const dialog = document.querySelector(".case-study-dialog");
+  const zoom = dialog?.querySelector(".case-study-zoom");
+  const scroller = dialog?.querySelector(".case-study-scroll");
+  const mount = dialog?.querySelector(".case-study-mount");
+  const backButton = dialog?.querySelector(".case-study-back");
+  const triggers = Array.from(document.querySelectorAll("[data-case-study]"));
+  const backgroundRegions = [document.querySelector("main"), document.querySelector("footer")].filter(Boolean);
+
+  if (!dialog || !zoom || !scroller || !mount || !backButton || !triggers.length) {
+    return;
+  }
+
+  const OPEN_DURATION = 900;
+  const CLOSE_DURATION = 760;
+  const CASE_STUDY_EASING = "cubic-bezier(0.65, 0, 0.35, 1)";
+  let activeScreen = null;
+  let activeTrigger = null;
+  let activeAnimation = null;
+  let savedScrollY = 0;
+  let closeCleanupTimer = null;
+
+  function getScreenForTrigger(trigger, key) {
+    const card = trigger.closest(".project-card");
+    return card?.querySelector(`.project-laptop[data-case-study="${key}"] .laptop-screen`) || null;
+  }
+
+  function getFocusableElements() {
+    return Array.from(
+      dialog.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((element) => !element.hasAttribute("inert") && element.offsetParent !== null);
+  }
+
+  function getScreenFrame(rect) {
+    return {
+      top: `${rect.top}px`,
+      left: `${rect.left}px`,
+      width: `${rect.width}px`,
+      height: `${rect.height}px`,
+    };
+  }
+
+  function getViewportFrame() {
+    return {
+      top: "0px",
+      left: "0px",
+      width: `${window.innerWidth}px`,
+      height: `${window.innerHeight}px`,
+    };
+  }
+
+  function lockPage() {
+    savedScrollY = window.scrollY;
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.classList.add("case-study-open");
+    backgroundRegions.forEach((region) => {
+      region.inert = true;
+    });
+  }
+
+  function unlockPage() {
+    document.body.classList.remove("case-study-open");
+    document.body.style.top = "";
+    backgroundRegions.forEach((region) => {
+      region.inert = false;
+    });
+    window.scrollTo(0, savedScrollY);
+  }
+
+  function finishOpen() {
+    const finishedAnimation = activeAnimation;
+    activeAnimation = null;
+    finishedAnimation?.cancel();
+    dialog.classList.remove("is-animating");
+    zoom.style.borderRadius = "";
+    backButton.focus({ preventScroll: true });
+  }
+
+  function openCaseStudy(trigger) {
+    const key = trigger.dataset.caseStudy;
+    const template = document.querySelector(`#case-study-${key}`);
+    const sourceScreen = getScreenForTrigger(trigger, key);
+
+    if (!template || !sourceScreen || dialog.classList.contains("is-active")) {
+      return;
+    }
+
+    window.clearTimeout(closeCleanupTimer);
+    activeScreen = sourceScreen;
+    activeTrigger = trigger;
+    const sourceRect = sourceScreen.getBoundingClientRect();
+
+    mount.replaceChildren(template.content.cloneNode(true));
+    scroller.scrollTop = 0;
+    dialog.inert = false;
+    dialog.setAttribute("aria-hidden", "false");
+    dialog.classList.add("is-active", "is-animating");
+    lockPage();
+
+    if (prefersReducedMotion.matches || typeof zoom.animate !== "function") {
+      finishOpen();
+      return;
+    }
+
+    activeAnimation = zoom.animate(
+      [
+        {
+          ...getScreenFrame(sourceRect),
+          borderRadius: "2px",
+        },
+        {
+          ...getViewportFrame(),
+          borderRadius: "0px",
+        },
+      ],
+      {
+        duration: OPEN_DURATION,
+        easing: CASE_STUDY_EASING,
+        fill: "both",
+      },
+    );
+
+    activeAnimation.finished.then(finishOpen).catch(() => {});
+  }
+
+  function finishClose() {
+    const finishedAnimation = activeAnimation;
+    activeAnimation = null;
+    finishedAnimation?.cancel();
+    unlockPage();
+    dialog.classList.remove("is-active", "is-animating");
+    dialog.setAttribute("aria-hidden", "true");
+    dialog.inert = true;
+    zoom.style.borderRadius = "";
+    activeTrigger?.focus({ preventScroll: true });
+    activeScreen = null;
+    activeTrigger = null;
+
+    closeCleanupTimer = window.setTimeout(() => {
+      if (!dialog.classList.contains("is-active")) {
+        mount.replaceChildren();
+      }
+    }, 220);
+  }
+
+  function closeCaseStudy() {
+    if (!dialog.classList.contains("is-active") || !activeScreen) {
+      return;
+    }
+
+    activeAnimation?.cancel();
+    scroller.scrollTo({ top: 0, behavior: "auto" });
+    const targetRect = activeScreen.getBoundingClientRect();
+    dialog.classList.add("is-animating");
+
+    if (prefersReducedMotion.matches || typeof zoom.animate !== "function") {
+      finishClose();
+      return;
+    }
+
+    activeAnimation = zoom.animate(
+      [
+        {
+          ...getViewportFrame(),
+          borderRadius: "0px",
+        },
+        {
+          ...getScreenFrame(targetRect),
+          borderRadius: "2px",
+        },
+      ],
+      {
+        duration: CLOSE_DURATION,
+        easing: CASE_STUDY_EASING,
+        fill: "both",
+      },
+    );
+
+    activeAnimation.finished.then(finishClose).catch(() => {});
+  }
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener("click", () => openCaseStudy(trigger));
+  });
+
+  backButton.addEventListener("click", closeCaseStudy);
+
+  window.addEventListener("keydown", (event) => {
+    if (!dialog.classList.contains("is-active")) {
+      return;
+    }
+
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeCaseStudy();
+      return;
+    }
+
+    if (event.key !== "Tab") {
+      return;
+    }
+
+    const focusable = getFocusableElements();
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (!first || !last) {
+      event.preventDefault();
+      return;
+    }
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+}
+
+setupCaseStudies();

@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/hero.css" />
     <link rel="stylesheet" href="css/content.css" />
+    <link rel="stylesheet" href="css/work-showcase.css" />
     <link rel="stylesheet" href="css/pricing.css" />
     <link rel="stylesheet" href="css/showtime.css" />
     <link rel="stylesheet" href="css/footer.css" />
@@ -214,33 +215,89 @@
           <a class="small-link" href="#contact">Start yours</a>
         </div>
 
-        <div class="work-grid">
-          <article>
-            <a class="work-link" href="https://www.cottage616.com/" target="_blank" rel="noopener">
-              <img src="assets/work/cottage616.jpg" alt="Cottage 616 event venue website homepage" />
-              <div>
-                <p>Event Venue</p>
-                <h3>Cottage 616 — a warm booking-first site for an intimate venue.</h3>
-              </div>
-            </a>
+        <div class="project-showcase">
+          <article class="project-card">
+            <button
+              class="project-laptop"
+              type="button"
+              data-case-study="cottage616"
+              aria-haspopup="dialog"
+              aria-controls="case-study-dialog"
+              aria-label="Open the Cottage 616 case study"
+            >
+              <span class="laptop-lid">
+                <span class="laptop-camera" aria-hidden="true"></span>
+                <span class="laptop-screen">
+                  <img src="assets/work/cottage616.jpg" alt="" aria-hidden="true" />
+                  <span class="laptop-cue"><span>View case study</span></span>
+                </span>
+              </span>
+              <span class="laptop-base" aria-hidden="true"><span></span></span>
+            </button>
+            <div class="project-summary">
+              <p>Event Venue</p>
+              <h3>Cottage 616</h3>
+              <span>A warm, booking-first site for an intimate venue.</span>
+              <button class="project-open" type="button" data-case-study="cottage616" aria-haspopup="dialog" aria-controls="case-study-dialog">
+                Explore the project <span aria-hidden="true">&#8599;</span>
+              </button>
+            </div>
           </article>
-          <article>
-            <a class="work-link" href="https://www.cottage616.com/the-hive.html" target="_blank" rel="noopener">
-              <img src="assets/work/the-hive.jpg" alt="The Hive head-spa retreat website" />
-              <div>
-                <p>Head-Spa Retreat</p>
-                <h3>The Hive — a calm, sensory landing page for scalp care and relaxation.</h3>
-              </div>
-            </a>
+
+          <article class="project-card project-card--reverse">
+            <button
+              class="project-laptop"
+              type="button"
+              data-case-study="the-hive"
+              aria-haspopup="dialog"
+              aria-controls="case-study-dialog"
+              aria-label="Open The Hive case study"
+            >
+              <span class="laptop-lid">
+                <span class="laptop-camera" aria-hidden="true"></span>
+                <span class="laptop-screen">
+                  <img src="assets/work/the-hive.jpg" alt="" aria-hidden="true" />
+                  <span class="laptop-cue"><span>View case study</span></span>
+                </span>
+              </span>
+              <span class="laptop-base" aria-hidden="true"><span></span></span>
+            </button>
+            <div class="project-summary">
+              <p>Head-Spa Retreat</p>
+              <h3>The Hive</h3>
+              <span>A calm, sensory landing page for scalp care and relaxation.</span>
+              <button class="project-open" type="button" data-case-study="the-hive" aria-haspopup="dialog" aria-controls="case-study-dialog">
+                Explore the project <span aria-hidden="true">&#8599;</span>
+              </button>
+            </div>
           </article>
-          <article>
-            <a class="work-link" href="https://xarindar.com/jazz/" target="_blank" rel="noopener">
-              <img src="assets/work/jazzr.jpg" alt="Jazzr Photography portfolio website" />
-              <div>
-                <p>Photography</p>
-                <h3>Jazzr Photography — a moody, image-led portfolio and booking site.</h3>
-              </div>
-            </a>
+
+          <article class="project-card">
+            <button
+              class="project-laptop"
+              type="button"
+              data-case-study="jazzr"
+              aria-haspopup="dialog"
+              aria-controls="case-study-dialog"
+              aria-label="Open the Jazzr Photography case study"
+            >
+              <span class="laptop-lid">
+                <span class="laptop-camera" aria-hidden="true"></span>
+                <span class="laptop-screen">
+                  <img src="assets/work/jazzr.jpg" alt="" aria-hidden="true" />
+                  <span class="laptop-cue"><span>View case study</span></span>
+                </span>
+              </span>
+              <span class="laptop-base" aria-hidden="true"><span></span></span>
+            </button>
+            <div class="project-summary">
+              <p>Photography</p>
+              <h3>Jazzr Photography</h3>
+              <span>A moody, image-led portfolio and booking site.</span>
+              <button class="project-open" type="button" data-case-study="jazzr" aria-haspopup="dialog" aria-controls="case-study-dialog">
+                Explore the project <span aria-hidden="true">&#8599;</span>
+              </button>
+            </div>
           </article>
         </div>
       </section>
@@ -487,6 +544,149 @@
       </div>
     </footer>
 
-    <script src="js/main.js?v=menu-morph"></script>
+    <div
+      class="case-study-dialog"
+      id="case-study-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="case-study-title"
+      inert
+    >
+      <div class="case-study-zoom">
+        <div class="case-study-scroll">
+          <button class="case-study-back" type="button" aria-label="Back to selected work">
+            <span class="back-arrow" aria-hidden="true">&#8592;</span>
+            <span>Back to work</span>
+          </button>
+          <div class="case-study-mount"></div>
+        </div>
+      </div>
+    </div>
+
+    <template id="case-study-cottage616">
+      <article class="case-study-page">
+        <header class="case-study-hero">
+          <img src="assets/work/cottage616.jpg" alt="Cottage 616 event venue website homepage" />
+          <div class="case-study-hero-copy">
+            <p>Event Venue &middot; Web Design &amp; Booking</p>
+            <h2 id="case-study-title">Cottage 616</h2>
+            <span>A welcoming digital front door built to turn interest into venue tours.</span>
+          </div>
+          <span class="case-scroll-cue" aria-hidden="true">Scroll for the story <b>&darr;</b></span>
+        </header>
+        <div class="case-study-body">
+          <div class="case-study-intro">
+            <p class="eyebrow">The assignment</p>
+            <h3>Make planning a celebration feel personal, clear, and easy to act on.</h3>
+            <a class="button button-dark" href="https://www.cottage616.com/" target="_blank" rel="noopener">Visit live site <span aria-hidden="true">&#8599;</span></a>
+          </div>
+          <div class="case-study-columns">
+            <section>
+              <span class="case-number">01</span>
+              <p class="eyebrow">Client needs</p>
+              <h4>A venue experience guests could understand before scheduling a tour.</h4>
+              <p>Cottage 616 needed to show its warmth and flexibility while answering the practical questions that slow down inquiries: what the space feels like, what it supports, and how to take the next step.</p>
+            </section>
+            <section>
+              <span class="case-number">02</span>
+              <p class="eyebrow">Our solution</p>
+              <h4>A visual, booking-first path with one clear next move.</h4>
+              <p>We paired generous event imagery with concise venue details and repeated booking cues. The structure keeps the atmosphere front and center while making it simple to move from browsing to a real conversation.</p>
+            </section>
+          </div>
+          <div class="case-outcomes">
+            <p class="eyebrow">Built to deliver</p>
+            <div><span>01</span><strong>Warm first impression</strong></div>
+            <div><span>02</span><strong>Faster booking path</strong></div>
+            <div><span>03</span><strong>Easy mobile browsing</strong></div>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <template id="case-study-the-hive">
+      <article class="case-study-page">
+        <header class="case-study-hero case-study-hero--hive">
+          <img src="assets/work/the-hive.jpg" alt="The Hive head-spa retreat website" />
+          <div class="case-study-hero-copy">
+            <p>Head-Spa Retreat &middot; Brand Landing Page</p>
+            <h2 id="case-study-title">The Hive</h2>
+            <span>A quiet, sensory introduction to an unfamiliar kind of care.</span>
+          </div>
+          <span class="case-scroll-cue" aria-hidden="true">Scroll for the story <b>&darr;</b></span>
+        </header>
+        <div class="case-study-body">
+          <div class="case-study-intro">
+            <p class="eyebrow">The assignment</p>
+            <h3>Explain a new wellness service without losing the sense of calm that makes it special.</h3>
+            <a class="button button-dark" href="https://www.cottage616.com/the-hive.html" target="_blank" rel="noopener">Visit live site <span aria-hidden="true">&#8599;</span></a>
+          </div>
+          <div class="case-study-columns">
+            <section>
+              <span class="case-number">01</span>
+              <p class="eyebrow">Client needs</p>
+              <h4>A clear explanation of head-spa care for first-time guests.</h4>
+              <p>The experience is tactile and restorative, but unfamiliar to many visitors. The Hive needed to build trust, explain what happens during a visit, and preserve its connection to Cottage 616 without feeling like an event-venue page.</p>
+            </section>
+            <section>
+              <span class="case-number">02</span>
+              <p class="eyebrow">Our solution</p>
+              <h4>A focused retreat with patient pacing and sensory imagery.</h4>
+              <p>We created a distinct visual rhythm, let the experience lead, and broke the service into reassuring, scannable moments. A direct booking path appears naturally once visitors know what to expect.</p>
+            </section>
+          </div>
+          <div class="case-outcomes">
+            <p class="eyebrow">Built to deliver</p>
+            <div><span>01</span><strong>Clear service education</strong></div>
+            <div><span>02</span><strong>Calm brand separation</strong></div>
+            <div><span>03</span><strong>Confident booking cues</strong></div>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <template id="case-study-jazzr">
+      <article class="case-study-page">
+        <header class="case-study-hero case-study-hero--jazzr">
+          <img src="assets/work/jazzr.jpg" alt="Jazzr Photography portfolio website" />
+          <div class="case-study-hero-copy">
+            <p>Photography &middot; Portfolio &amp; Booking</p>
+            <h2 id="case-study-title">Jazzr Photography</h2>
+            <span>An image-led portfolio that makes the photographer's point of view unmistakable.</span>
+          </div>
+          <span class="case-scroll-cue" aria-hidden="true">Scroll for the story <b>&darr;</b></span>
+        </header>
+        <div class="case-study-body">
+          <div class="case-study-intro">
+            <p class="eyebrow">The assignment</p>
+            <h3>Let the work create an emotional connection, then make booking feel effortless.</h3>
+            <a class="button button-dark" href="https://xarindar.com/jazz/" target="_blank" rel="noopener">Visit live site <span aria-hidden="true">&#8599;</span></a>
+          </div>
+          <div class="case-study-columns">
+            <section>
+              <span class="case-number">01</span>
+              <p class="eyebrow">Client needs</p>
+              <h4>A portfolio with atmosphere that still works as a practical sales tool.</h4>
+              <p>Jazzr needed space for expressive, story-rich photography without burying package information or the route to a session. The brand had to feel personal and artistic while staying easy to navigate.</p>
+            </section>
+            <section>
+              <span class="case-number">02</span>
+              <p class="eyebrow">Our solution</p>
+              <h4>Cinematic images, restrained type, and a simple path to inquiry.</h4>
+              <p>We kept the interface quiet so every frame could carry the story. Clear portfolio groupings, concise package guidance, and persistent booking cues turn that emotional first impression into action.</p>
+            </section>
+          </div>
+          <div class="case-outcomes">
+            <p class="eyebrow">Built to deliver</p>
+            <div><span>01</span><strong>Distinct visual voice</strong></div>
+            <div><span>02</span><strong>Scannable packages</strong></div>
+            <div><span>03</span><strong>Direct session booking</strong></div>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <script src="js/main.js?v=case-study-laptops"></script>
   </body>
 </html>

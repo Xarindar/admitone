@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/hero.css" />
     <link rel="stylesheet" href="css/content.css" />
+    <link rel="stylesheet" href="css/blog.css" />
     <link rel="stylesheet" href="css/work-showcase.css" />
     <link rel="stylesheet" href="css/pricing.css" />
     <link rel="stylesheet" href="css/showtime.css" />
@@ -453,21 +454,21 @@
             <p class="eyebrow">Notes</p>
             <h2>Latest insights and trends.</h2>
           </div>
-          <a class="small-link" href="#contact">Read more</a>
+          <a class="small-link" href="blog.html">Read more</a>
         </div>
 
-        <div class="notes-grid">
-          <article>
+        <div class="notes-grid" data-blog-grid aria-live="polite">
+          <article data-blog-fallback>
             <img src="https://picsum.photos/seed/admit-one-note-a/520/360" alt="Placeholder website planning" />
             <p>Design Direction</p>
             <h3>How to make placeholder assets feel intentional.</h3>
           </article>
-          <article>
+          <article data-blog-fallback>
             <img src="https://picsum.photos/seed/admit-one-note-b/520/360" alt="Placeholder content planning" />
             <p>Content</p>
             <h3>What your homepage needs before the visuals arrive.</h3>
           </article>
-          <article>
+          <article data-blog-fallback>
             <img src="https://picsum.photos/seed/admit-one-note-c/520/360" alt="Placeholder development screen" />
             <p>Launch</p>
             <h3>Small QA checks that make a site feel finished.</h3>
@@ -687,6 +688,8 @@
       </article>
     </template>
 
+    <script src="js/blog-config.js"></script>
+    <script src="js/blog.js"></script>
     <script src="js/main.js?v=case-study-laptops"></script>
   </body>
 </html>

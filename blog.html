@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notes | Admit One</title>
+    <meta
+      name="description"
+      content="Practical notes from Admit One about thoughtful websites, clearer content, and smoother launches."
+    />
+    <link rel="icon" href="assets/logos/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:opsz,wght@9..144,500..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/tokens.css?v=marquee-bulbs" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/subpage.css" />
+    <link rel="stylesheet" href="css/blog.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="subpage-hero">
+      <header class="site-header">
+        <nav class="nav" aria-label="Primary navigation">
+          <div class="nav-spacer" aria-hidden="true"></div>
+
+          <a class="brand" href="index.html" aria-label="Admit One home">
+            <span class="brand-full">
+              <img src="assets/logos/logo-wordmark.svg" alt="" aria-hidden="true" />
+            </span>
+            <span class="brand-compact">
+              <img src="assets/logos/logo-icon.svg" alt="" aria-hidden="true" />
+            </span>
+          </a>
+
+          <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+            <span class="menu-mark" aria-hidden="true">
+              <span class="menu-line"></span>
+              <span class="menu-line"></span>
+              <span class="menu-line"></span>
+              <span class="menu-close-word">Close</span>
+            </span>
+          </button>
+
+          <div class="nav-links" id="nav-links">
+            <div class="nav-primary-links">
+              <a href="index.html#services">Services</a>
+              <a href="index.html#work">Work</a>
+              <a href="index.html#pricing">Pricing</a>
+              <a href="blog.html" aria-current="page">Notes</a>
+              <a href="resources.html">Help</a>
+            </div>
+            <a class="nav-cta" href="index.html#contact">Start</a>
+          </div>
+        </nav>
+      </header>
+    </div>
+
+    <main id="main">
+      <section class="blog-index" data-blog-library>
+        <header class="blog-index-header">
+          <p class="eyebrow">Notes from the studio</p>
+          <h1>Ideas for a clearer, more useful website.</h1>
+          <p class="lead">
+            Practical guidance on design direction, content, and the small launch details that
+            make a site feel finished.
+          </p>
+        </header>
+        <div class="blog-library-grid" data-blog-library-grid aria-live="polite">
+          <article class="blog-message"><p>Loading the latest notes&hellip;</p></article>
+        </div>
+      </section>
+
+      <article class="blog-story" data-blog-post hidden>
+        <a class="blog-story-back" href="blog.html">&larr; All notes</a>
+        <header class="blog-story-header">
+          <p class="eyebrow" data-blog-category>Notes</p>
+          <h1 data-blog-title>Loading story&hellip;</h1>
+          <p class="blog-story-excerpt" data-blog-excerpt hidden></p>
+          <p class="blog-story-meta">
+            <time data-blog-date hidden></time>
+            <span data-blog-author hidden></span>
+          </p>
+        </header>
+        <img class="blog-story-image" data-blog-image alt="" hidden />
+        <p class="blog-story-status" data-blog-status>Loading the story&hellip;</p>
+        <div class="blog-story-content" data-blog-content></div>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <a class="brand" href="index.html" aria-label="Admit One home">
+          <span class="brand-mark">
+            <img src="assets/logos/logo-footer.svg" alt="" aria-hidden="true" />
+          </span>
+          <span class="brand-name">Admit One</span>
+        </a>
+        <p>Web design for clean launches and memorable first impressions.</p>
+        <nav aria-label="Footer navigation">
+          <a href="index.html#services">Services</a>
+          <a href="index.html#work">Work</a>
+          <a href="index.html#pricing">Pricing</a>
+          <a href="resources.html">Help Center</a>
+          <a href="index.html#contact">Contact</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="js/blog-config.js"></script>
+    <script src="js/blog.js"></script>
+    <script src="js/main.js?v=menu-morph"></script>
+  </body>
+</html>

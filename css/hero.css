@@ -205,6 +205,23 @@
   text-box: trim-both cap alphabetic;
 }
 
+.marquee-line-text--punctuated {
+  padding-right: 0.13em;
+}
+
+.marquee-comma {
+  position: absolute;
+  right: 0;
+  bottom: -0.23em;
+  display: block;
+  line-height: 1;
+  color: #181410;
+  background-image: linear-gradient(177deg, #453d31 0%, #1d1a12 50%, #060503 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* Fallback for engines without text-box-trim: with line-height 1 and this
    font's ascent/descent (930/-270 per 1000), the baseline sits 0.17em above
    the line-box bottom, so nudging down 0.17em drops it onto the lower rail. */

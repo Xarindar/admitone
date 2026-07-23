@@ -178,8 +178,12 @@
       const description = document.querySelector('meta[name="description"]');
       if (description && post.excerpt) description.setAttribute("content", post.excerpt);
     } catch (error) {
-      if (status) status.textContent = error instanceof Error ? error.message : "The story could not be loaded.";
+      const message = error instanceof Error ? error.message : "The story could not be loaded.";
+      const title = story.querySelector("[data-blog-title]");
+      if (title) title.textContent = "Story unavailable";
+      if (status) status.textContent = message;
       if (content) content.replaceChildren();
+      document.title = "Story unavailable | Admit One";
     }
   }
 

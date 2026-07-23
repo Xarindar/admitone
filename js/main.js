@@ -364,6 +364,7 @@ function setupCaseStudies() {
     const sourceRect = sourceScreen.getBoundingClientRect();
 
     mount.replaceChildren(template.content.cloneNode(true));
+    mount.querySelector("[data-case-study-title]")?.setAttribute("id", "case-study-title");
     scroller.scrollTop = 0;
     dialog.inert = false;
     dialog.setAttribute("aria-hidden", "false");

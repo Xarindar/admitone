@@ -91,6 +91,13 @@ Then open:
 http://127.0.0.1:59120/
 ```
 
+## Client uploads
+
+The Help Center and homepage footer link to `https://admin.admitonedesign.com/uploads`.
+In Showrunner, use **Client uploads** to create a private project link and share it with
+the client. Clients upload their original files directly to the private Railway bucket;
+retrieve them with **Download original** in Showrunner. Close the link when finished.
+
 ## Notes
 
 The current logos, images, metrics, testimonials, package prices, and project names are placeholders so final brand assets can be swapped in later.

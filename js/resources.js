@@ -10,6 +10,13 @@
      Keywords cover the words clients use, not the words we use. */
   var HELP_INDEX = [
     {
+      group: "Tools",
+      title: "Send original files",
+      hint: "Private project uploads without resizing or compression",
+      url: "https://admin.admitonedesign.com/uploads",
+      keywords: "upload send media images photos videos logos files original quality client portal",
+    },
+    {
       group: "Guides",
       title: "Set up GitHub",
       hint: "Account, private repository, and inviting Admit One",

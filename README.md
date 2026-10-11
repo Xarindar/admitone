@@ -100,5 +100,4 @@ retrieve them with **Download original** in Showrunner. Close the link when fini
 
 ## Notes
 
-
 The current logos, images, metrics, testimonials, package prices, and project names are placeholders so final brand assets can be swapped in later.
